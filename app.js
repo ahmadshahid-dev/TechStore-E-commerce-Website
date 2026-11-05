@@ -64,9 +64,9 @@ const app = express();
 app.use(express.json());
 // EJS View Engine Setup;
 app.set("view engine", "ejs");
-app.set("views", "views");
+app.set("views", path.join(Directory, "views"));
 // CSS and JS Files Middleware;
-app.use(express.static(path.join("public")));
+app.use(express.static(path.join(Directory, "public")));
 // Upload Files Middleware;
 app.use("/uploads", express.static(path.join(Directory, "uploads")));
 // MongoDB Store;
@@ -165,7 +165,7 @@ app.use((error, req, res, next) => {
     });
   }
   // Page Request â†’ Render Error Page;
-  res.status(500).render(path.join(Directory, "views/errors/500"), {
+  res.status(500).render("errors/500", {
     currentPage: "500 Server Error",
     isLoggedIn: req.session.isLoggedIn,
     user: req.session.user,
@@ -174,7 +174,7 @@ app.use((error, req, res, next) => {
 });
 // 404 Error Handling Middleware;
 app.use((req, res, next) => {
-  res.render(path.join(Directory, "views/errors/404"), {
+  res.render("errors/404", {
     currentPage: "404",
     isLoggedIn: req.session.isLoggedIn,
     user: req.session.user,

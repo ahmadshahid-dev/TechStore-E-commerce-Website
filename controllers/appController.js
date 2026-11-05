@@ -1,8 +1,6 @@
 /* ***********************************
                Imports
 *********************************** */
-const path = require("path");
-const Directory = require("../utils/util");
 const escapeRegex = require("../utils/regex");
 const Product = require("../models/productModel");
 const Contact = require("../models/contactModel");
@@ -14,7 +12,7 @@ Website GET Home Controller
 const getHome = async (req, res, next) => {
   try {
     const products = await Product.find({ status: "Active" }).lean();
-    res.render(path.join(Directory, "views/pages/home"), {
+    res.render("pages/home", {
       currentPage: "Home",
       isLoggedIn: req.session.isLoggedIn,
       user: req.session.user,
@@ -30,7 +28,7 @@ const getHome = async (req, res, next) => {
 Website GET About Controller
 *********************************** */
 const getAbout = (req, res, next) => {
-  res.render(path.join(Directory, "views/pages/about"), {
+  res.render("pages/about", {
     currentPage: "About",
     isLoggedIn: req.session.isLoggedIn,
     user: req.session.user,
@@ -57,7 +55,7 @@ const getShop = async (req, res, next) => {
       let productHTML = "";
       for (const product of products) {
         productHTML += await new Promise((resolve, reject) => {
-          res.render(path.join(Directory, "views/partials/product"),
+          res.render("partials/product",
             { currentPage: "Shop", product },
             (error, html) => {
               if (error) return reject(error);
@@ -72,7 +70,7 @@ const getShop = async (req, res, next) => {
         countItems : products.length
       });
     }
-    return res.render(path.join(Directory, "views/pages/shop"), {
+    return res.render("pages/shop", {
       currentPage: "Shop",
       isLoggedIn: req.session.isLoggedIn,
       user: req.session.user,
@@ -88,7 +86,7 @@ const getShop = async (req, res, next) => {
 Website GET Contact Controller
 *********************************** */
 const getContact = (req, res, next) => {
-  res.render(path.join(Directory, "views/pages/contact"), {
+  res.render("pages/contact", {
     currentPage: "Contact",
     isLoggedIn: req.session.isLoggedIn,
     user: req.session.user,
@@ -158,7 +156,7 @@ const getSearch = async (req, res, next) => {
   const { search } = req.query;
   try {
     if (!search || search.trim() === "") {
-      return res.render(path.join(Directory, "views/pages/search"), {
+      return res.render("pages/search", {
         currentPage: "Search",
         isLoggedIn: req.session.isLoggedIn,
         user: req.session.user,
@@ -171,7 +169,7 @@ const getSearch = async (req, res, next) => {
     const products = await Product.find({
       name: { $regex: safeSearch, $options: "i" },
     }).lean();
-    return res.render(path.join(Directory, "views/pages/search"), {
+    return res.render("pages/search", {
       currentPage: "Search",
       isLoggedIn: req.session.isLoggedIn,
       user: req.session.user,
@@ -250,7 +248,7 @@ const postNewsLetter = [
 Website GET Privacy & Policy Controller
 *********************************** */
 const getPrivacyPolicy = (req, res, next) => {
-  res.render(path.join(Directory, "views/pages/privacy-policy"), {
+  res.render("pages/privacy-policy", {
     currentPage: "Privacy & Policy",
     isLoggedIn: req.session.isLoggedIn,
     user: req.session.user,
@@ -261,7 +259,7 @@ const getPrivacyPolicy = (req, res, next) => {
 Website GET Returns Policy Controller
 *********************************** */
 const getReturnsPolicy = (req, res, next) => {
-  res.render(path.join(Directory, "views/pages/returns-policy"), {
+  res.render("pages/returns-policy", {
     currentPage: "Returns & Policy",
     isLoggedIn: req.session.isLoggedIn,
     user: req.session.user,
@@ -272,7 +270,7 @@ const getReturnsPolicy = (req, res, next) => {
 Website GET Terms Conditions Controller
 *********************************** */
 const getTermsConditions = (req, res, next) => {
-  res.render(path.join(Directory, "views/pages/terms-conditions"), {
+  res.render("pages/terms-conditions", {
     currentPage: "Terms Conditions",
     isLoggedIn: req.session.isLoggedIn,
     user: req.session.user,
