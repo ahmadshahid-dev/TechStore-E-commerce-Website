@@ -1,0 +1,14 @@
+// Imports;
+const express = require('express');
+const controller = require('../controllers/categoriesController');
+const categoriesRoutes = express.Router();
+// Website GET Headphones Route;
+categoriesRoutes.get('/headphones', controller.getHeadphones);
+// Website GET Keyboards Route;
+categoriesRoutes.get('/keyboards', controller.getKeyboards);
+// Website GET Mice Route;
+categoriesRoutes.get('/mice', controller.getMice);
+// Website GET PDP Route;
+categoriesRoutes.get('/:category/:sku', controller.getPdp);
+// Exports;
+module.exports = categoriesRoutes;

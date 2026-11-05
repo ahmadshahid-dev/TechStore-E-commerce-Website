@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Track Order | TechStore</title>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/output.css" />
+</head>
+
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-orange-500 selection:text-white">
+  <!-- Header -->
+  <%- include("../partials/header") %>
+  <!-- Main -->
+  <main>
+    <section class="relative py-8 sm:py-10 lg:py-12 h-[calc(100vh_-_75px)] flex items-center" id="tracking-page">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Breadcrumb & Header Banner -->
+        <div class="max-w-3xl mx-auto text-center mb-10">
+          <nav class="flex items-center justify-center gap-x-2 mb-2.5">
+            <a class="text-slate-500 dark:text-slate-400 text-xs font-inter font-medium hover:text-orange-600 dark:hover:text-orange-500 hover:transition-colors" href="/">Home</a>
+            <svg class="text-slate-400 h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+            <span class="text-slate-800 dark:text-slate-200 text-xs font-inter font-semibold">Track Order</span>
+          </nav>
+          <h1 class="text-slate-900 dark:text-white text-3xl sm:text-5xl font-montserrat font-extrabold tracking-tight mb-3.5">
+            Track Your <span class="text-orange-600 dark:text-orange-400">Shipment</span>
+          </h1>
+          <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-inter leading-relaxed max-w-lg mx-auto">
+            Enter your order ID and account email address to get real-time tracking updates on your package.
+          </p>
+        </div>
+        <!-- Order Lookup Form -->
+        <div class="max-w-2xl mx-auto">
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm p-6 sm:p-8">
+            <form class="space-y-5" id="orderTrackForm">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                  <label class="text-slate-700 dark:text-slate-300 text-xs font-inter font-semibold block" for="orderId">Order ID / Reference</label>
+                  <input class="bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white w-full text-sm font-inter uppercase border border-slate-200 dark:border-slate-700 focus:ring focus:ring-orange-500/20 focus:border-orange-500 outline-none rounded-xl py-3 px-4" type="text" name="orderId" id="orderId" required placeholder="e.g., TS-849201" />
+                  <p class="error text-rose-500 text-xs font-inter" id="error-orderId"></p>
+                </div>
+                <div class="space-y-1.5">
+                  <label class="text-slate-700 dark:text-slate-300 text-xs font-inter font-semibold block" for="orderEmail">Billing Email Address</label>
+                  <input class="bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white w-full text-sm font-inter lowercase border border-slate-200 dark:border-slate-700 focus:ring focus:ring-orange-500/20 focus:border-orange-500 outline-none rounded-xl py-3 px-4" type="email" name="orderEmail" id="orderEmail" required placeholder="your.email@example.com" />
+                  <p class="error text-rose-500 text-xs font-inter" id="error-orderEmail"></p>
+                </div>
+              </div>
+              <button class="bg-orange-600 text-white w-full flex items-center justify-center gap-2 rounded-2xl shadow-lg shadow-orange-600/25 py-3.5 px-8 hover:bg-orange-700 active:scale-[0.98] cursor-pointer transition ease-out duration-[250ms]" type="submit">
+                <svg class="h-4 w-4 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <span class="text-sm font-montserrat font-semibold">Track Package</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Tracking Results Container (Sample Live Tracker Result) -->
+    <section class="relative backdrop-blur-md pb-8 sm:pb-10 lg:pb-12 hidden" id="tracking-result">
+      <div class="max-w-4xl mx-auto space-y-8">
+        <!-- Order Header Bar Card -->
+        <div class="bg-white dark:bg-slate-900 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm p-6 sm:p-8">
+          <div class="flex flex-col gap-y-1">
+            <div class="flex items-center gap-x-2.5">
+              <span class="text-slate-400 text-xs font-inter font-bold leading-none uppercase tracking-wider">Order Reference</span>
+              <span class="bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 text-xs font-inter font-bold leading-none rounded-md py-1 px-2.5" id="orderNoId"></span>
+            </div>
+            <h2 class="text-slate-900 dark:text-white text-xl font-montserrat font-bold leading-tight">
+              Carrier: FedEx Express (Tracking #00000000)
+            </h2>
+          </div>
+          <!-- Estimated Delivery Badge -->
+          <div class="bg-emerald-50 dark:bg-emerald-500/10 flex items-center self-start sm:self-auto gap-3 border border-emerald-200/60 dark:border-emerald-500/20 rounded-2xl p-4">
+            <span class="bg-emerald-500 h-2.5 w-2.5 rounded-full animate-pulse"></span>
+            <div class="flex flex-col gap-y-1">
+              <span class="text-slate-400 text-[0.6250rem] font-inter font-bold uppercase tracking-wider">Estimated Delivery</span>
+              <span class="text-emerald-700 dark:text-emerald-400 text-sm font-montserrat font-bold leading-none" id="DeliveryInfo">Thursday, Sept 24</span>
+            </div>
+          </div>
+        </div>
+        <!-- Step-by-Step Progress Timeline Card -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm space-y-8 p-6 sm:p-8">
+          <h3 class="text-slate-900 dark:text-white text-base font-montserrat font-bold border-b border-slate-100 dark:border-slate-800 pb-4">
+            Package Status Timeline
+          </h3>
+          <!-- Horizontal Progress Bar (Desktop & Mobile Responsive) -->
+          <div class="grid grid-cols-1 sm:grid-cols-4 gap-6 relative py-4">
+            <!-- Step 1: Order Placed -->
+            <div class="flex sm:flex-col items-center gap-y-3.5 text-left sm:text-center group">
+              <div class="bg-emerald-600 text-white h-10 w-10 text-sm font-montserrat font-bold flex items-center justify-center rounded-full shadow-md shadow-emerald-600/20 z-10">
+                ✓
+              </div>
+              <div class="flex flex-col gap-y-1.25">
+                <h4 class="text-slate-900 dark:text-white text-sm font-montserrat font-bold">Order Confirmed</h4>
+                <span class="text-slate-400 text-xs font-inter">Sept 18 • 10:30 AM</span>
+              </div>
+            </div>
+            <!-- Step 2: Quality Inspection -->
+            <div class="flex sm:flex-col items-center gap-4 text-left sm:text-center group">
+              <div class="bg-emerald-600 text-white h-10 w-10 text-sm font-montserrat font-bold flex items-center justify-center rounded-full shadow-md shadow-emerald-600/20 z-10">
+                ✓
+              </div>
+              <div class="flex flex-col gap-y-1.25">
+                <h4 class="text-slate-900 dark:text-white text-sm font-montserrat font-bold">Quality Checked</h4>
+                <span class="text-slate-400 text-xs font-inter">Sept 18 • 03:15 PM</span>
+              </div>
+            </div>
+            <!-- Step 3: In Transit (Active) -->
+            <div class="flex sm:flex-col items-center gap-4 text-left sm:text-center group">
+              <div class="bg-orange-600 text-white h-10 w-10 flex items-center justify-center text-sm  font-bold rounded-full shadow-md shadow-orange-600/25 z-10 animate-pulse">
+                📦
+              </div>
+              <div class="flex flex-col gap-y-1.25">
+                <h4 class="text-orange-600 dark:text-orange-400 text-sm font-montserrat font-bold">In Transit</h4>
+                <span class="text-slate-400 text-xs font-inter">Sept 19 • Hub Dispatch</span>
+              </div>
+            </div>
+            <!-- Step 4: Delivered -->
+            <div class="flex sm:flex-col items-center gap-4 text-left sm:text-center group opacity-50">
+              <div class="bg-slate-200 dark:bg-slate-800 text-slate-400 h-10 w-10 text-sm font-montserrat font-bold flex items-center justify-center rounded-full shadow-md shadow-emerald-600/20 z-10">
+                🏡
+              </div>
+              <div class="flex flex-col gap-y-1.25">
+                <h4 class="text-slate-600 dark:text-slate-400 text-sm font-montserrat font-bold">Delivered</h4>
+                <span class="text-slate-400 text-xs font-inter">Pending Arrival</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Order Summary Details Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <!-- Destination Address Card -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm space-y-2 p-6">
+            <span class="text-slate-400 text-xs font-inter font-bold uppercase tracking-wider block mb-1.5">Delivery Address</span>
+            <p class="text-slate-900 dark:text-white text-sm font-montserrat font-bold" id="fullName"></p>
+            <div class="flex flex-col">
+              <span class="text-slate-600 dark:text-slate-400 text-xs font-inter leading-relaxed" id="stateAddress"></span>
+              <span class="text-slate-600 dark:text-slate-400 text-xs font-inter leading-relaxed" id="prvinceCtyPstlCd"></span>
+            </div>
+          </div>
+          <!-- Help & Support Quick Box -->
+          <div class="bg-white dark:bg-slate-900 flex flex-col justify-between border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm space-y-4 p-6">
+            <span class="text-slate-400 text-xs font-inter font-bold uppercase tracking-wider block mb-1.5">Need Shipment Help?</span>
+            <p class="text-slate-600 dark:text-slate-400 text-xs font-inter leading-relaxed">
+              Is your shipment delayed or do you need to change your address? Contact our 24/7 support.
+            </p>
+            <a class="text-orange-600 dark:text-orange-400 text-xs font-montserrat font-bold inline-flex items-center gap-2 hover:underline" href="/contact">
+              Contact Shipping Support →
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- Footer -->
+  <%- include("../partials/footer") %>
+  <!-- Scripts -->
+  <script src="/js/script.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/user.js"></script>
+</body>
+
+</html>                     

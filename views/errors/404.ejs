@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 - Page Not Found | TechStore</title>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/output.css" />
+</head>
+
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100
+min-h-screen flex flex-col antialiased selection:bg-orange-500 selection:text-white">
+  <!-- Header -->
+  <%- include("../partials/header") %>
+  <!-- Main -->
+  <main class="flex-1 flex items-center justify-center p-6 lg:p-8 relative overflow-hidden">
+    <!-- Ambient Background Glow -->
+    <div class="bg-orange-500/10 dark:bg-orange-500/5 h-96 sm:h-[500px] w-96 sm:w-[500px] rounded-full blur-3xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+    <!-- Card -->
+    <div class="w-full max-w-2xl text-center relative z-10 py-8">
+      <!-- 404 Large Gradient Text -->
+      <div class="relative inline-block mb-8">
+        <span class="bg-gradient-to-b from-orange-500 to-amber-500 text-8xl sm:text-9xl md:text-[140px] font-montserrat font-black leading-none tracking-tighter text-transparent bg-clip-text select-none ">
+          404
+        </span>
+        <!-- Floating Tag Badge -->
+        <div class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-montserrat font-bold uppercase tracking-wider whitespace-nowrap absolute -bottom-2 sm:-bottom-3 left-1/2 -translate-x-1/2 rounded-full shadow-lg py-1 px-3">
+          Page Not Found
+        </div>
+      </div>
+      <!-- Headings & Text -->
+      <div class="space-y-3 mb-8">
+        <h1 class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-bold leading-none py-1">
+          Lost In The
+          <span class="text-orange-600 dark:text-orange-400">Digital Void?</span>
+        </h1>
+        <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-inter leading-relaxed max-w-md mx-auto">
+          The link you followed may be broken, or the page may have been removed. Let's get you
+          back on track!
+        </p>
+      </div>
+      <!-- Quick Search Box -->
+      <form class="search-form relative" action="/search" method="GET" role="search" data-search="search-404" data-suggestions="suggestionsList-404" aria-label="Site Search">
+        <div class="relative max-w-md mx-auto">
+          <div class="flex items-center">
+            <label for="search-404" class="sr-only">Search</label>
+            <svg class="text-slate-400 h-4 w-4 absolute left-3.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input class="bg-white dark:bg-slate-900 text-slate-900 dark:text-white w-full text-xs sm:text-sm font-inter border border-slate-300 dark:border-slate-800 focus:border-orange-500 focus:ring focus:ring-orange-500/20 focus:outline-none placeholder:text-slate-400 rounded-xl shadow-sm py-3 pl-10 pr-24" type="search" name="search" id="search-404" autocomplete="off" placeholder="Search products, headphones, mice..." />
+            <button class="bg-orange-600 text-white text-xs font-montserrat font-semibold absolute right-1.5 rounded-lg shadow-sm cursor-pointer py-1.5 px-3 hover:bg-orange-700" type="submit">
+              Search
+            </button>
+          </div>
+          <!-- Search Suggestions Dropdown -->
+          <ul class="bg-white dark:bg-slate-900/95 w-full absolute top-full left-0 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl shadow-xl dark:shadow-2xl z-50 py-3.5 hidden" id="suggestionsList-404" role="listbox"></ul>
+        </div>
+      </form>
+      <!-- Primary Action Buttons -->
+      <div class="max-w-md mx-auto flex flex-col sm:flex-row items-center justify-center gap-3 pt-6">
+        <!-- Go to Homepage -->
+        <a href="/" class="bg-orange-600 text-white w-full sm:w-1/2 text-xs sm:text-sm font-montserrat font-bold flex items-center justify-center gap-2 rounded-xl shadow-lg shadow-orange-500/25 py-3 px-6 hover:bg-orange-700 active:scale-[0.98] transition-transform">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          <span>Back to Home</span>
+        </a>
+        <!-- Go Back Previous Page -->
+        <a href="javascript:history.back()" class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 w-full sm:w-1/2 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm flex items-center justify-center gap-2 py-3 px-6 hover:bg-slate-100 dark:hover:bg-slate-800">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          <span class="text-xs sm:text-sm font-montserrat font-semibold">Previous Page</span>
+        </a>
+      </div>
+      <!-- Helpful Quick Links -->
+      <div class="space-y-2 pt-8">
+        <p class="text-slate-400 text-xs font-inter">Popular destinations:</p>
+        <div class="flex flex-wrap items-center justify-center gap-x-2.5">
+          <a class="text-slate-600 dark:text-slate-300 text-xs font-inter underline hover:text-orange-600 dark:hover:text-orange-400" href="/category/headphones">
+            Headphones
+          </a>
+          <span>•</span>
+          <a class="text-slate-600 dark:text-slate-300 text-xs font-inter underline hover:text-orange-600 dark:hover:text-orange-400" href="/category/keyboards">
+            Keyboards
+          </a>
+          <span>•</span>
+          <a class="text-slate-600 dark:text-slate-300 text-xs font-inter underline hover:text-orange-600 dark:hover:text-orange-400" href="/category/mice">
+            Gaming Mice
+          </a>
+          <span>•</span>
+          <a class="text-slate-600 dark:text-slate-300 text-xs font-inter underline hover:text-orange-600 dark:hover:text-orange-400" href="/contact">
+            Contact Support
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- Footer -->
+  <%- include("../partials/footer") %>
+  <!-- Scripts -->
+  <script src="/js/script.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+
+</html>

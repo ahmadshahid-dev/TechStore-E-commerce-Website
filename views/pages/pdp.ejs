@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Buy <%= product.name %> at best price in Pakistan. Fast nationwide delivery, official warranty, and easy returns at TechStore." />
+  <title><%= product.name %> | TechStore</title>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/output.css" />
+</head>
+
+<body class="bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 text-slate-900 dark:text-slate-100 antialiased selection:bg-orange-500 selection:text-white">
+  <!-- Header -->
+  <%- include("../partials/header") %>
+  <!-- Main -->
+  <main>
+    <!-- ==================== 1. BREADCRUMB NAVIGATION ==================== -->
+    <div class="backdrop-blur-md max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <nav class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-inter flex items-center gap-2 overflow-x-auto whitespace-nowrap py-3.5">
+        <a class="hover:text-orange-600 dark:hover:text-orange-400 hover:underline hover:transition-colors" href="/">
+          Home
+        </a>
+        <span class="text-slate-300 dark:text-slate-700">/</span>
+        <a class="hover:text-orange-600 dark:hover:text-orange-400 capitalize hover:underline hover:transition-colors" href="/category/<%= product.category %>">
+          <%= product.category %>
+        </a>
+        <span class="text-slate-300 dark:text-slate-700">/</span>
+        <span class="text-slate-800 dark:text-slate-200 font-semibold truncate max-w-xs sm:max-w-md">
+          <%= product.name %>
+        </span>
+      </nav>
+    </div>
+    <!-- ==================== 2. MAIN PRODUCT SECTION ==================== -->
+    <section class="backdrop-blur-md pb-8 sm:pb-10 lg:pb-12 overflow-hidden">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-10">
+          <!-- LEFT: Product Image Showcase -->
+          <div class="space-y-5">
+            <!-- Main Product Image -->
+            <div class="relative bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-800 border border-slate-200/80 dark:border-slate-700/80 rounded-3xl 
+             shadow-lg group overflow-hidden">
+              <!-- Promotional Tags -->
+              <div class="absolute top-2.5 left-2.5 flex flex-col gap-1.5 z-10">
+                <% if (product.tag) { %>
+                <div class="bg-gradient-to-r from-orange-500 to-red-500 text-white flex items-center gap-1.5 backdrop-blur-sm rounded-full shadow-lg py-1.5 px-2.5">
+                  <svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                  <span class="text-xs sm:text-sm font-montserrat font-semibold uppercase tracking-wider"><%= product.tag %></span>
+                </div>
+                <% } %>
+              </div>
+              <!-- Main Product Image -->
+              <img class="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform ease-in-out duration-300 drop-shadow-2xl relative z-5" id="pdpImage" src="/uploads/<%= product.pdpImage %>" loading="eager" alt="<%= product.name %>" />
+            </div>
+            <!-- Thumbnail Gallery -->
+            <div class="grid grid-cols-4 gap-x-2.5 sm:mt-10 place-items-center">
+              <% for(let i = 0; i < 4; i++) { %>
+              <button class="changeImgBtn bg-white dark:bg-slate-900 max-h-28 max-w-28 w-full   border-2 flex items-center justify-center border-slate-200 dark:border-slate-700 hover:border-orange-400 relative group dark:hover:border-orange-600 rounded-2xl cursor-pointer shadow-sm overflow-hidden hover:shadow-md hover:scale-[1.025] opacity-75 hover:opacity-100 hover:transition hover:ease-in-out hover:duration-300" type="button">
+                <img class="Img max-h-full max-w-full object-contain" src="/uploads/<%= product.pdpImage %>" alt="Thumbnail <%= i + 2 %>" />
+              </button>
+              <% } %>
+            </div>
+          </div>
+          <!-- RIGHT: Product Details & Purchase -->
+          <div class="space-y-5">
+            <div class="space-y-2.5 border-b border-slate-200 dark:border-slate-800">
+              <!-- Product Title -->
+              <h1 class="text-slate-800 dark:text-slate-200 text-lg sm:text-xl lg:text-2xl font-montserrat font-bold uppercase leading-snug tracking-tight">
+                <%= product.name %>
+              </h1>
+              <!-- Rating -->
+              <div class="flex items-center gap-x-2.5 mb-2.5">
+                <div class="flex gap-0.5">
+                  <% for(let i = 0; i < 5; i++) { %>
+                  <svg class="h-5 w-5 text-amber-400 fill-current" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                  <% } %>
+                </div>
+                <div class="flex items-center gap-x-1.5">
+                  <span class="text-slate-900 dark:text-white text-sm font-montserrat font-bold">5.0</span>
+                  <span class="text-slate-500 dark:text-slate-400 text-sm font-inter">
+                    (1,246 verified reviews)
+                  </span>
+                </div>
+              </div>
+            </div>
+            <!-- Pricing & Color -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl space-y-2.5 p-3.5">
+              <!-- Pricing Row -->
+              <div class="flex items-center justify-between flex-wrap gap-2.5">
+                <div class="flex items-center gap-x-2.5">
+                  <span class="text-slate-900 dark:text-slate-100 text-2xl font-montserrat font-extrabold tracking-tight">
+                    Rs <%= product.currentPrice?.toLocaleString() %>
+                  </span>
+                  <% if (product.originalPrice && product.originalPrice > product.currentPrice) { %>
+                  <span class="text-slate-400 text-sm font-inter line-through">
+                    Rs <%= product.originalPrice?.toLocaleString() %>
+                  </span>
+                  <% } %>
+                </div>
+                <% if (product.originalPrice && product.originalPrice > product.currentPrice) { %>
+                <span class="bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 text-xs font-inter font-bold leading-none inline-flex 
+                items-center rounded-md py-1.5 px-2">
+                  <%= Math.round(((product.originalPrice - product.currentPrice) / product.originalPrice) * 100) %>% OFF
+                </span>
+                <% } %>
+              </div>
+              <!-- Variant Row -->
+              <% if (product.color) { %>
+              <div class="border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between pt-2.5">
+                <span class="text-slate-500 dark:text-slate-400 text-xs font-inter font-medium">Color:</span>
+                <span class="text-slate-900 dark:text-slate-100 text-xs font-montserrat font-bold inline-flex items-center gap-1.5">
+                  <span class="bg-purple-500 h-2.5 w-2.5 ring-2 ring-purple-500/20 rounded-full"></span>
+                  <%= product.color %>
+                </span>
+              </div>
+              <% } %>
+            </div>
+            <!-- Quantity & Action Buttons -->
+            <form class="space-y-5" id="cart-form" data-product-id="<%= product._id %>">
+              <!-- Quantity Selector -->
+              <div class="space-y-1.5">
+                <label class="text-slate-700 dark:text-slate-300 text-sm font-montserrat font-semibold uppercase tracking-wider block" for="quantity">
+                  Quantity
+                </label>
+                <div class="flex items-center gap-3.5">
+                  <div class="bg-white dark:bg-slate-900 w-fit flex items-center border-2 border-slate-300 dark:border-slate-700 rounded-xl shadow-sm">
+                    <button class="text-slate-700 dark:text-slate-300 text-xl font-montserrat 
+                    font-bold w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800" id="minus-pdp" type="button">
+                      −
+                    </button>
+                    <input class="bg-transparent text-slate-900 dark:text-white w-15 text-lg font-montserrat font-bold text-center outline-none" type="number" id="quantity" name="quantity" value="1" min="1" max="10" readonly />
+                    <button class="text-slate-700 dark:text-slate-300 text-xl font-montserrat 
+                    font-bold w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800" id="plus-pdp" type="button">
+                      +
+                    </button>
+                  </div>
+                  <span class="text-slate-500 dark:text-slate-400 text-sm font-inter">(Max: 10 per order)</span>
+                </div>
+              </div>
+              <!-- Action Buttons -->
+              <div class="flex flex-col sm:flex-row gap-5">
+                <!-- Add to Cart Button -->
+                <button class="bg-gradient-to-r from-orange-600 to-red-600 text-white rounded-xl shadow-sm shadow-orange-500/30 hover:shadow-orange-500/40 gap-x-2.5 hover:to-red-700 hover:from-orange-700 flex flex-1 items-center justify-center cursor-pointer py-3.5 px-6 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition ease-out duration-[250ms]" type="submit" <%= product.stockQuantity <= 0 ? 'disabled' : '' %>>
+                  <svg class="Icon h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path>
+                  </svg>
+                  <span class="Spinner h-4.5 w-4.5 border-[3px] border-orange-100 border-t-orange-500 shrink-0 rounded-full animate-spin drop-shadow-[0_0_4px_rgba(249,115,22,0.6)] hidden"></span>
+                  <span class="Text text-[0.9375rem] font-montserrat font-semibold leading-none">Add to Cart</span>
+                </button>
+                <!-- Wishlist Button -->
+                <button class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 flex-1 sm:flex-initial flex items-center justify-center gap-x-2.5 border border-slate-200 dark:border-slate-700 shadow-sm rounded-xl py-3.25 px-6 hover:bg-slate-50 dark:hover:bg-slate-800 hover:shadow-md active:scale-[0.98] cursor-pointer group hover:transition hover:ease-out hover:duration-[250ms]" id="fav-btn" type="button" data-product-id="<%= product._id %>">
+                  <svg class="Icon text-red-500 h-5 w-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12.001 4.52853C14.35 2.42 17.98 2.49 20.2426 4.75736C22.5053 7.02472 22.583 10.637 20.4786 12.993L11.9999 21.485L3.52138 12.993C1.41705 10.637 1.49571 7.01901 3.75736 4.75736C6.02157 2.49315 9.64519 2.41687 12.001 4.52853Z" />
+                  </svg>
+                  <span class="Spinner h-4.5 w-4.5 border-[3px] border-orange-100 border-t-orange-500 shrink-0 rounded-full animate-spin drop-shadow-[0_0_4px_rgba(249,115,22,0.6)] hidden"></span>
+                  <span class="Text text-[0.9375rem] font-montserrat font-semibold leading-none">Wishlist</span>
+                </button>
+              </div>
+              <!-- Buy Now Button -->
+              <button class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white w-full flex items-center justify-center gap-x-2.5 rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-orange-500/40 cursor-pointer py-4 px-6 active:scale-[0.98] disabled:opacity-50 transition ease-out duration-[250ms] disabled:cursor-not-allowed" id="buy-btn" type="submit" <%= product.stockQuantity <= 0 ? 'disabled' : '' %>>
+                <span class="Spinner h-4.5 w-4.5 border-[3px] border-orange-100 border-t-orange-500 shrink-0 rounded-full animate-spin drop-shadow-[0_0_4px_rgba(249,115,22,0.6)] hidden"></span>
+                <span class="Text text-[0.9375rem] font-montserrat font-semibold leading-none">Buy Now</span>
+              </button>
+            </form>
+            <!-- Trust Badges -->
+            <div class="grid grid-cols-2 gap-3 border-t border-slate-200 dark:border-slate-800 pt-5">
+              <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 border border-green-200 dark:border-green-800/50 rounded-lg 
+              flex items-start gap-3 p-3.5">
+                <svg class="text-green-600 dark:text-green-400 h-5 w-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                <div>
+                  <p class="text-green-900 dark:text-green-400 text-xs font-montserrat font-bold">Genuine</p>
+                  <p class="text-green-700 dark:text-green-300 text-xs font-inter">100% Authentic</p>
+                </div>
+              </div>
+              <div class="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/30 border border-blue-200 dark:border-blue-800/50 rounded-lg 
+              flex items-start gap-3 p-3.5">
+                <svg class="text-blue-600 dark:text-blue-400 h-5 w-5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+                <div>
+                  <p class="text-blue-900 dark:text-blue-400 text-xs font-montserrat font-bold">Fast Delivery</p>
+                  <p class="text-blue-700 dark:text-blue-300 text-xs font-inter">Nationwide Available</p>
+                </div>
+              </div>
+              <div class="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 border border-amber-200 dark:border-amber-800/50 rounded-lg 
+              flex items-start gap-3 p-3.5">
+                <svg class="text-amber-600 dark:text-amber-400 h-5 w-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" />
+                </svg>
+                <div>
+                  <p class="text-amber-900 dark:text-amber-400 text-xs font-montserrat font-bold">Easy Returns</p>
+                  <p class="text-amber-700 dark:text-amber-300 text-xs font-inter">7-Day Money Back</p>
+                </div>
+              </div>
+              <div class="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 border border-purple-200 dark:border-purple-800/50 rounded-lg 
+              flex items-start gap-3 p-3.5">
+                <svg class="text-purple-600 dark:text-purple-400 h-5 w-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                </svg>
+                <div>
+                  <p class="text-purple-900 dark:text-purple-400 text-xs font-montserrat font-bold">Secure</p>
+                  <p class="text-purple-700 dark:text-purple-300 text-xs font-inter">Safe Checkout</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ==================== 3. DESCRIPTION & SPECIFICATIONS ==================== -->
+    <section class="border-t border-slate-200 dark:border-slate-800 py-8 sm:py-10 
+      lg:py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+          <div class="space-y-1.5 mb-8">
+            <span class="text-orange-600 dark:text-orange-400 text-xs font-montserrat font-bold uppercase tracking-wider block">
+              Product Details
+            </span>
+            <h2 class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-bold leading-none">
+              Overview & <span class="text-transparent bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text">Specifications</span>
+            </h2>
+          </div>
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm p-6 lg:p-8">
+            <div class="text-slate-700 dark:text-slate-300 text-base font-inter leading-relaxed whitespace-pre-line"><%= product.description %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ==================== 4. RELATED PRODUCTS ==================== -->
+    <section class="bg-white/50 dark:bg-slate-900/50 border-t border-slate-200 
+    dark:border-slate-800 py-8 sm:py-10 lg:py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mx-auto text-center mb-8 sm:mb-10">
+          <span class="text-orange-600 dark:text-orange-400 inline-flex items-center gap-1.5">
+            <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h1a1 1 0 001-1v-6a1 1 0 00-1-1h-1z" />
+            </svg>
+            <span class="text-xs font-montserrat font-bold uppercase tracking-wider">Similar Products</span>
+          </span>
+          <h2 class=" text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-bold leading-none">
+            Related <span class="text-transparent bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text">Gear & Accessories</span>
+          </h2>
+        </div>
+        <% if ( relatedProducts && relatedProducts.length > 0) { %>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <% relatedProducts.forEach((relatedItem) => { %>
+          <%- include("../partials/product", { product: relatedItem }) %>
+          <% }) %>
+        </div>
+        <% } else { %>
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-center py-12 px-6">
+          <svg class="text-slate-400 dark:text-slate-600 h-12 w-12 mx-auto mb-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+          </svg>
+          <p class="text-slate-500 dark:text-slate-400 font-inter">
+            No related products available in this category at the moment.
+          </p>
+        </div>
+        <% } %>
+      </div>
+    </section>
+  </main>
+  <!-- Footer -->
+  <%- include("../partials/footer") %>
+  <!-- Scripts -->
+  <script src="/js/script.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/user.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy | TechStore</title>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/output.css" />
+</head>
+
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-orange-500 selection:text-white">
+  <!-- Header -->
+  <%- include("../partials/header") %>
+  <!-- Main -->
+  <main>
+    <div class="max-w-7xl mx-auto py-8 sm:py-10 lg:py-12 px-4 sm:px-6 lg:px-8">
+      <!-- Page Header Banner -->
+      <div class="max-w-3xl mx-auto text-center space-y-4 mb-8 sm:mb-10">
+        <!-- Bg Glow -->
+        <div class="bg-orange-500/10 h-72 w-72 sm:h-96 sm:w-96 absolute -top-24 left-1/2 -translate-x-1/2 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="bg-orange-100 text-orange-700 dark:bg-orange-500/10 dark:text-orange-400 text-xs font-montserrat font-bold uppercase tracking-widest inline-flex items-center gap-2 border border-orange-200/60 dark:border-orange-500/20 rounded-full py-1.5 px-4">
+          <span class="bg-orange-600 dark:bg-orange-400 h-2 w-2 rounded-full"></span>
+          Legal & Compliance
+        </div>
+        <h1 class="text-slate-900 dark:text-white text-3xl sm:text-5xl font-montserrat font-extrabold tracking-tight">
+          Privacy & <span class="text-orange-600 dark:text-orange-400">Policy</span>
+        </h1>
+        <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-inter max-w-xl mx-auto">
+          Last Updated: <span class="text-slate-700 dark:text-slate-300 font-bold">September 19, 2026</span> • Effective Date: January 1, 2026
+        </p>
+      </div>
+      <!-- 2-Column Content Layout (Left: Sticky TOC Sidebar | Right: Policy Content) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Sticky Table of Contents Sidebar -->
+        <div class="lg:col-span-4 lg:sticky lg:top-24">
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm p-6">
+            <h2 class="text-slate-400 text-xs font-inter font-bold uppercase tracking-wider border-b border-slate-100 dark:border-slate-800 pb-2.5 mb-4">
+              Table of Contents
+            </h2>
+            <nav class="flex flex-col gap-y-1">
+              <a class="text-slate-600 dark:text-slate-400 text-xs font-inter font-semibold rounded-xl py-2.5 px-3 hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-orange-400 hover:transition-colors" href="#information-we-collect">
+                1. Information We Collect
+              </a>
+              <a class="text-slate-600 dark:text-slate-400 text-xs font-inter font-semibold rounded-xl py-2.5 px-3 hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-orange-400 hover:transition-colors" href="#how-we-use-data">
+                2. How We Use Your Data
+              </a>
+              <a class="text-slate-600 dark:text-slate-400 text-xs font-inter font-semibold rounded-xl py-2.5 px-3 hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-orange-400 hover:transition-colors" href="#third-party-sharing">
+                3. Third-Party Data Sharing
+              </a>
+              <a class="text-slate-600 dark:text-slate-400 text-xs font-inter font-semibold rounded-xl py-2.5 px-3 hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-orange-400 hover:transition-colors" href="#data-security">
+                4. Security & Encryption
+              </a>
+              <a class="text-slate-600 dark:text-slate-400 text-xs font-inter font-semibold rounded-xl py-2.5 px-3 hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-orange-400 hover:transition-colors" href="#cookies-tracking">
+                5. Cookies & Tracking
+              </a>
+              <a class="text-slate-600 dark:text-slate-400 text-xs font-inter font-semibold rounded-xl py-2.5 px-3 hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-orange-400 hover:transition-colors" href="#user-rights">
+                6. Your Privacy Rights
+              </a>
+              <a class="text-slate-600 dark:text-slate-400 text-xs font-inter font-semibold rounded-xl py-2.5 px-3 hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-orange-400 hover:transition-colors" href="#contact-us">
+                7. Contact Privacy Team
+              </a>
+            </nav>
+            <!-- Need Help Box -->
+            <div class="border-t border-slate-100 dark:border-slate-800 text-center pt-6 mt-6">
+              <p class="text-slate-500 text-xs font-inter mb-3">Have questions about your personal data?</p>
+              <a class="bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 w-full text-xs font-inter font-bold inline-flex items-center justify-center rounded-xl py-2.5 px-4 hover:bg-slate-800 dark:hover:bg-white hover:transition-colors hover:ease-out hover:duration-[250ms]" href="/contact">
+                Contact Privacy Support
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- Main Policy Document Body -->
+        <div class="lg:col-span-8 space-y-8">
+          <!-- Intro Overview Card -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm p-6 sm:p-8">
+            <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm font-inter leading-relaxed">
+              At <strong class="text-slate-900 dark:text-white">TechStore</strong>, we value your privacy and are committed to protecting your personal information. This Privacy Policy outlines how we collect, use, store, and safeguard your data when you visit our website, place orders for tech hardware, or interact with our services.
+            </p>
+          </div>
+          <!-- Section 1 -->
+          <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 rounded-3xl shadow-sm p-6 sm:p-8 scroll-mt-28" id="information-we-collect">
+            <div class="flex items-center gap-x-3 border-b border-slate-100 dark:border-slate-800 pb-3">
+              <div class="bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 h-8 w-8 text-sm font-inter font-bold flex items-center justify-center rounded-xl">
+                1
+              </div>
+              <h2 class="text-slate-900 dark:text-white text-base sm:text-lg font-montserrat font-bold sm:leading-none flex-1">
+                Information We Collect
+              </h2>
+            </div>
+            <div class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter leading-relaxed space-y-3">
+              <p>We collect information you provide directly to us when making purchases or registering accounts:</p>
+              <ul class="text-slate-700 dark:text-slate-300 list-disc space-y-1.5 pl-5">
+                <li><strong>Personal Identifiers:</strong> Name, email address, phone number, and physical shipping address.</li>
+                <li><strong>Order & Transaction Data:</strong> Items purchased, order total, transaction date, and payment confirmation status.</li>
+                <li><strong>Account Credentials:</strong> Hashed passwords, username, and account security preferences.</li>
+                <li><strong>Device & Usage Information:</strong> IP address, browser type, device identifiers, and pages visited on TechStore.</li>
+              </ul>
+            </div>
+          </section>
+          <!-- Section 2 -->
+          <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 rounded-3xl shadow-sm p-6 sm:p-8 scroll-mt-28" id="how-we-use-data">
+            <div class="flex items-center gap-x-3 border-b border-slate-100 dark:border-slate-800 pb-3">
+              <div class="bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 h-8 w-8 text-sm font-inter font-bold flex items-center justify-center rounded-xl">
+                2
+              </div>
+              <h2 class="text-slate-900 dark:text-white text-base sm:text-lg font-montserrat font-bold sm:leading-none flex-1">
+                How We Use Your Data
+              </h2>
+            </div>
+            <div class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter leading-relaxed space-y-3">
+              <p>TechStore utilizes collected data strictly for e-commerce fulfillment and site improvements:</p>
+              <ul class="text-slate-700 dark:text-slate-300 list-disc space-y-1.5 pl-5">
+                <li>To process, ship, and deliver your tech products to your designated address.</li>
+                <li>To send real-time order tracking updates, order receipts, and verification codes.</li>
+                <li>To provide responsive customer support and process returns or warranty claims.</li>
+                <li>To prevent fraudulent transactions and maintain high cybersecurity standards.</li>
+              </ul>
+            </div>
+          </section>
+          <!-- Section 3 -->
+          <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 rounded-3xl shadow-sm p-6 sm:p-8 scroll-mt-28" id="third-party-sharing">
+            <div class="flex items-center gap-x-3 border-b border-slate-100 dark:border-slate-800 pb-3">
+              <div class="bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 h-8 w-8 text-sm font-inter font-bold flex items-center justify-center rounded-xl">
+                3
+              </div>
+              <h2 class="text-slate-900 dark:text-white text-base sm:text-lg font-montserrat font-bold sm:leading-none flex-1">
+                Third-Party Data Sharing
+              </h2>
+            </div>
+            <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter leading-relaxed">
+              <strong class="text-slate-900 dark:text-white">We do not sell your personal information.</strong> We only share necessary data with trusted service providers who assist us in operating our platform:
+            </p>
+            <ul class="text-slate-700 dark:text-slate-300 text-xs sm:text-sm font-inter list-disc space-y-1.5 pl-5">
+              <li><strong>Delivery & Logistics Partners:</strong> Shipping couriers (e.g., DHL, FedEx, Local Express) to deliver physical products.</li>
+              <li><strong>Payment Processors:</strong> Encrypted payment gateways to process credit card or digital wallet transactions safely.</li>
+            </ul>
+          </section>
+          <!-- Section 4 -->
+          <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 rounded-3xl shadow-sm p-6 sm:p-8 scroll-mt-28" id="data-security">
+            <div class="flex items-center gap-x-3 border-b border-slate-100 dark:border-slate-800 pb-3">
+              <div class="bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 h-8 w-8 text-sm font-inter font-bold flex items-center justify-center rounded-xl">
+                4
+              </div>
+              <h2 class="text-slate-900 dark:text-white text-base sm:text-lg font-montserrat font-bold sm:leading-none flex-1">
+                Security & 256-Bit SSL Encryption
+              </h2>
+            </div>
+            <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter leading-relaxed">
+              We implement industry-standard 256-bit SSL encryption to safeguard sensitive data during transmission. Passwords are stored using secure salted hashing algorithms, ensuring your credentials remain confidential.
+            </p>
+          </section>
+          <!-- Section 5 -->
+          <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 rounded-3xl shadow-sm p-6 sm:p-8 scroll-mt-28" id="cookies-tracking">
+            <div class="flex items-center gap-x-3 border-b border-slate-100 dark:border-slate-800 pb-3">
+              <div class="bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 h-8 w-8 text-sm font-inter font-bold flex items-center justify-center rounded-xl">
+                5
+              </div>
+              <h2 class="text-slate-900 dark:text-white text-base sm:text-lg font-montserrat font-bold sm:leading-none flex-1">
+                Cookies & Tracking Technologies
+              </h2>
+            </div>
+            <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter leading-relaxed">
+              TechStore uses cookies to remember items in your shopping cart, maintain logged-in user sessions, and save dark/light theme preferences. You can adjust your browser settings to decline non-essential cookies.
+            </p>
+          </section>
+          <!-- Section 6 -->
+          <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 rounded-3xl shadow-sm p-6 sm:p-8 scroll-mt-28" id="user-rights">
+            <div class="flex items-center gap-x-3 border-b border-slate-100 dark:border-slate-800 pb-3">
+              <div class="bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 h-8 w-8 text-sm font-inter font-bold flex items-center justify-center rounded-xl">
+                6
+              </div>
+              <h2 class="text-slate-900 dark:text-white text-base sm:text-lg font-montserrat font-bold sm:leading-none flex-1">
+                Your Privacy Rights & Controls
+              </h2>
+            </div>
+            <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter leading-relaxed">
+              Depending on your jurisdiction, you have the right to:
+            </p>
+            <ul class="text-slate-700 dark:text-slate-300 text-xs sm:text-sm font-inter list-disc space-y-1.5 pl-5">
+              <li>Access and export a copy of your personal data archive.</li>
+              <li>Request corrections to inaccurate account details.</li>
+              <li>Request permanent deletion of your account and personal data.</li>
+            </ul>
+            <div class="pt-2">
+              <a class="text-orange-600 dark:text-orange-400 text-xs font-inter font-bold hover:underline hover:transition-colors" href="/user/privacy-security">
+                Go to Privacy Settings Controls →
+              </a>
+            </div>
+          </section>
+          <!-- Section 7 -->
+          <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 rounded-3xl shadow-sm p-6 sm:p-8 scroll-mt-28" id="contact-us">
+            <div class="flex items-center gap-x-3 border-b border-slate-100 dark:border-slate-800 pb-3">
+              <div class="bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 h-8 w-8 text-sm font-inter font-bold flex items-center justify-center rounded-xl">
+                7
+              </div>
+              <h2 class="text-slate-900 dark:text-white text-base sm:text-lg font-montserrat font-bold sm:leading-none flex-1">
+                Contact Us Regarding Privacy
+              </h2>
+            </div>
+            <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter leading-relaxed">
+              If you have questions, feedback, or data privacy requests, please reach out to our legal team:
+            </p>
+            <div class="bg-slate-50/70 dark:bg-slate-800/40 text-xs sm:text-sm font-inter border border-slate-200/60 dark:border-slate-800 space-y-1 rounded-2xl p-4">
+              <p class="text-slate-900 dark:text-white font-bold">TechStore Data Protection Office</p>
+              <p class="text-slate-500">Email: <a href="mailto:privacy@techstore.com" class="text-orange-600 dark:text-orange-400 hover:underline">privacy@techstore.com</a></p>
+              <p class="text-slate-500">Support Hours: Monday – Friday, 9:00 AM – 6:00 PM EST</p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- Footer -->
+  <%- include("../partials/footer") %>
+  <!-- Scripts -->
+  <script src="/js/script.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/user.js"></script>
+</body>
+
+</html>

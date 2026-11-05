@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Orders | TechStore</title>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/output.css" />
+</head>
+
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased selection:bg-orange-500 selection:text-white">
+  <!-- Header -->
+  <%- include("../partials/header") %>
+
+  <!-- Main Content -->
+  <main class="min-h-screen">
+    <!-- ==================== 1. PAGE HEADER BANNER ==================== -->
+    <section class="border-b border-slate-200/80 dark:border-slate-800/80 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md py-8 sm:py-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <!-- Breadcrumbs & Heading -->
+          <div class="space-y-1.5">
+            <div class="text-slate-500 dark:text-slate-400 text-xs font-inter flex items-center gap-2">
+              <a class="hover:text-orange-600 dark:hover:text-orange-400" href="/">Home</a>
+              <span>/</span>
+              <a class="hover:text-orange-600 dark:hover:text-orange-400" href="/<%= '@' + user?.username %>/profile-overview">Account</a>
+              <span>/</span>
+              <span class="text-slate-800 dark:text-slate-200 font-semibold">My Orders</span>
+            </div>
+            <h1 class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-extrabold leading-none tracking-tight mb-2.5">
+              Order <span class="text-orange-600 dark:text-orange-400">History</span>
+            </h1>
+            <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-inter">
+              Track recent shipments, inspect order summaries, or download previous invoices.
+            </p>
+          </div>
+          <!-- Continue Shopping CTA -->
+          <a href="/shop" class="bg-slate-900 dark:bg-white text-white dark:text-slate-950 w-fit inline-flex items-center gap-2 rounded-xl py-3 px-5 hover:bg-orange-600 dark:hover:bg-orange-500 hover:text-white dark:hover:text-white active:scale-[0.98] transition ease-out duration-200">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
+            <span class="text-xs sm:text-sm font-montserrat font-semibold">Browse Products</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 2. MAIN SECTION ==================== -->
+    <section class="backdrop-blur-md py-8 sm:py-10 lg:py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <% if (!orders || orders.length === 0) { %>
+        <!-- Empty State -->
+        <div class="max-w-md mx-auto space-y-6 text-center py-16 px-4">
+          <div class="bg-orange-50 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 h-24 w-24 flex items-center justify-center mx-auto border border-orange-200/80 dark:border-orange-900/50 rounded-3xl shadow-sm">
+            <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
+          </div>
+          <div class="space-y-2">
+            <h2 class="text-slate-900 dark:text-white text-2xl font-montserrat font-bold">
+              No Orders Found Yet
+            </h2>
+            <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-inter leading-relaxed">
+              You haven't placed any orders with TechStore yet. Discover our tech gadgets and gaming accessories!
+            </p>
+          </div>
+          <a href="/shop" class="bg-orange-600 text-white inline-flex items-center gap-2 rounded-xl py-3.5 px-8 shadow-lg shadow-orange-500/25 hover:bg-orange-700 active:scale-[0.98] transition">
+            <span class="text-xs sm:text-sm font-montserrat font-bold">Start Shopping Now</span>
+          </a>
+        </div>
+        <% } else { %>
+
+        <!-- KPI Summary Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-8">
+          <% 
+            const totalCount = orders.length;
+            const deliveredCount = orders.filter(o => o.orderStatus === 'Delivered').length;
+            const inProgressCount = orders.filter(o => o.orderStatus !== 'Delivered' && o.orderStatus !== 'Cancelled').length;
+          %>
+          <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-5 rounded-2xl flex items-center justify-between shadow-sm">
+            <div>
+              <p class="text-xs font-inter text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Total Orders</p>
+              <h3 class="text-2xl font-montserrat font-extrabold text-slate-900 dark:text-white mt-1"><%= totalCount %></h3>
+            </div>
+            <div class="h-11 w-11 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-5 rounded-2xl flex items-center justify-between shadow-sm">
+            <div>
+              <p class="text-xs font-inter text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">In Progress</p>
+              <h3 class="text-2xl font-montserrat font-extrabold text-orange-600 dark:text-orange-400 mt-1"><%= inProgressCount %></h3>
+            </div>
+            <div class="h-11 w-11 rounded-xl bg-orange-50 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 flex items-center justify-center">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-5 rounded-2xl flex items-center justify-between shadow-sm">
+            <div>
+              <p class="text-xs font-inter text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Delivered</p>
+              <h3 class="text-2xl font-montserrat font-extrabold text-emerald-600 dark:text-emerald-400 mt-1"><%= deliveredCount %></h3>
+            </div>
+            <div class="h-11 w-11 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Chips Bar -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-6">
+          <button type="button" data-filter="All" class="order-filter-btn active-filter px-4 py-2 rounded-xl text-xs font-montserrat font-bold bg-orange-600 text-white shadow-sm shadow-orange-500/20 whitespace-nowrap cursor-pointer transition">
+            All Orders (<%= totalCount %>)
+          </button>
+          <button type="button" data-filter="Processing" class="order-filter-btn px-4 py-2 rounded-xl text-xs font-montserrat font-semibold bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 whitespace-nowrap cursor-pointer transition">
+            Processing
+          </button>
+          <button type="button" data-filter="Shipped" class="order-filter-btn px-4 py-2 rounded-xl text-xs font-montserrat font-semibold bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 whitespace-nowrap cursor-pointer transition">
+            Shipped
+          </button>
+          <button type="button" data-filter="Delivered" class="order-filter-btn px-4 py-2 rounded-xl text-xs font-montserrat font-semibold bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 whitespace-nowrap cursor-pointer transition">
+            Delivered
+          </button>
+          <button type="button" data-filter="Cancelled" class="order-filter-btn px-4 py-2 rounded-xl text-xs font-montserrat font-semibold bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 whitespace-nowrap cursor-pointer transition">
+            Cancelled
+          </button>
+        </div>
+
+        <!-- Orders Cards List -->
+        <div class="space-y-6" id="ordersContainer">
+          <% orders.forEach(order => { %>
+          <div class="order-card bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition duration-200" data-status="<%= order.orderStatus %>" data-order='<%= JSON.stringify(order).replace(/'/g, "&apos;") %>'>
+
+            <!-- Order Card Header -->
+            <div class="bg-slate-50/70 dark:bg-slate-800/40 p-5 sm:px-6 border-b border-slate-100 dark:border-slate-800/80 flex flex-wrap items-center justify-between gap-4">
+              <div class="flex flex-wrap items-center gap-y-2 gap-x-6 text-xs font-inter">
+                <div>
+                  <span class="text-slate-400 block font-semibold uppercase tracking-wider text-[10px]">Order ID</span>
+                  <span class="font-montserrat font-bold text-slate-800 dark:text-slate-200 font-mono">#<%= order.orderId || order._id %></span>
+                </div>
+                <div>
+                  <span class="text-slate-400 block font-semibold uppercase tracking-wider text-[10px]">Placed On</span>
+                  <span class="font-medium text-slate-700 dark:text-slate-300">
+                    <%= new Date(order.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %>
+                  </span>
+                </div>
+                <div>
+                  <span class="text-slate-400 block font-semibold uppercase tracking-wider text-[10px]">Total Paid</span>
+                  <span class="font-montserrat font-bold text-orange-600 dark:text-orange-400">Rs <%= (order.totalAmount || 0).toLocaleString() %></span>
+                </div>
+              </div>
+
+              <!-- Status Pill Badge -->
+              <div class="flex items-center gap-3">
+                <% 
+                  let statusBadgeClass = "bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-900/60";
+                  if (order.orderStatus === 'Delivered') {
+                    statusBadgeClass = "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-900/60";
+                  } else if (order.orderStatus === 'Shipped') {
+                    statusBadgeClass = "bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 border-sky-200 dark:border-sky-900/60";
+                  } else if (order.orderStatus === 'Cancelled') {
+                    statusBadgeClass = "bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border-rose-200 dark:border-rose-900/60";
+                  }
+                %>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-montserrat font-bold border <%= statusBadgeClass %>">
+                  <span class="h-1.5 w-1.5 rounded-full bg-current"></span>
+                  <%= order.orderStatus %>
+                </span>
+
+                <!-- View Summary Button (Modal Trigger) -->
+                <button type="button" class="view-order-btn bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-orange-50 dark:hover:bg-orange-950/50 hover:text-orange-600 dark:hover:text-orange-400 border border-slate-200 dark:border-slate-700 px-4 py-1.5 rounded-xl text-xs font-montserrat font-semibold transition cursor-pointer">
+                  View Details
+                </button>
+              </div>
+            </div>
+
+            <!-- Items Preview List inside the card -->
+            <div class="p-5 sm:p-6 divide-y divide-slate-100 dark:divide-slate-800/60">
+              <% if (order.items && order.items.length > 0) { %>
+              <% order.items.forEach(item => { %>
+              <div class="py-3 first:pt-0 last:pb-0 flex items-center justify-between gap-4">
+                <div class="flex items-center gap-4">
+                  <div class="h-14 w-14 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 p-1 flex items-center justify-center shrink-0 overflow-hidden">
+                    <% if (item.image) { %>
+                    <img src="<%= item.image.startsWith('http') ? item.image : '/uploads/' + item.image %>" alt="<%= item.title %>" class="h-full w-full object-contain" />
+                    <% } else { %>
+                    <svg class="h-6 w-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                    </svg>
+                    <% } %>
+                  </div>
+                  <div>
+                    <h4 class="font-montserrat font-bold text-xs sm:text-sm text-slate-900 dark:text-white line-clamp-1">
+                      <%= item.title || item.name %>
+                    </h4>
+                    <p class="text-[11px] font-inter text-slate-500 dark:text-slate-400 mt-0.5">
+                      Qty: <strong class="text-slate-700 dark:text-slate-300"><%= item.quantity %></strong>
+                    </p>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <span class="font-montserrat font-bold text-xs sm:text-sm text-slate-900 dark:text-white">
+                    Rs <%= ((item.price || 0) * (item.quantity || 1)).toLocaleString() %>
+                  </span>
+                </div>
+              </div>
+              <% }); %>
+              <% } %>
+            </div>
+
+            <!-- Card Bottom Bar: Quick Shipping Destination snippet -->
+            <div class="bg-slate-50/40 dark:bg-slate-900/40 px-5 sm:px-6 py-3 border-t border-slate-100 dark:border-slate-800 text-[11px] font-inter text-slate-500 dark:text-slate-400 flex items-center justify-between flex-wrap gap-2">
+              <div class="flex items-center gap-1.5">
+                <svg class="h-3.5 w-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                </svg>
+                <span>Delivery: <%= order.shippingAddress?.city || 'Shipping Address' %>, <%= order.shippingAddress?.country || 'Pakistan' %></span>
+              </div>
+              <div>
+                <span>Payment: <strong class="text-slate-700 dark:text-slate-300 uppercase"><%= order.paymentMethod || 'Cash On Delivery' %></strong></span>
+              </div>
+            </div>
+
+          </div>
+          <% }); %>
+        </div>
+
+        <% } %>
+
+      </div>
+    </section>
+
+    <!-- ==================== 3. ORDER DETAILS & SUMMARY MODAL ==================== -->
+    <div id="orderDetailsModal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto">
+      <div class="relative w-full max-w-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden my-8">
+
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between px-6 py-5 border-b border-slate-100 dark:border-slate-800">
+          <div>
+            <h3 class="text-lg font-montserrat font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              Order Summary <span id="modalOrderId" class="text-xs font-mono text-orange-600 dark:text-orange-400">#ORD</span>
+            </h3>
+            <p id="modalOrderDate" class="text-xs text-slate-500 dark:text-slate-400 font-inter mt-0.5">
+              Placed on Date
+            </p>
+          </div>
+          <button type="button" id="closeOrderModalBtn" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition cursor-pointer">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Modal Body Content -->
+        <div class="p-6 space-y-6 max-h-[75vh] overflow-y-auto font-inter">
+
+          <!-- Order Status Banner -->
+          <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80 flex items-center justify-between flex-wrap gap-3">
+            <div>
+              <span class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 block">Current Status</span>
+              <p id="modalOrderStatusText" class="text-sm font-montserrat font-bold text-slate-900 dark:text-white capitalize">
+                Status
+              </p>
+            </div>
+            <div id="modalStatusBadge"></div>
+          </div>
+
+          <!-- Items Ordered Section -->
+          <div>
+            <h4 class="text-xs font-montserrat font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-3">
+              Items In This Order
+            </h4>
+            <div id="modalItemsList" class="divide-y divide-slate-100 dark:divide-slate-800 border border-slate-200/80 dark:border-slate-800 rounded-2xl overflow-hidden">
+              <!-- Dynamically populated via JS -->
+            </div>
+          </div>
+
+          <!-- 2-Columns: Shipping Address & Payment Details -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Shipping Info -->
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800 space-y-2">
+              <div class="flex items-center gap-2 text-slate-900 dark:text-white font-montserrat font-bold text-xs">
+                <svg class="h-4 w-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                </svg>
+                <span>Delivery Address</span>
+              </div>
+              <div id="modalShippingContent" class="text-xs text-slate-600 dark:text-slate-300 space-y-1">
+                <!-- Shipping content injected here -->
+              </div>
+            </div>
+
+            <!-- Payment Info -->
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800 space-y-2">
+              <div class="flex items-center gap-2 text-slate-900 dark:text-white font-montserrat font-bold text-xs">
+                <svg class="h-4 w-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                </svg>
+                <span>Payment Summary</span>
+              </div>
+              <div class="text-xs text-slate-600 dark:text-slate-300 space-y-1.5 pt-1">
+                <div class="flex justify-between">
+                  <span class="text-slate-400">Method:</span>
+                  <span id="modalPaymentMethod" class="font-semibold text-slate-800 dark:text-slate-200 uppercase">COD</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-400">Payment Status:</span>
+                  <span id="modalPaymentStatus" class="font-semibold text-emerald-600 dark:text-emerald-400">Paid</span>
+                </div>
+                <div class="flex justify-between border-t border-slate-200 dark:border-slate-700/60 pt-2 font-montserrat font-bold text-slate-900 dark:text-white">
+                  <span>Grand Total:</span>
+                  <span id="modalGrandTotal" class="text-orange-600 dark:text-orange-400">Rs 0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="px-6 py-4 bg-slate-50/60 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+          <button type="button" onclick="window.print()" class="text-xs font-montserrat font-semibold text-slate-600 dark:text-slate-400 hover:text-orange-600 flex items-center gap-1.5 cursor-pointer">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+            </svg>
+            Print Invoice
+          </button>
+          <button type="button" id="closeOrderModalBottomBtn" class="bg-orange-600 hover:bg-orange-700 text-white px-5 py-2 rounded-xl text-xs font-montserrat font-bold transition cursor-pointer">
+            Done
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <%- include("../partials/footer") %>
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const modal = document.getElementById("orderDetailsModal");
+      const closeBtn = document.getElementById("closeOrderModalBtn");
+      const closeBottomBtn = document.getElementById("closeOrderModalBottomBtn");
+
+      // Modal Target Fields
+      const modalOrderId = document.getElementById("modalOrderId");
+      const modalOrderDate = document.getElementById("modalOrderDate");
+      const modalOrderStatusText = document.getElementById("modalOrderStatusText");
+      const modalStatusBadge = document.getElementById("modalStatusBadge");
+      const modalItemsList = document.getElementById("modalItemsList");
+      const modalShippingContent = document.getElementById("modalShippingContent");
+      const modalPaymentMethod = document.getElementById("modalPaymentMethod");
+      const modalPaymentStatus = document.getElementById("modalPaymentStatus");
+      const modalGrandTotal = document.getElementById("modalGrandTotal");
+
+      function openModal() {
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeModal() {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+        document.body.style.overflow = "";
+      }
+
+      closeBtn?.addEventListener("click", closeModal);
+      closeBottomBtn?.addEventListener("click", closeModal);
+      modal?.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !modal.classList.contains("hidden")) closeModal();
+      });
+
+      // 1. POPULATE & OPEN ORDER DETAILS MODAL
+      document.querySelectorAll(".view-order-btn").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          const card = e.target.closest(".order-card");
+          if (!card) return;
+
+          try {
+            const orderData = JSON.parse(card.getAttribute("data-order"));
+
+            // Set Headers
+            modalOrderId.textContent = "#" + (orderData.orderId || orderData._id);
+            modalOrderDate.textContent = "Placed on " + new Date(orderData.createdAt).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            });
+
+            // Set Status & Badge
+            modalOrderStatusText.textContent = orderData.orderStatus || "Pending";
+            let badgeClass = "bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-900/60";
+            if (orderData.orderStatus === 'Delivered') {
+              badgeClass = "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-900/60";
+            } else if (orderData.orderStatus === 'Shipped') {
+              badgeClass = "bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 border-sky-200 dark:border-sky-900/60";
+            } else if (orderData.orderStatus === 'Cancelled') {
+              badgeClass = "bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border-rose-200 dark:border-rose-900/60";
+            }
+            modalStatusBadge.innerHTML = `<span class="px-3 py-1 text-xs font-montserrat font-bold rounded-full border ${badgeClass}">${orderData.orderStatus}</span>`;
+
+            // Populate Items List
+            modalItemsList.innerHTML = "";
+            if (orderData.items && orderData.items.length > 0) {
+              orderData.items.forEach(item => {
+                const itemImg = item.image ?
+                  (item.image.startsWith("http") ? item.image : "/uploads/" + item.image) :
+                  "";
+
+                const itemRow = document.createElement("div");
+                itemRow.className = "p-3 bg-white dark:bg-slate-900 flex items-center justify-between gap-3 text-xs";
+                itemRow.innerHTML = `
+                  <div class="flex items-center gap-3">
+                    <div class="h-10 w-10 rounded-lg bg-slate-100 dark:bg-slate-800 p-0.5 border border-slate-200 dark:border-slate-700 flex items-center justify-center shrink-0">
+                      ${itemImg ? `<img src="${itemImg}" class="h-full w-full object-contain" />` : `<svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>`}
+                    </div>
+                    <div>
+                      <p class="font-montserrat font-bold text-slate-800 dark:text-slate-200 line-clamp-1">${item.title || item.name}</p>
+                      <p class="text-slate-400 text-[11px]">Qty: ${item.quantity} × Rs ${(item.price || 0).toLocaleString()}</p>
+                    </div>
+                  </div>
+                  <div class="font-montserrat font-bold text-slate-900 dark:text-white shrink-0">
+                    Rs ${((item.price || 0) * (item.quantity || 1)).toLocaleString()}
+                  </div>
+                `;
+                modalItemsList.appendChild(itemRow);
+              });
+            }
+
+            // Populate Shipping Address
+            const s = orderData.shippingAddress || {};
+            modalShippingContent.innerHTML = `
+              <p class="font-bold text-slate-800 dark:text-slate-200">${s.fullName || orderData.customerName || 'N/A'}</p>
+              <p>${s.phone || ''}</p>
+              <p class="text-slate-500 dark:text-slate-400">${s.stateAddress || s.address || ''}</p>
+              <p class="text-slate-500 dark:text-slate-400">${s.city || ''}${s.province ? ', ' + s.province : ''}${s.postalCode ? ' - ' + s.postalCode : ''}</p>
+            `;
+
+            // Payment Details
+            modalPaymentMethod.textContent = orderData.paymentMethod || "Cash On Delivery";
+            modalPaymentStatus.textContent = orderData.paymentStatus || "Pending";
+            modalGrandTotal.textContent = "Rs " + (orderData.totalAmount || 0).toLocaleString();
+
+            openModal();
+          } catch (err) {
+            console.error("Failed to parse order details:", err);
+          }
+        });
+      });
+
+      // 2. TABS FILTERING
+      const filterBtns = document.querySelectorAll(".order-filter-btn");
+      const orderCards = document.querySelectorAll(".order-card");
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const filter = btn.getAttribute("data-filter");
+
+          // Update active tab button style
+          filterBtns.forEach(b => {
+            b.className = "order-filter-btn px-4 py-2 rounded-xl text-xs font-montserrat font-semibold bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 whitespace-nowrap cursor-pointer transition";
+          });
+          btn.className = "order-filter-btn active-filter px-4 py-2 rounded-xl text-xs font-montserrat font-bold bg-orange-600 text-white shadow-sm shadow-orange-500/20 whitespace-nowrap cursor-pointer transition";
+
+          // Filter card items
+          orderCards.forEach(card => {
+            const status = card.getAttribute("data-status");
+            if (filter === "All" || status === filter) {
+              card.style.display = "block";
+            } else {
+              card.style.display = "none";
+            }
+          });
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

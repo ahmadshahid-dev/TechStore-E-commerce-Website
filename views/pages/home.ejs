@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="TechStore - Buy premium headphones, mechanical keyboards, and gaming mice with fast delivery and best prices." />
+  <meta name="keywords" content="headphones, keyboards, gaming mice, TechStore, gaming gear" />
+  <meta name="author" content="TechStore" />
+  <meta property="og:title" content="TechStore - Premium Tech Products" />
+  <meta property="og:description" content="Upgrade your tech experience for work & gaming with TechStore" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.techstore.com/" />
+  <meta property="og:image" content="https://www.techstore.com/og-image.jpg" />
+  <title>Home | TechStore</title>
+  <link rel="preload" as="image" href="/background.jpg" fetchpriority="high" />
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/output.css" />
+</head>
+
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100
+antialiased selection:bg-orange-500 selection:text-white">
+  <!-- Page Loading Overlay -->
+  <div class="bg-slate-50/95 dark:bg-slate-950/95 fixed inset-0 backdrop-blur-xl flex flex-col items-center justify-center transition-opacity ease-in-out duration-500 select-none z-[9999]" id="page-loading">
+    <!-- Ambient Radial Glow -->
+    <div class="bg-orange-500/10 dark:bg-orange-500/15 h-72 w-72 blur-3xl absolute rounded-full  pointer-events-none animate-pulse"></div>
+    <!-- Central Logo & Spinner Container -->
+    <div class="relative flex flex-col items-center gap-5 z-10">
+      <!-- Animated Icon Badge with Ring -->
+      <div class="relative flex items-center justify-center">
+        <!-- Outer Spinning Ring -->
+        <div class="w-16 h-16 border-2 border-slate-200/80 dark:border-slate-800 border-t-orange-600 dark:border-t-orange-500 animate-spin rounded-full"></div>
+        <!-- Inner Glowing Brand -->
+        <div class="absolute inset-0 flex items-center justify-center text-orange-600 dark:text-orange-500">
+          <svg class="h-7 w-7 transform -translate-y-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+        </div>
+      </div>
+      <!-- TechStore Brand Name -->
+      <div class="text-center">
+        <a href="/" class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-black tracking-tight">
+          Tech<span class="text-orange-600 dark:text-orange-500">Store</span>
+        </a>
+        <!-- Staged Bouncing Loading Indicator -->
+        <div class="flex items-center justify-center gap-1.5 mt-3.5">
+          <span class="text-slate-400 dark:text-slate-500 text-xs font-inter font-semibold uppercase tracking-widest">
+            Loading
+          </span>
+          <div class="flex items-center gap-x-[0.3125rem]">
+            <span class="bg-orange-600 dark:bg-orange-500 h-1.5 w-1.5 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+            <span class="bg-orange-600 dark:bg-orange-500 h-1.5 w-1.5 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+            <span class="bg-orange-600 dark:bg-orange-500 h-1.5 w-1.5 rounded-full animate-bounce"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Header -->
+  <%- include("../partials/header") %>
+  <main>
+    <!-- ==================== 1. HERO BANNER SECTION ==================== -->
+    <section class="relative py-16 sm:py-18 md:py-20 overflow-hidden" role="banner">
+      <!-- Hero Background Image -->
+      <div class="bg-[url('/website-bg.jpg')] bg-center bg-cover bg-no-repeat absolute inset-0" aria-hidden="true"></div>
+      <!-- Gradient Dark Overlay -->
+      <div class="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-slate-950/55 to-slate-950/60" aria-hidden="true"></div>
+      <!-- Hero Content Container -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col items-center relative z-10">
+          <!-- Productivity Pill Badge -->
+          <div class="bg-white/10 dark:bg-slate-900/60 backdrop-blur-md border border-white/20 dark:border-slate-700/60 inline-flex items-center gap-x-2 rounded-full shadow-lg py-[0.45rem] px-5 mb-5">
+            <span class="bg-orange-500 h-2 w-2 rounded-full animate-pulse"></span>
+            <span class="text-orange-400 text-sm font-montserrat font-semibold">
+              Boost Your Productivity
+            </span>
+          </div>
+          <!-- Main Heading -->
+          <h1 class="text-white text-[2.15rem] sm:text-[3.50rem] font-inter font-extrabold leading-[2.55rem] sm:leading-[3.65rem] text-center max-w-5xl mx-auto">
+            Upgrade Your Tech Setup For
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-400">
+              Work & Gaming
+            </span>
+          </h1>
+          <!-- Animated Typing Subtitle -->
+          <div class="text-slate-200 text-xl sm:text-2xl font-montserrat font-medium tracking-tight truncate my-2.5" aria-label="Premium Headphones, Mechanical Keyboards, Gaming Mice" role="text">
+            Premium
+            <span id="element" class="text-orange-400 font-bold" aria-hidden="true"></span>
+          </div>
+          <!-- Paragraph Description -->
+          <p class="text-slate-300 text-[0.97rem] sm:text-[1.065rem] font-inter leading-relaxed text-center max-w-2xl lg:max-w-[750px] mx-auto mb-[1.875rem]">
+            High-Quality Headphones With Rich Immersive Sound. Enjoy Performance-Driven Keyboards
+            Designed for Speed and Lasting Comfort. Control Every Move With Precision Gaming Mice
+            Built for Accuracy and Durability.
+          </p>
+          <!-- CTA Buttons -->
+          <div class="flex flex-col sm:flex-row w-full sm:w-auto items-center justify-center gap-5 mb-10">
+            <a class="bg-orange-600 text-white w-full sm:w-auto flex items-center justify-center gap-x-2 py-3.5 px-8 rounded-xl shadow-lg shadow-orange-500/25 hover:bg-orange-700 hover:shadow-orange-500/40 active:scale-[0.98] transition ease-out duration-[250ms]" href="/shop">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+              </svg>
+              <span class="text-sm sm:text-base font-montserrat font-semibold">Shop Now</span>
+            </a>
+            <a class="bg-blue-950/15 dark:bg-slate-900/60 text-white w-full sm:w-auto flex items-center justify-center gap-x-2 py-[0.8125rem] px-8 rounded-xl border border-white/20 box-border backdrop-blur-md cursor-pointer hover:bg-blue-950/25 dark:hover:bg-slate-900/90" onclick="document.getElementById('categories').scrollIntoView()">
+              <span class="text-sm sm:text-base font-montserrat font-semibold">
+                Explore Categories
+              </span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </a>
+          </div>
+          <!-- Trust Mini Badges -->
+          <div class="flex flex-wrap items-center justify-center gap-5">
+            <div class="flex items-center gap-x-1.5">
+              <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-slate-300 text-xs font-inter">Official Warranty</span>
+            </div>
+            <div class="flex items-center gap-x-1.5">
+              <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-slate-300 text-xs font-inter">Fast Dispatch</span>
+            </div>
+            <div class="flex items-center gap-x-1.5">
+              <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-slate-300 text-xs font-inter">Cash On Delivery</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ==================== 2. SHOP BY CATEGORY SECTION ==================== -->
+    <section class="border-b border-slate-200/80 dark:border-slate-800/80 py-8
+    sm:py-10 lg:py-12" id="categories">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Section Header -->
+        <div class="max-w-md mx-auto text-center mb-8 sm:mb-10">
+          <h2 class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-bold leading-none mb-2.5">
+            Shop By
+            <span class="text-orange-600 dark:text-orange-400">Category</span>
+          </h2>
+          <p class="text-slate-500 dark:text-slate-400 text-sm font-inter leading-relaxed">
+            Explore the latest tech essentials, from headphones and keyboards to mice and more.
+          </p>
+        </div>
+        <!-- Category Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <!-- Category 1: Headphones -->
+          <a href="/category/headphones" class="group relative h-60 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow-lg dark:shadow-xl active:scale-95 hover:-translate-y-1 transition-shadow transition-transform ease-in-out duration-300 overflow-hidden">
+            <!-- Background Image -->
+            <img class="h-full w-full object-cover group-hover:scale-110 transition-transform ease-out duration-300" src="/categories/headphones/category-headphone.jpg" loading="lazy" decoding="async" height="240" width="800" alt="Headphones Collection" />
+            <!-- Dark Gradient Overlay -->
+            <div class="bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent absolute inset-0 group-hover:from-slate-950/95 transition-colors" aria-hidden="true"></div>
+            <!-- Card Details -->
+            <div class="absolute inset-0 p-5 flex flex-col justify-end">
+              <span class="text-orange-400 text-xs font-montserrat font-bold uppercase tracking-wider">
+                Audio Gear
+              </span>
+              <div class="flex items-center justify-between">
+                <h3 class="text-white text-xl font-montserrat font-bold group-hover:text-orange-400 transition-colors">
+                  Headphones
+                </h3>
+                <svg class="text-slate-300 w-5 h-5 group-hover:text-orange-400 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </div>
+            </div>
+          </a>
+          <!-- Category 2: Keyboards -->
+          <a href="/category/keyboards" class="group relative h-60 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow-lg dark:shadow-xl active:scale-95 hover:-translate-y-1 transition-shadow transition-transform ease-in-out duration-300 overflow-hidden">
+            <!-- Background Image -->
+            <img class="h-full w-full object-cover group-hover:scale-110 transition-transform ease-out duration-300" src="/categories/keyboards/category-keyboard.jpg" loading="lazy" decoding="async" height="240" width="800" alt="Keyboards Collection" />
+            <!-- Dark Gradient Overlay -->
+            <div class="bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent absolute inset-0 group-hover:from-slate-950/95 transition-colors" aria-hidden="true"></div>
+            <!-- Card Details -->
+            <div class="absolute inset-0 p-5 flex flex-col justify-end">
+              <span class="text-orange-400 text-xs font-montserrat font-bold uppercase tracking-wider">
+                Mechanical
+              </span>
+              <div class="flex items-center justify-between">
+                <h3 class="text-white text-xl font-montserrat font-bold group-hover:text-orange-400 transition-colors">
+                  Keyboards
+                </h3>
+                <svg class="text-slate-300 w-5 h-5 group-hover:text-orange-400 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </div>
+            </div>
+          </a>
+          <!-- Category 3: Mice -->
+          <a href="/category/mice" class="group relative h-60 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow-lg dark:shadow-xl active:scale-95 hover:-translate-y-1 transition-shadow transition-transform ease-in-out duration-300 overflow-hidden">
+            <!-- Background Image -->
+            <img class="h-full w-full object-cover group-hover:scale-110 transition-transform ease-out duration-300" src="/categories/mice/category-mice.jpg" loading="lazy" decoding="async" height="240" width="800" alt="Mice Collection" />
+            <!-- Dark Gradient Overlay -->
+            <div class="bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent absolute inset-0 group-hover:from-slate-950/95 transition-colors" aria-hidden="true"></div>
+            <!-- Card Details -->
+            <div class="absolute inset-0 p-5 flex flex-col justify-end">
+              <span class="text-orange-400 text-xs font-montserrat font-bold uppercase tracking-wider">
+                Precision
+              </span>
+              <div class="flex items-center justify-between">
+                <h3 class="text-white text-xl font-montserrat font-bold group-hover:text-orange-400 transition-colors">
+                  Gaming Mice
+                </h3>
+                <svg class="text-slate-300 w-5 h-5 group-hover:text-orange-400 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+    <!-- ==================== 3. FEATURED PRODUCTS SECTION ==================== -->
+    <section class="border-b border-slate-200/80 dark:border-slate-800/80 py-8
+    sm:py-10 lg:py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Products Not Found (Empty State) -->
+        <% if(!products || products.length === 0) { %>
+        <div class="max-w-md mx-auto text-center space-y-4 py-5">
+          <div class="bg-orange-50 dark:bg-orange-950/35 w-20 h-20 border border-gray-200 dark:border-gray-800 rounded-2xl mx-auto flex items-center justify-center">
+            <svg class="text-orange-600 dark:text-orange-400 w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+            </svg>
+          </div>
+          <h3 class="text-slate-900 dark:text-white text-xl font-montserrat font-bold pt-0.5 mb-2.5">
+            No Products Featured Yet
+          </h3>
+          <p class="text-slate-500 dark:text-slate-400 text-sm font-inter leading-relaxed mb-5">
+            Exciting new gear and exclusive deals are being stocked right now. Check back soon!
+          </p>
+          <a class="bg-orange-600 text-white inline-flex text-sm font-montserrat font-semibold py-3.5 px-6 rounded-xl shadow-md hover:bg-orange-700 transition ease-out duration-[250ms]" href="/shop">
+            Browse All Products
+          </a>
+        </div>
+        <% } else { %>
+        <!-- Section Header -->
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-y-4 
+        mb-8 sm:mb-10">
+          <div class="space-y-1.5">
+            <span class="text-orange-600 dark:text-orange-400 text-xs font-montserrat font-bold uppercase tracking-wider">
+              Featured Picks
+            </span>
+            <h2 class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-bold leading-[1.89rem]">
+              Trending
+              <span class="text-orange-600 dark:text-orange-400">Products</span>
+            </h2>
+          </div>
+          <a href="/shop" class="text-orange-600 dark:text-orange-400 flex items-center gap-x-1 group">
+            <span class="text-sm font-montserrat font-semibold group-hover:underline">
+              View All Products
+            </span>
+            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+        <!-- Product Cards Grid (Responsive: 1 -> 2 -> 3 -> 4 cols) -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+          <!-- Deals -->
+          <% products.filter((product) => product.tag === "Deal").forEach((product) => { %>
+          <%- include("../partials/product", { product }) %>
+          <% }) %>
+          <!-- Best-Sell -->
+          <% products.filter((product) => product.tag === "Best-Sell").forEach((product) => { %>
+          <%- include("../partials/product", { product }) %>
+          <% }) %>
+          <!-- New -->
+          <% products.filter((product) => product.tag === "New").forEach((product) => { %>
+          <%- include("../partials/product", { product }) %>
+          <% }) %>
+        </div>
+        <% } %>
+      </div>
+    </section>
+    <!-- ==================== 4. WHY CHOOSE US / TRUST SECTION ==================== -->
+    <section class="backdrop-blur-md py-8 sm:py-10 lg:py-12 overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Section Header -->
+        <div class="text-center max-w-md mx-auto mb-8 sm:mb-10">
+          <h2 class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-bold leading-none mb-2.5">
+            Why Choose
+            <span class="text-orange-600 dark:text-orange-400">TechStore?</span>
+          </h2>
+          <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-inter leading-relaxed">
+            Built by tech enthusiasts for gamers, creators, and professionals.
+          </p>
+        </div>
+        <!-- 4-Card Perks Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <!-- Perk 1: 24/7 Support -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 p-6 rounded-2xl shadow-sm group flex flex-col items-center sm:items-start text-center sm:text-left hover:shadow-lg dark:hover:shadow-2xl transition-shadow ease-in-out duration-300">
+            <div class="bg-orange-50 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 h-12 w-12 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ease-in-out duration-300">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            </div>
+            <h3 class="text-slate-900 dark:text-white text-lg font-montserrat font-bold mb-1">
+              24/7 Live Support
+            </h3>
+            <p class="text-slate-500 dark:text-slate-400 text-sm font-inter leading-relaxed">
+              Dedicated technical help whenever you need support or guidance.
+            </p>
+          </div>
+          <!-- Perk 2: Fast Delivery -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 p-6 rounded-2xl shadow-sm group flex flex-col items-center sm:items-start text-center sm:text-left hover:shadow-lg dark:hover:shadow-2xl transition-shadow ease-in-out duration-300">
+            <div class="bg-orange-50 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 h-12 w-12 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ease-in-out duration-300">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <h3 class="text-slate-900 dark:text-white text-lg font-montserrat font-bold mb-1">
+              Fast Delivery
+            </h3>
+            <p class="text-slate-500 dark:text-slate-400 text-sm font-inter leading-relaxed">
+              Express delivery nationwide with real-time tracking updates.
+            </p>
+          </div>
+          <!-- Perk 4: Easy Returns -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 p-6 rounded-2xl shadow-sm group flex flex-col items-center sm:items-start text-center sm:text-left hover:shadow-lg dark:hover:shadow-2xl transition-shadow ease-in-out duration-300">
+            <div class="bg-orange-50 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 h-12 w-12 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ease-in-out duration-300">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+            </div>
+            <h3 class="text-slate-900 dark:text-white text-lg font-montserrat font-bold mb-1">
+              7-Day Easy Returns
+            </h3>
+            <p class="text-slate-500 dark:text-slate-400 text-sm font-inter leading-relaxed">
+              Hassle-free replacement guarantee if product doesn't meet quality.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- Footer -->
+  <%- include("../partials/footer") %>
+  <!-- ==================== SCRIPTS ==================== -->
+  <!-- Typed.js for Dynamic Typing -->
+  <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (document.getElementById('element')) {
+        new Typed('#element', {
+          strings: ['Headphones.', 'Mechanical Keyboards.', 'Gaming Mice.'],
+          typeSpeed: 50,
+          backSpeed: 35,
+          backDelay: 1500,
+          loop: true,
+        });
+      }
+    });
+  </script>
+  <script src="/js/script.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/user.js"></script>
+</body>
+
+</html>

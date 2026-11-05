@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= editing ? 'Edit Address' : 'Add New Address' %> | TechStore</title>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/output.css" />
+</head>
+
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased selection:bg-orange-500 selection:text-white">
+  <!-- Header -->
+  <%- include("../partials/header") %>
+  <!-- Main -->
+  <main>
+    <!-- ==================== 1. PAGE HEADER ==================== -->
+    <section class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md 
+    border-b border-slate-200/80 dark:border-slate-800/80 py-8 sm:py-10">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <!-- Title & Breadcrumb -->
+          <div class="space-y-1.5">
+            <div class="text-slate-500 dark:text-slate-400 text-xs font-inter flex items-center gap-2">
+              <a href="/@<%= user.username %>/address-book" class="hover:text-orange-600 dark:hover:text-orange-400 hover:transition-colors">Address Book</a>
+              <span>/</span>
+              <span class="text-slate-800 dark:text-slate-200 font-semibold"><%= editing ? 'Edit' : 'New' %></span>
+            </div>
+            <h1 class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-extrabold leading-none tracking-tight">
+              <%= editing ? 'Edit' : 'Add New' %> <span class="text-orange-600 dark:text-orange-400">Address</span>
+            </h1>
+            <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-inter">
+              <%= editing ? 'Update recipient details, street address, and delivery instructions.' : 'Add a new residential or commercial shipping destination.' %>
+            </p>
+          </div>
+          <!-- Back Button -->
+          <a class="bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 w-fit flex items-center gap-2 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm 
+          py-2.5 px-4 hover:bg-slate-50 dark:hover:bg-slate-700 hover:transition-colors hover:ease-out hover:duration-[250ms]" href="/@<%= user.username %>/address-book">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span class="text-xs font-montserrat font-semibold">Back to Addresses</span>
+          </a>
+        </div>
+      </div>
+    </section>
+    <!-- ==================== 2. ADDRESS FORM ==================== -->
+    <section class="backdrop-blur-md py-8 sm:py-10 lg:py-12 overflow-hidden">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <form class="space-y-6 sm:space-y-8" id="<%= editing ? 'editAddressForm' : 'addAddressForm' %>">
+          <!-- Hidden ID Field -->
+          <input type="hidden" name="_id" id="id" value="<%= editing ? address._id : '' %>" />
+          <!-- 1. Address Type Selection Cards -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl shadow-sm space-y-5 p-6 sm:p-8">
+            <div class="space-y-1.5">
+              <h2 class="text-slate-900 dark:text-white text-lg font-montserrat font-bold leading-none">Address Label</h2>
+              <p class="text-slate-500 dark:text-slate-400 text-xs font-inter">Select a tag to easily recognize this delivery destination.</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <!-- Option 1: Home -->
+              <label class="relative cursor-pointer group">
+                <input type="radio" name="label" id="label-home" value="Home" class="sr-only peer" <%= editing && address.label === 'Home' ? 'checked' : '' %> />
+                <div class="border-2 border-slate-200 dark:border-slate-800 flex items-center gap-3.5 rounded-2xl p-4 group-hover:border-slate-300 dark:group-hover:border-slate-700  peer-checked:bg-orange-50/50 dark:peer-checked:bg-orange-950/20 peer-checked:border-orange-500 hover:transition-colors">
+                  <div class="bg-orange-50 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 h-10 w-10 flex items-center justify-center flex-shrink-0 rounded-xl">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                  </div>
+                  <div class="flex flex-col gap-y-0.75 mt-0.5">
+                    <p class="text-slate-900 dark:text-white text-sm font-montserrat font-bold leading-none">Home</p>
+                    <p class="text-slate-500 dark:text-slate-400 text-[0.6875rem] font-inter">House / Apartment</p>
+                  </div>
+                </div>
+              </label>
+              <!-- Option 2: Office -->
+              <label class="relative cursor-pointer group">
+                <input type="radio" name="label" id="label-office" value="Office" class="sr-only peer" <%= editing && address.label === 'Office' ? 'checked' : '' %> />
+                <div class="border-2 border-slate-200 dark:border-slate-800 flex items-center gap-3.5 rounded-2xl p-4 group-hover:border-slate-300 dark:group-hover:border-slate-700  peer-checked:bg-orange-50/50 dark:peer-checked:bg-orange-950/20 peer-checked:border-orange-500 hover:transition-colors">
+                  <div class="bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 h-10 w-10 flex items-center justify-center flex-shrink-0 rounded-xl">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                  </div>
+                  <div class="flex flex-col gap-y-0.75 mt-0.5">
+                    <p class="text-slate-900 dark:text-white text-sm font-montserrat font-bold leading-none">Office</p>
+                    <p class="text-slate-500 dark:text-slate-400 text-[0.6875rem] font-inter">Work / Business</p>
+                  </div>
+                </div>
+              </label>
+              <!-- Option 3: Other -->
+              <label class="relative cursor-pointer group">
+                <input type="radio" name="label" id="label-other" value="Other" class="sr-only peer" <%= editing && address.label === 'Other' ? 'checked' : '' %> />
+                <div class="border-2 border-slate-200 dark:border-slate-800 flex items-center gap-3.5 rounded-2xl p-4 group-hover:border-slate-300 dark:group-hover:border-slate-700  peer-checked:bg-orange-50/50 dark:peer-checked:bg-orange-950/20 peer-checked:border-orange-500 hover:transition-colors">
+                  <div class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 h-10 w-10 flex items-center justify-center flex-shrink-0 rounded-xl">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                  <div class="flex flex-col gap-y-0.75 mt-0.5">
+                    <p class="text-slate-900 dark:text-white text-sm font-montserrat font-bold leading-none">Other</p>
+                    <p class="text-slate-500 dark:text-slate-400 text-[0.6875rem] font-inter">Custom Location</p>
+                  </div>
+                </div>
+              </label>
+            </div>
+            <p class="error text-rose-500 text-xs font-inter" id="error-label"></p>
+          </div>
+          <!-- 2. Contact Information -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl shadow-sm space-y-5 p-6 sm:p-8">
+            <div class="space-y-1.5">
+              <h2 class="text-slate-900 dark:text-white text-lg font-montserrat font-bold leading-none">Recipient Details</h2>
+              <p class="text-slate-500 dark:text-slate-400 text-xs font-inter">Who will be receiving this order parcel?</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <!-- Full Name -->
+              <div class="space-y-1.5">
+                <label class="text-slate-600 dark:text-slate-300 text-xs font-inter font-semibold uppercase tracking-wider block" for="fullName">
+                  Recipient Full Name <span class="text-rose-500">*</span>
+                </label>
+                <input class="bg-slate-50/50 dark:bg-slate-800/50 text-slate-900 dark:text-white 
+                w-full text-sm font-inter border border-slate-300 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none placeholder:text-slate-400 rounded-xl py-2.5 px-4" id="fullName" type="text" name="fullName" value="<%= editing ? address.fullName : '' %>" autocomplete="name" placeholder="e.g. Ahmad Shahid" required />
+                <p class="error text-rose-500 text-xs font-inter" id="error-fullName"></p>
+              </div>
+              <!-- Phone Number -->
+              <div class="space-y-1.5">
+                <label class="text-slate-600 dark:text-slate-300 text-xs font-inter font-semibold uppercase tracking-wider block" for="phone">
+                  Phone Number <span class="text-rose-500">*</span>
+                </label>
+                <input class="bg-slate-50/50 dark:bg-slate-800/50 text-slate-900 dark:text-white 
+                w-full text-sm font-inter border border-slate-300 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none placeholder:text-slate-400 rounded-xl py-2.5 px-4" id="phone" type="tel" name="phone" value="<%= editing ? address.phone : '' %>" placeholder="+92 300 1234567" autocomplete="tel" required />
+                <p class="error text-rose-500 text-xs font-inter" id="error-phone"></p>
+              </div>
+            </div>
+          </div>
+          <!-- 3. Location Details -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl shadow-sm space-y-5 p-6 sm:p-8">
+            <div class="space-y-1.5">
+              <h2 class="text-slate-900 dark:text-white text-lg font-montserrat font-bold leading-none">Region & Postal Info</h2>
+              <p class="text-slate-500 dark:text-slate-400 text-xs font-inter">Specify geographical location for accurate courier dispatch.</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <!-- Country -->
+              <div class="space-y-1.5">
+                <label class="text-slate-600 dark:text-slate-300 text-xs font-inter font-semibold uppercase tracking-wider block" for="country">
+                  Country <span class="text-rose-500">*</span>
+                </label>
+                <select class="bg-slate-50/50 dark:bg-slate-800/50 text-slate-900 dark:text-white 
+                w-full text-sm font-inter border border-slate-300 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none placeholder:text-slate-400 rounded-xl cursor-pointer py-2.5 px-4" id="country" name="country" autocomplete="country" required>
+                  <option value="Pakistan" selected>Pakistan</option>
+                </select>
+                <p class="error text-rose-500 text-xs font-inter" id="error-country"></p>
+              </div>
+              <!-- Province -->
+              <div class="space-y-1.5">
+                <label class="text-slate-600 dark:text-slate-300 text-xs font-inter font-semibold uppercase tracking-wider block" for="province">
+                  Province / State <span class="text-rose-500">*</span>
+                </label>
+                <select class="bg-slate-50/50 dark:bg-slate-800/50 text-slate-900 dark:text-white 
+                w-full text-sm font-inter border border-slate-300 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none placeholder:text-slate-400 rounded-xl cursor-pointer py-2.5 px-4" id="province" name="province" required>
+                  <option value="" disabled selected>Select a Province</option>
+                  <option value="Punjab" <%= editing && address.province === 'Punjab' ? 'selected' : '' %>>Punjab</option>
+                  <option value="Sindh" <%= editing && address.province === 'Sindh' ? 'selected' : '' %>>Sindh</option>
+                  <option value="Khyber Pakhtunkhwa" <%= editing && address.province === 'Khyber Pakhtunkhwa' ? 'selected' : '' %>>Khyber Pakhtunkhwa</option>
+                  <option value="Balochistan" <%= editing && address.province === 'Balochistan' ? 'selected' : '' %>>Balochistan</option>
+                  <option value="Azad Kashmir" <%= editing && address.province === 'Azad Kashmir' ? 'selected' : '' %>>Azad Kashmir</option>
+                  <option value="Gilgit Baltistan" <%= editing && address.province === 'Gilgit Baltistan' ? 'selected' : '' %>>Gilgit Baltistan</option>
+                </select>
+                <p class="error text-rose-500 text-xs font-inter" id="error-province"></p>
+              </div>
+              <!-- City -->
+              <div class="space-y-1.5">
+                <label class="text-slate-600 dark:text-slate-300 text-xs font-inter font-semibold uppercase tracking-wider block" for="city">
+                  City <span class="text-rose-500">*</span>
+                </label>
+                <input class="bg-slate-50/50 dark:bg-slate-800/50 text-slate-900 dark:text-white 
+                w-full text-sm font-inter border border-slate-300 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none placeholder:text-slate-400 rounded-xl py-2.5 px-4" id="city" type="text" name="city" value="<%= editing ? address.city : '' %>" autocomplete="address-level2" placeholder="e.g. Rahim Yar Khan, Lahore" required />
+                <p class="error text-rose-500 text-xs font-inter" id="error-city"></p>
+              </div>
+              <!-- Postal Code -->
+              <div class="space-y-1.5">
+                <label class="text-slate-600 dark:text-slate-300 text-xs font-inter font-semibold uppercase tracking-wider block" for="postalCode">
+                  Postal Code <span class="text-rose-500">*</span>
+                </label>
+                <input class="bg-slate-50/50 dark:bg-slate-800/50 text-slate-900 dark:text-white 
+                w-full text-sm font-mono border border-slate-300 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none placeholder:text-slate-400 rounded-xl py-2.5 px-4" id="postalCode" type="text" name="postalCode" value="<%= editing ? address.postalCode : '' %>" placeholder="e.g. 64200" required />
+                <p class="error text-rose-500 text-xs font-inter" id="error-postalCode"></p>
+              </div>
+            </div>
+          </div>
+          <!-- 4. Street Address -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm p-6 sm:p-8 space-y-4">
+            <div class="space-y-1.5">
+              <h2 class=" text-slate-900 dark:text-white text-lg font-montserrat font-bold leading-none">Full Street Address</h2>
+              <p class="text-slate-500 dark:text-slate-400 text-xs font-inter">Include house number, street name, block, and nearby landmarks.</p>
+            </div>
+            <div class="space-y-1.5">
+              <label class="text-slate-600 dark:text-slate-300 text-xs font-inter font-semibold uppercase tracking-wider block" for="stateAddress">
+                Street & House Details <span class="text-rose-500">*</span>
+              </label>
+              <textarea class="bg-slate-50/50 dark:bg-slate-800/50 text-slate-900 dark:text-white 
+                w-full text-sm font-inter border border-slate-300 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none placeholder:text-slate-400 rounded-xl p-4 resize-none" id="stateAddress" name="stateAddress" rows="3" placeholder="House / Flat #, Street #, Sector/Phase, Near Landmark..." required><%= editing ? address.stateAddress : '' %></textarea>
+              <p class="error text-rose-500 text-xs font-inter" id="error-stateAddress"></p>
+            </div>
+          </div>
+          <!-- 5. Default Address Switch -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm p-5 sm:p-6">
+            <label class="flex items-start gap-3 cursor-pointer select-none">
+              <input class="text-orange-600 h-5 w-5 border-slate-300 dark:border-slate-700 focus:ring-orange-500 rounded mt-0.5 cursor-pointer" id="isDefault" type="checkbox" name="isDefault" value="true" <%= editing && address.isDefault ? 'checked' : '' %> />
+              <div class="space-y-0.5">
+                <span class="text-slate-900 dark:text-white text-sm font-montserrat font-bold block">
+                  Set as Default Shipping Address
+                </span>
+                <p class="text-xs text-slate-500 dark:text-slate-400 font-inter">
+                  This destination will be automatically selected during checkout for 1-click orders.
+                </p>
+                <p class="error text-red-500 text-xs font-inter" id="error-isDefault"></p>
+              </div>
+            </label>
+          </div>
+          <!-- 6. Form Action Buttons -->
+          <div class="flex flex-col sm:flex-row items-center gap-3.5 pt-2.5">
+            <button class="bg-orange-600 text-white w-full sm:w-auto flex flex-1 items-center justify-center gap-x-2 py-3.5 px-8 rounded-xl shadow-lg shadow-orange-500/25 cursor-pointer hover:bg-orange-700 hover:shadow-orange-500/35 active:scale-[0.98] transition ease-out duration-[250ms]" type="submit">
+              <svg class="Icon h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span class="Spinner h-4.5 w-4.5 border-[3px] border-orange-100 border-t-orange-500 shrink-0 rounded-full animate-spin drop-shadow-[0_0_4px_rgba(249,115,22,0.6)] hidden"></span>
+              <span class="Text text-sm font-montserrat font-semibold"><%= editing ? 'Update Address' : 'Save Address' %></span>
+            </button>
+            <a class="bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 w-full 
+            sm:w-auto text-sm font-montserrat font-semibold flex items-center justify-center border border-slate-200 dark:border-slate-700 rounded-xl py-3.5 px-8  hover:bg-slate-100 dark:hover:bg-slate-700" href="/@<%= user.username %>/address-book">
+              Cancel
+            </a>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+  <!-- Footer -->
+  <%- include("../partials/footer") %>
+  <!-- Scripts -->
+  <script src="/js/script.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/user.js"></script>
+</body>
+
+</html>

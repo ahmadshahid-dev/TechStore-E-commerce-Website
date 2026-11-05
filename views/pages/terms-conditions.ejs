@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms & Conditions | TechStore</title>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/output.css" />
+</head>
+
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-orange-500 selection:text-white">
+  <!-- Header -->
+  <%- include("../partials/header") %>
+  <!-- Main -->
+  <main>
+    <div class="max-w-7xl mx-auto py-8 sm:py-10 lg:py-12 px-4 sm:px-6 lg:px-8">
+      <!-- Page Header Banner -->
+      <div class="max-w-3xl mx-auto text-center space-y-4 mb-8 sm:mb-10">
+        <!-- Bg Glow -->
+        <div class="bg-orange-500/10 h-72 w-72 sm:h-96 sm:w-96 absolute -top-24 left-1/2 -translate-x-1/2 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="bg-orange-100 text-orange-700 dark:bg-orange-500/10 dark:text-orange-400 text-xs font-montserrat font-bold uppercase tracking-widest inline-flex items-center gap-2 border border-orange-200/60 dark:border-orange-500/20 rounded-full py-1.5 px-4">
+          <span class="bg-orange-600 dark:bg-orange-400 h-2 w-2 rounded-full"></span>
+          Terms of Service
+        </div>
+        <h1 class="text-slate-900 dark:text-white text-3xl sm:text-5xl font-montserrat font-extrabold tracking-tight">
+          Terms & <span class="text-orange-600 dark:text-orange-400">Conditions</span>
+        </h1>
+        <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-inter max-w-xl mx-auto">
+          Please read these terms carefully before purchasing or using TechStore products and services.
+        </p>
+      </div>
+      <!-- 2-Column Content Layout (Left: Sticky TOC Sidebar | Right: Terms Content) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Sticky Table of Contents Sidebar -->
+        <div class="lg:col-span-4 lg:sticky lg:top-24">
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm p-6">
+            <h2 class="text-slate-400 text-xs font-inter font-bold uppercase tracking-wider border-b border-slate-100 dark:border-slate-800 pb-2.5 mb-4">
+              Terms Table of Contents
+            </h2>
+            <nav class="flex flex-col gap-y-1">
+              <a class="text-slate-600 dark:text-slate-400 text-xs font-inter font-semibold rounded-xl py-2.5 px-3 hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-orange-400 hover:transition-colors" href="#agreement-to-terms">
+                1. Agreement to Terms
+              </a>
+              <a class="text-slate-600 dark:text-slate-400 text-xs font-inter font-semibold rounded-xl py-2.5 px-3 hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-orange-400 hover:transition-colors" href="#user-accounts">
+                2. Account Responsibilities
+              </a>
+              <a class="text-slate-600 dark:text-slate-400 text-xs font-inter font-semibold rounded-xl py-2.5 px-3 hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-orange-400 hover:transition-colors" href="#orders-payments">
+                3. Orders, Pricing & Payments
+              </a>
+              <a class="text-slate-600 dark:text-slate-400 text-xs font-inter font-semibold rounded-xl py-2.5 px-3 hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-orange-400 hover:transition-colors" href="#shipping-delivery">
+                4. Shipping & Risk of Loss
+              </a>
+              <a class="text-slate-600 dark:text-slate-400 text-xs font-inter font-semibold rounded-xl py-2.5 px-3 hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-orange-400 hover:transition-colors" href="#intellectual-property">
+                5. Intellectual Property Rights
+              </a>
+              <a class="text-slate-600 dark:text-slate-400 text-xs font-inter font-semibold rounded-xl py-2.5 px-3 hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-orange-400 hover:transition-colors" href="#limitation-of-liability">
+                6. Limitation of Liability
+              </a>
+              <a class="text-slate-600 dark:text-slate-400 text-xs font-inter font-semibold rounded-xl py-2.5 px-3 hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-orange-400 hover:transition-colors" href="#governing-law">
+                7. Governing Law
+              </a>
+              <a class="text-slate-600 dark:text-slate-400 text-xs font-inter font-semibold rounded-xl py-2.5 px-3 hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-orange-400 hover:transition-colors" href="#contact-legal">
+                8. Contact Legal Support
+              </a>
+            </nav>
+            <!-- Need Support Box -->
+            <div class="border-t border-slate-100 dark:border-slate-800 text-center pt-6 mt-6">
+              <p class="text-slate-500 text-xs font-inter mb-3">Questions regarding these terms?</p>
+              <a class="bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 w-full text-xs font-inter font-bold inline-flex items-center justify-center rounded-xl py-2.5 px-4 hover:bg-slate-800 dark:hover:bg-white hover:transition-colors hover:ease-out hover:duration-[250ms]" href="/contact">
+                Contact Legal Department
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- Main Policy Document Body -->
+        <div class="lg:col-span-8 space-y-8">
+          <!-- Intro Overview Card -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm p-6 sm:p-8">
+            <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm font-inter leading-relaxed">
+              Welcome to <strong class="text-slate-900 dark:text-white">TechStore</strong>. These Terms & Conditions govern your access to and use of our website, mobile interface, and hardware purchasing services. By accessing or making a purchase on TechStore, you agree to be bound by these terms.
+            </p>
+          </div>
+          <!-- Section 1 -->
+          <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 rounded-3xl shadow-sm p-6 sm:p-8 scroll-mt-28" id="agreement-to-terms">
+            <div class="flex items-center gap-x-3 border-b border-slate-100 dark:border-slate-800 pb-3">
+              <div class="bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 h-8 w-8 text-sm font-inter font-bold flex items-center justify-center rounded-xl">
+                1
+              </div>
+              <h2 class="text-slate-900 dark:text-white text-base sm:text-lg font-montserrat font-bold sm:leading-none flex-1">
+                Agreement to Terms & Eligibility
+              </h2>
+            </div>
+            <div class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter leading-relaxed space-y-3">
+              <p>By creating an account or placing an order on TechStore, you confirm that:</p>
+              <ul class="text-slate-700 dark:text-slate-300 list-disc space-y-1.5 pl-5">
+                <li>You are at least 18 years of age or possess legal parental/guardian consent.</li>
+                <li>You have the legal authority to enter into binding financial transactions.</li>
+                <li>You will not use TechStore products for unlawful or prohibited activities.</li>
+              </ul>
+            </div>
+          </section>
+          <!-- Section 2 -->
+          <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 rounded-3xl shadow-sm p-6 sm:p-8 scroll-mt-28" id="user-accounts">
+            <div class="flex items-center gap-x-3 border-b border-slate-100 dark:border-slate-800 pb-3">
+              <div class="bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 h-8 w-8 text-sm font-inter font-bold flex items-center justify-center rounded-xl">
+                2
+              </div>
+              <h2 class="text-slate-900 dark:text-white text-base sm:text-lg font-montserrat font-bold sm:leading-none flex-1">
+                Account Registration & Security
+              </h2>
+            </div>
+            <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter leading-relaxed">
+              You are responsible for maintaining the confidentiality of your account credentials and password. TechStore reserves the right to terminate accounts, refuse service, or cancel orders at our sole discretion if fraud or breach of terms is detected.
+            </p>
+          </section>
+          <!-- Section 3 -->
+          <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 rounded-3xl shadow-sm p-6 sm:p-8 scroll-mt-28" id="orders-payments">
+            <div class="flex items-center gap-x-3 border-b border-slate-100 dark:border-slate-800 pb-3">
+              <div class="bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 h-8 w-8 text-sm font-inter font-bold flex items-center justify-center rounded-xl">
+                3
+              </div>
+              <h2 class="text-slate-900 dark:text-white text-base sm:text-lg font-montserrat font-bold sm:leading-none flex-1">
+                Orders, Pricing & Payment Terms
+              </h2>
+            </div>
+            <div class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter leading-relaxed space-y-3">
+              <p>All prices listed on TechStore are shown in USD ($) unless otherwise stated:</p>
+              <ul class="text-slate-700 dark:text-slate-300 list-disc space-y-1.5 pl-5">
+                <li>Prices and product availability are subject to change without prior notice.</li>
+                <li>We reserve the right to refuse or cancel orders containing pricing errors or technical inventory glitches.</li>
+                <li>Payments must be cleared in full before physical shipment dispatch.</li>
+              </ul>
+            </div>
+          </section>
+          <!-- Section 4 -->
+          <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 rounded-3xl shadow-sm p-6 sm:p-8 scroll-mt-28" id="shipping-delivery">
+            <div class="flex items-center gap-x-3 border-b border-slate-100 dark:border-slate-800 pb-3">
+              <div class="bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 h-8 w-8 text-sm font-inter font-bold flex items-center justify-center rounded-xl">
+                4
+              </div>
+              <h2 class="text-slate-900 dark:text-white text-base sm:text-lg font-montserrat font-bold sm:leading-none flex-1">
+                Shipping, Handling & Risk of Loss
+              </h2>
+            </div>
+            <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter leading-relaxed">
+              Estimated shipping dates are provided as guidelines. Risk of loss and title for all items purchased from TechStore pass to you upon our delivery of the items to the shipping courier.
+            </p>
+          </section>
+          <!-- Section 5 -->
+          <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 rounded-3xl shadow-sm p-6 sm:p-8 scroll-mt-28" id="intellectual-property">
+            <div class="flex items-center gap-x-3 border-b border-slate-100 dark:border-slate-800 pb-3">
+              <div class="bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 h-8 w-8 text-sm font-inter font-bold flex items-center justify-center rounded-xl">
+                5
+              </div>
+              <h2 class="text-slate-900 dark:text-white text-base sm:text-lg font-montserrat font-bold sm:leading-none flex-1">
+                Intellectual Property & Trademarks
+              </h2>
+            </div>
+            <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter leading-relaxed">
+              All content on TechStore—including logos, branding, product graphics, interface designs, text, and code—is the property of TechStore and protected under international copyright and trademark laws.
+            </p>
+          </section>
+          <!-- Section 6 -->
+          <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 rounded-3xl shadow-sm p-6 sm:p-8 scroll-mt-28" id="limitation-of-liability">
+            <div class="flex items-center gap-x-3 border-b border-slate-100 dark:border-slate-800 pb-3">
+              <div class="bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 h-8 w-8 text-sm font-inter font-bold flex items-center justify-center rounded-xl">
+                6
+              </div>
+              <h2 class="text-slate-900 dark:text-white text-base sm:text-lg font-montserrat font-bold sm:leading-none flex-1">
+                Limitation of Liability & Warranty Disclaimer
+              </h2>
+            </div>
+            <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter leading-relaxed">
+              TechStore products are backed by our official manufacturer warranty. Except as expressly provided, TechStore services are provided "as is" without warranties of any kind. TechStore shall not be liable for any indirect or consequential damages resulting from product use.
+            </p>
+          </section>
+          <!-- Section 7 -->
+          <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 rounded-3xl shadow-sm p-6 sm:p-8 scroll-mt-28" id="governing-law">
+            <div class="flex items-center gap-x-3 border-b border-slate-100 dark:border-slate-800 pb-3">
+              <div class="bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 h-8 w-8 text-sm font-inter font-bold flex items-center justify-center rounded-xl">
+                7
+              </div>
+              <h2 class="text-slate-900 dark:text-white text-base sm:text-lg font-montserrat font-bold sm:leading-none flex-1">
+                Governing Law & Dispute Resolution
+              </h2>
+            </div>
+            <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter leading-relaxed">
+              These terms shall be governed by and construed in accordance with applicable commercial and e-commerce laws. Any legal disputes shall be resolved through binding arbitration or competent courts.
+            </p>
+          </section>
+          <!-- Section 8 -->
+          <section class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4 rounded-3xl shadow-sm p-6 sm:p-8 scroll-mt-28" id="contact-legal">
+            <div class="flex items-center gap-x-3 border-b border-slate-100 dark:border-slate-800 pb-3">
+              <div class="bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 h-8 w-8 text-sm font-inter font-bold flex items-center justify-center rounded-xl">
+                8
+              </div>
+              <h2 class="text-slate-900 dark:text-white text-base sm:text-lg font-montserrat font-bold sm:leading-none flex-1">
+                Contact Legal Support
+              </h2>
+            </div>
+            <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter leading-relaxed">
+              For questions or formal inquiries regarding these Terms & Conditions, please contact us:
+            </p>
+            <div class="bg-slate-50/70 dark:bg-slate-800/40 text-xs sm:text-sm font-inter border border-slate-200/60 dark:border-slate-800 space-y-1 rounded-2xl p-4">
+              <p class="text-slate-900 dark:text-white font-bold">TechStore Legal Department</p>
+              <p class="text-slate-500">Email: <a href="mailto:legal@techstore.com" class="text-orange-600 dark:text-orange-400 hover:underline">legal@techstore.com</a></p>
+              <p class="text-slate-500">Office: TechStore HQ, Legal Affairs Division</p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- Footer -->
+  <%- include("../partials/footer") %>
+  <!-- Scripts -->
+  <script src="/js/script.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/user.js"></script>
+</body>
+
+</html>

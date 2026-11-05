@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shopping Cart | TechStore</title>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/output.css" />
+</head>
+
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-orange-500 selection:text-white">
+  <!-- Header -->
+  <%- include("../partials/header") %>
+  <!-- Main -->
+  <main>
+    <!-- Breadcrumbs & Page Header -->
+    <section class="border-b border-slate-200 dark:border-slate-800 py-8 
+    sm:py-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col gap-y-1.5">
+          <nav class="text-slate-500 dark:text-slate-400 text-xs font-inter font-medium flex items-center gap-x-2">
+            <a href="/" class="hover:text-orange-600 dark:hover:text-orange-500 hover:transition-colors">Home</a>
+            <svg class="h-3.5 text-slate-400 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+            <span class="text-slate-800 dark:text-slate-200 font-semibold">Cart</span>
+          </nav>
+          <!-- Header Content & Counter -->
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div class="flex flex-col gap-2.5">
+              <h1 class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-extrabold leading-none flex items-center gap-x-2.5">
+                <span class="bg-purple-50 dark:bg-purple-500/10 text-purple-500 dark:text-purple-400 h-10 w-10 border border-purple-200/60 dark:border-purple-500/20 rounded-2xl shadow-sm inline-flex items-center justify-center">
+                  <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                  </svg>
+                </span>
+                Shopping <span class="text-orange-600 dark:text-orange-400">Cart</span>
+              </h1>
+              <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter">
+                Review your selected gear and complete your purchase anytime with ease and confidence.
+              </p>
+            </div>
+            <!-- Items Saved Badge -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl flex items-center gap-x-3 shadow-sm self-start sm:self-auto p-3.5">
+              <div class="bg-purple-500 h-2.5 w-2.5 rounded-full animate-pulse"></div>
+              <div class="block">
+                <p class="text-slate-400 text-[0.6875rem] font-inter font-bold uppercase tracking-wider">Items saved</p>
+                <div class="flex items-center gap-x-1.5">
+                  <span class="text-slate-900 dark:text-white text-xl font-montserrat font-bold" id="items-count">
+                    <%= cartItems ? cartItems.length : 0 %>
+                  </span>
+                  <p class="text-slate-500 text-xs font-inter font-medium" id="countText">
+                    Item<%= cartItems && cartItems.length !== 1 ? 's' : '' %>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Products Grid & Empty State -->
+    <section class="backdrop-blur-md py-8 sm:py-10 lg:py-12 overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Empty Cart State -->
+        <div class="<%= !cartItems || cartItems.length === 0 ? 'block' : 'hidden' %> flex flex-col items-center justify-center text-center max-w-xl mx-auto py-5" id="empty">
+          <div class="relative w-24 h-24 mx-auto mb-6">
+            <div class="bg-orange-500/10 blur-xl absolute inset-0 rounded-full"></div>
+            <div class="bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 relative w-24 h-24 border border-orange-200 dark:border-orange-500/20 rounded-full flex items-center justify-center">
+              <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            </div>
+          </div>
+          <h2 class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-bold leading-none mb-3">
+            Your Cart is Empty
+          </h2>
+          <p class="text-slate-600 dark:text-slate-400 text-sm font-inter leading-relaxed mb-6">
+            Explore our carefully curated collection of premium tech gear and discover products thoughtfully selected to meet your needs.
+          </p>
+          <a class="bg-orange-600 text-white rounded-2xl shadow-lg shadow-orange-600/25 flex items-center gap-2 py-4 px-8 mb-8 hover:bg-orange-700 active:scale-[0.98] group transition ease-out duration-[250ms]" href="/shop">
+            <span class="text-sm font-montserrat font-semibold">Start Shopping</span>
+            <svg class="h-4 w-4 mt-0.5 group-hover:translate-x-1 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M1.99974 13.0001L1.9996 11.0002L18.1715 11.0002L14.2218 7.05044L15.636 5.63623L22 12.0002L15.636 18.3642L14.2218 16.9499L18.1716 13.0002L1.99974 13.0001Z"></path>
+            </svg>
+          </a>
+          <div class="w-full border-t border-slate-200 dark:border-slate-800 pt-6">
+            <p class="text-slate-400 text-xs font-inter font-semibold uppercase tracking-wider mb-4">
+              Explore Categories
+            </p>
+            <div class="flex flex-wrap justify-center gap-2.5">
+              <a class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-xs font-inter font-semibold border border-slate-200 dark:border-slate-800 rounded-xl hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-orange-400 py-2 px-4" href="/category/headphones">
+                🎧 Headphones
+              </a>
+              <a class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-xs font-inter font-semibold border border-slate-200 dark:border-slate-800 rounded-xl hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-orange-400 py-2 px-4" href="/category/keyboards">
+                ⌨️ Keyboards
+              </a>
+              <a class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-xs font-inter font-semibold border border-slate-200 dark:border-slate-800 rounded-xl hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-orange-400 py-2 px-4" href="/category/mice">
+                🖱️ Mice
+              </a>
+            </div>
+          </div>
+        </div>
+        <% if (cartItems && cartItems.length > 0) { %>
+        <!-- Populated Cart Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 items-start gap-6 lg:gap-8" id="content-container">
+          <!-- Items List -->
+          <div class="lg:col-span-8 flex flex-col gap-5">
+            <!-- Cart Item Cards -->
+            <% cartItems.forEach((item) => { %>
+            <div class="bg-white dark:bg-slate-900 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl p-4 sm:p-5 hover:shadow-sm transition-shadow duration-300" id="product-<%= item._id %>">
+              <!-- Left Side: Image & Product Details -->
+              <div class="flex items-center gap-3.5 sm:gap-4 w-full sm:w-auto min-w-0">
+                <a class="bg-slate-50 dark:bg-slate-800/60 h-20 w-20 flex-shrink-0 flex items-center justify-center border border-slate-100 dark:border-slate-800/80 rounded-xl sm:rounded-2xl group overflow-hidden" href="/category/<%= item.category %>/<%= item.sku %>">
+                  <img class="h-full w-full object-contain group-hover:scale-105 transition-transform ease-out duration-300" src="/uploads/<%= item.image %>" loading="lazy" alt="<%= item.name %>" />
+                </a>
+                <div class="flex flex-col gap-y-1.5 min-w-0 flex-1">
+                  <a href="/category/<%= item.category %>/<%= item.sku %>" class="group">
+                    <h3 class="text-slate-800 dark:text-slate-100 text-sm sm:text-base font-montserrat font-semibold leading-snug line-clamp-2 group-hover:text-orange-600 dark:group-hover:text-orange-400 hover:transition-colors">
+                      <%= item.name %>
+                    </h3>
+                  </a>
+                  <!-- Pricing -->
+                  <div class="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
+                    <span class="text-slate-900 dark:text-slate-100 text-base font-inter font-bold">
+                      Rs <%= item.currentPrice.toLocaleString() %>
+                    </span>
+                    <% if (item.originalPrice && item.originalPrice > item.currentPrice) { %>
+                    <span class="text-slate-400 dark:text-slate-500 text-xs sm:text-sm font-inter line-through">
+                      Rs <%= item.originalPrice.toLocaleString() %>
+                    </span>
+                    <span class="bg-green-50 dark:bg-green-950/40 text-green-600 dark:text-green-400 text-xs font-semibold font-inter border border-green-200/60 dark:border-green-900/40 rounded py-0.5 px-1.5">
+                      <%= Math.round(((item.originalPrice - item.currentPrice) / item.originalPrice) * 100) %>% OFF
+                    </span>
+                    <% } %>
+                  </div>
+                </div>
+              </div>
+              <!-- Right Side: Quantity, Subtotal & Remove Action -->
+              <div class="w-full sm:w-auto flex items-center justify-between sm:justify-end gap-3 sm:gap-6 border-t sm:border-t-0 border-slate-100 dark:border-slate-800/80 pt-3 sm:pt-0">
+                <!-- Quantity Selector -->
+                <div class="bg-slate-50 dark:bg-slate-800/80 flex items-center border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xs overflow-hidden">
+                  <button class="minusCartQuantity text-slate-600 dark:text-slate-300 font-inter font-bold h-8 sm:h-9 w-8 sm:w-9 flex items-center justify-center cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-[0.95] overflow-hidden hover:transition-colors" data-item-id="<%= item._id %>" aria-label="Decrease quantity">
+                    -
+                  </button>
+                  <input class="bg-transparent text-slate-800 dark:text-slate-100 w-10 sm:w-11 
+                  text-xs sm:text-sm font-inter font-semibold text-center focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" id="qty-<%= item._id %>" type="number" min="1" max="10" value="<%= item.quantity %>" />
+                  <button class="plusCartQuantity text-slate-600 dark:text-slate-300 font-inter font-bold h-8 sm:h-9 w-8 sm:w-9 flex items-center justify-center cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-[0.95] overflow-hidden hover:transition-colors" data-item-id="<%= item._id %>" aria-label="Increase quantity">
+                    +
+                  </button>
+                </div>
+                <!-- Subtotal & Remove Button -->
+                <div class="flex items-center gap-3 sm:gap-4">
+                  <% const itemSubTotal = item.currentPrice * item.quantity; %>
+                  <div class="min-w-[5rem] sm:min-w-[6rem] text-right flex flex-col justify-center">
+                    <span class="text-slate-400 dark:text-slate-500 text-[0.6250rem] font-montserrat font-medium uppercase tracking-wider hidden sm:block">Subtotal</span>
+                    <span class="text-slate-900 dark:text-slate-100 text-sm sm:text-base font-montserrat font-bold">
+                      Rs <span id="item-<%= item._id %>"><%= itemSubTotal.toLocaleString() %></span>
+                    </span>
+                  </div>
+                  <!-- Delete Button -->
+                  <button class="removeCartBtn text-slate-400 flex items-center justify-center rounded-lg cursor-pointer p-2 hover:bg-red-50 dark:hover:bg-red-950/30  hover:text-red-500 dark:hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-50 transition-colors" data-product-id="<%= item._id %>" title="Remove item">
+                    <svg class="Icon h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                    </svg>
+                    <span class="Spinner h-4 w-4 border-[3px] border-orange-600 border-t-white shrink-0 rounded-full animate-spin drop-shadow-[0_0_4px_rgba(249,115,22,0.6)] hidden"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <% }) %>
+            <!-- Guarantee Note -->
+            <div class="bg-orange-50/60 dark:bg-orange-500/5 border border-orange-200/50 dark:border-orange-500/10 rounded-2xl flex items-center gap-x-3 p-4 mt-2.5">
+              <svg class="text-orange-600 dark:text-orange-400 flex-shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+              <p class="text-slate-700 dark:text-slate-300 text-xs font-inter">
+                <span class="text-slate-900 dark:text-white font-bold">Shop with confidence:</span> All items in your cart are covered by our 30-day return policy and 1-year official warranty.
+              </p>
+            </div>
+          </div>
+          <!-- Sticky Order Summary -->
+          <div class="lg:col-span-4 lg:sticky lg:top-24">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm flex flex-col gap-5 p-5">
+              <h2 class="text-slate-900 dark:text-white text-xl font-montserrat font-extrabold border-b border-slate-100 dark:border-slate-800 pb-4">
+                Order <span class="text-orange-600 dark:text-orange-400">Summary</span>
+              </h2>
+              <!-- Free Shipping -->
+              <div class="bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200/60 dark:border-emerald-500/20 rounded-2xl flex items-center gap-2.5 p-3">
+                <span class="bg-emerald-600 text-white h-5 w-5 text-xs rounded-full flex items-center justify-center flex-shrink-0">✓</span>
+                <span class="text-emerald-800 dark:text-emerald-300 text-xs font-inter font-medium">You unlocked FREE Express Delivery!</span>
+              </div>
+              <!-- Price Breakdown -->
+              <div class="flex flex-col gap-y-2.5">
+                <div class="text-slate-700 dark:text-slate-300 text-sm font-inter font-medium flex items-center justify-between">
+                  <% 
+                  let subTotal  = 0;
+                  let totalSaving = 0;
+                  const shipping = 200;
+                  let grandTotal = 0;
+                  cartItems.forEach((item) => {
+                  subTotal += item.currentPrice * item.quantity
+                  totalSaving += item.quantity * (item.originalPrice - item.currentPrice)
+                  })
+                  grandTotal = subTotal + shipping;
+                  %>
+                  <span>Subtotal</span>
+                  <span class="text-slate-900 dark:text-white">Rs: <span class="text-base font-bold" id="itemsSubTotalTxt"><%= subTotal.toLocaleString() %></span>
+                  </span>
+                </div>
+                <div class="text-slate-600 dark:text-slate-400 text-sm font-inter font-medium flex items-center justify-between">
+                  <span>Total Savings</span>
+                  <span>Rs: <span class="font-bold" id="itemsTotalSavingsTxt"><%= totalSaving.toLocaleString() %></span>
+                  </span>
+                </div>
+                <div class="text-slate-600 dark:text-slate-400 text-sm font-inter font-medium flex items-center justify-between">
+                  <span>Estimated Shipping</span>
+                  <span>Rs:
+                    <span class="text-emerald-600 dark:text-emerald-400 font-bold">
+                      <%= shipping %>
+                    </span>
+                  </span>
+                </div>
+                <div class="border-t border-slate-100 dark:border-slate-800 flex items-center justify-between pt-4">
+                  <div class="flex flex-col gap-y-0.75">
+                    <span class="text-slate-900 dark:text-white text-base font-montserrat font-bold leading-none">Grand Total</span>
+                    <span class="text-slate-500 text-[0.6875rem] font-inter">Includes all taxes</span>
+                  </div>
+                  <span class="text-orange-600 dark:text-orange-500 text-xl sm:text-2xl font-montserrat font-extrabold">
+                    Rs:
+                    <span id="itemsGrandTotalTxt"><%= grandTotal.toLocaleString() %></span>
+                  </span>
+                </div>
+              </div>
+              <!-- Primary CTA -->
+              <a class="bg-orange-600 text-white text-center w-full inline-flex items-center justify-center gap-x-2 rounded-2xl shadow-lg shadow-orange-600/25 cursor-pointer py-4.5 
+              px-8 hover:bg-orange-700 active:scale-[0.98] transition ease-out duration-[250ms]" id="checkout-btn" data-username="<%= user?.username %>">
+                <span class="Spinner h-4.5 w-4.5 border-[3px] border-orange-100 border-t-orange-500 shrink-0 rounded-full animate-spin drop-shadow-[0_0_4px_rgba(249,115,22,0.6)] hidden"></span>
+                <span class="Text text-sm sm:text-base font-montserrat font-semibold leading-none">Proceed to Checkout</span>
+                <svg class="Icon w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </a>
+              <!-- Security Badges -->
+              <div class="border-t border-slate-100 dark:border-slate-800 text-center pt-4">
+                <span class="text-slate-400 text-xs font-inter">🔒 256-Bit SSL Encrypted Checkout</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %>
+      </div>
+    </section>
+  </main>
+  <!-- Footer -->
+  <%- include("../partials/footer") %>
+  <!-- Scripts -->
+  <script src="/js/script.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/user.js"></script>
+</body>
+
+</html>

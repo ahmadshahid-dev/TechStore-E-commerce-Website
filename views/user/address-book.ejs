@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Address Book | TechStore</title>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/output.css" />
+</head>
+
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased selection:bg-orange-500 selection:text-white">
+  <!-- Header -->
+  <%- include("../partials/header") %>
+  <!-- Main -->
+  <main>
+    <!-- ==================== 1. PAGE HEADER BANNER ==================== -->
+    <section class="border-b border-slate-200/80 dark:border-slate-800/80 
+    bg-white/60 dark:bg-slate-900/60 backdrop-blur-md py-8 sm:py-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <!-- Breadcrumbs & Title -->
+          <div class="space-y-1.5">
+            <div class="text-slate-500 dark:text-slate-400 text-xs font-inter flex items-center gap-2">
+              <a class="hover:text-orange-600 dark:hover:text-orange-400 hover:transition-colors" href="/">Home</a>
+              <span>/</span>
+              <a class="hover:text-orange-600 dark:hover:text-orange-400 hover:transition-colors" href="/<%= '@' + user?.username %>/profile-overview">Account</a>
+              <span>/</span>
+              <span class="text-slate-800 dark:text-slate-200 font-semibold">Addresses</span>
+            </div>
+            <h1 class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-extrabold leading-none tracking-tight mb-2.5">
+              Delivery <span class="text-orange-600 dark:text-orange-400">Address Book</span>
+            </h1>
+            <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-inter">
+              Manage your residential and office delivery locations for faster 1-click checkout.
+            </p>
+          </div>
+          <!-- Add Address -->
+          <a class=" bg-orange-600 text-white w-fit inline-flex items-center gap-2 rounded-xl 
+          shadow-lg shadow-orange-500/25 py-3.5 px-6 hover:bg-orange-700 active:scale-[0.98] hover:shadow-orange-500/35 transition ease-out duration-[250ms]" href="/<%= '@' + user?.username %>/address-add">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            <span class="text-xs sm:text-sm font-montserrat font-semibold leading-none">Add New Address</span>
+          </a>
+        </div>
+      </div>
+    </section>
+    <!-- ==================== 2. MAIN ADDRESSES LIST SECTION ==================== -->
+    <section class="backdrop-blur-md py-8 sm:py-10 lg:py-12 overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Empty State -->
+        <div class="<%= !addresses || addresses.length === 0 ? 'block' : 'hidden' %> max-w-md mx-auto space-y-6 text-center px-4 py-5" id="empty">
+          <div class="bg-orange-50 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 h-20 w-20 flex items-center justify-center mx-auto border border-orange-200/80 dark:border-orange-900/50 rounded-3xl shadow-sm">
+            <svg class="h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+          <div class="space-y-2.5">
+            <h2 class="text-slate-900 dark:text-white text-2xl font-montserrat font-bold leading-none mb-3">
+              No Addresses Saved Yet
+            </h2>
+            <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-inter leading-relaxed">
+              You haven't added any shipping destinations. Add your primary address for quick 1-click checkout.
+            </p>
+          </div>
+          <a class="bg-orange-600 text-white inline-flex items-center gap-2 rounded-xl py-4 px-8 shadow-lg shadow-orange-500/25 hover:bg-orange-700 active:scale-[0.98] transition ease-out duration-[250ms]" href="/<%= '@' + user?.username %>/address-add">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            <span class=" text-xs sm:text-sm font-montserrat font-semibold leading-none">Add Your First Address</span>
+          </a>
+          <!-- Helpful 3-Point Benefits -->
+          <div class="border-t border-slate-200/80 dark:border-slate-800/80 flex flex-col items-center justify-center space-y-2.5 pt-6">
+            <div class="flex items-center gap-x-2.5">
+              <span class="text-emerald-500 text-xs font-inter">✓</span>
+              <span class="text-slate-600 dark:text-slate-400 text-xs font-inter">Fast 1-click checkout without re-typing details</span>
+            </div>
+            <div class="flex items-center gap-x-2.5">
+              <span class="text-emerald-500 text-xs font-inter">✓</span>
+              <span class="text-slate-600 dark:text-slate-400 text-xs font-inter">Save multiple locations (Home, Work, Parents)</span>
+            </div>
+            <div class="flex items-center gap-x-2.5">
+              <span class="text-emerald-500 text-xs font-inter">✓</span>
+              <span class="text-slate-600 dark:text-slate-400 text-xs font-inter">Precise GPS and postal code parcel dispatch</span>
+            </div>
+          </div>
+        </div>
+        <div id="content-container">
+          <% if (addresses && addresses.length > 0) { %>
+          <!-- Stats & Filter Bar -->
+          <div class="flex items-center gap-3 flex-wrap mb-8" id="countItemsBar">
+            <div class="bg-white dark:bg-slate-900 flex items-center gap-2 border border-slate-200/80 dark:border-slate-800 rounded-xl shadow-sm py-2 px-3.5">
+              <span class="text-slate-500 dark:text-slate-400 text-xs font-inter">Total Saved Locations:</span>
+              <strong class="text-slate-900 dark:text-white text-xs font-montserrat font-bold" id="items-count"><%= totalAddresses %></strong>
+            </div>
+            <div class="bg-white dark:bg-slate-900 flex items-center gap-2 border border-slate-200/80 dark:border-slate-800 rounded-xl shadow-sm py-2 px-3.5">
+              <span class="bg-emerald-500 h-2 w-2 rounded-full"></span>
+              <span class="text-slate-500 dark:text-slate-400 text-xs font-inter">Default Shipping Address:</span>
+              <strong class="text-emerald-600 dark:text-emerald-400 text-xs font-montserrat font-bold">Set</strong>
+            </div>
+          </div>
+          <!-- Addresses Grid (3 Columns) -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <% addresses.forEach((address) => { %>
+            <!-- Address Card -->
+            <div class="bg-white dark:bg-slate-900 flex flex-col justify-between group border border-slate-200/80 dark:border-slate-800 rounded-3xl shadow-sm hover:shadow-lg transition-shadow ease-in-out duration-300 overflow-hidden" id="address-<%= address._id %>">
+              <!-- Card Header: Label & Default Badge -->
+              <div class="flex items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-800/80 p-5 pb-4">
+                <div class="flex items-center gap-3">
+                  <!-- Label Icon Box -->
+                  <% if (address.label === "Home") { %>
+                  <div class="bg-orange-50 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 h-10 w-10 flex items-center justify-center flex-shrink-0 rounded-xl">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                  </div>
+                  <% } else if (address.label === "Office") { %>
+                  <div class="bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 h-10 w-10 flex items-center justify-center flex-shrink-0 rounded-xl">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                  </div>
+                  <% } else { %>
+                  <div class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 h-10 w-10 flex items-center justify-center flex-shrink-0 rounded-xl">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                  <% } %>
+                  <h3 class="text-slate-900 dark:text-white text-base font-montserrat font-bold leading-none">
+                    <%= address.label %>
+                  </h3>
+                </div>
+                <!-- Default Pill Badge -->
+                <div class="defaultTags" data-address-id="<%= address._id %>">
+                  <% if (address.isDefault) { %>
+                  <span class="defaultTag bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200/80 dark:border-emerald-900/40 inline-flex items-center gap-1.5 rounded-full py-1 px-2.5">
+                    <span class="bg-emerald-500 h-1.5 w-1.5 rounded-full"></span>
+                    <span class="text-[0.6875rem] font-montserrat font-bold uppercase tracking-wider">
+                      Default
+                    </span>
+                  </span>
+                  <% } %>
+                </div>
+              </div>
+              <!-- Card Details -->
+              <div class="space-y-3.5 p-5">
+                <!-- Full Name -->
+                <div class="space-y-0.5 pt-0.5">
+                  <span class="text-slate-400 text-[0.6250rem] font-inter font-semibold uppercase tracking-wider block">Recipient Name</span>
+                  <p class="text-slate-900 dark:text-white text-sm font-montserrat font-bold">
+                    <%= address.fullName %>
+                  </p>
+                </div>
+                <!-- Phone Number -->
+                <div class="space-y-0.5 pt-0.5">
+                  <span class="text-slate-400 text-[0.6250rem] font-inter font-semibold uppercase tracking-wider block">Phone Contact</span>
+                  <p class="text-slate-800 dark:text-slate-200 text-xs font-montserrat font-semibold">
+                    <%= address.phone %>
+                  </p>
+                </div>
+                <!-- Street Address -->
+                <div class="space-y-0.5 pt-0.5">
+                  <span class="text-slate-400 text-[0.6250rem] font-inter font-semibold uppercase tracking-wider block">Street Address</span>
+                  <p class="text-slate-600 dark:text-slate-300 text-xs font-inter font-medium leading-relaxed">
+                    <%= address.stateAddress %>
+                  </p>
+                </div>
+                <!-- City, Province, Postal Code -->
+                <div class="space-y-0.5 pt-0.5">
+                  <span class="text-slate-400 text-[0.6250rem] font-inter font-semibold uppercase tracking-wider block">Area & Postal</span>
+                  <p class="text-slate-800 dark:text-slate-200 text-xs font-inter font-semibold">
+                    <%= address.city %>, <%= address.province %>, <%= address.country %> - <span class="text-orange-600 dark:text-orange-400 font-mono"><%= address.postalCode %></span>
+                  </p>
+                </div>
+              </div>
+              <!-- Edit & Delete Action Buttons -->
+              <div class="grid grid-cols-2 gap-2 p-5 pt-0 pb-3">
+                <!-- Edit Button -->
+                <a class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 
+                flex items-center justify-center gap-1.5 rounded-xl py-2.5 px-4 hover:bg-orange-50 dark:hover:bg-orange-950/40 hover:text-orange-600 dark:hover:text-orange-400 hover:transition-colors hover:ease-out hover:duration-[250ms]" href="/<%= '@' + user?.username %>/address-edit/<%= address._id %>?editing=true">
+                  <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                  <span class="text-xs font-montserrat font-semibold">Edit</span>
+                </a>
+                <!-- Delete Button -->
+                <button class="deleteAddressBtns bg-rose-50 dark:bg-rose-950/30 text-rose-600 dark:text-rose-400 w-full flex items-center justify-center gap-x-1.5 border border-rose-200/60 dark:border-rose-900/40 rounded-xl cursor-pointer py-2.5 px-4 hover:bg-rose-100 dark:hover:bg-rose-900/50 hover:transition-colors hover:ease-out hover:duration-[250ms]" type="submit" data-address-id="<%= address._id %>">
+                  <svg class="Icon h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                  <span class="Spinner h-3.5 w-3.5 border-[3px] border-orange-100 border-t-orange-500 shrink-0 rounded-full animate-spin drop-shadow-[0_0_4px_rgba(249,115,22,0.6)] hidden"></span>
+                  <span class="Text text-xs font-montserrat font-semibold">Delete</span>
+                </button>
+              </div>
+              <!-- Default Switch / Toggle Bar -->
+              <div class="bg-slate-50/70 dark:bg-slate-800/40 border-t border-slate-100 dark:border-slate-800/80 py-3 px-5">
+                <form class="default-address-form flex items-center gap-2.5 cursor-pointer" onsubmit="setDefaultAddress(event, '<%= address._id %>')" method="POST" data-address-id="<%= address._id %>">
+                  <input class="text-orange-600 h-4 w-4 border-slate-300 dark:border-slate-700 focus:ring-orange-500 rounded cursor-pointer" id="isDefault-<%= address._id %>" type="checkbox" name="isDefault" <%= address.isDefault ? 'checked disabled' : '' %> onchange="this.form.requestSubmit()" />
+                  <label class="text-xs cursor-pointer <%= address.isDefault ? 'text-emerald-600 dark:text-emerald-400 font-montserrat font-bold' : 'text-slate-600 dark:text-slate-400 font-inter font-medium' %>" for="isDefault-<%= address._id %>">
+                    <%= address.isDefault ? 'Active Default Address' : 'Set as Default Address' %>
+                  </label>
+                </form>
+              </div>
+            </div>
+            <% }); %>
+            <!-- Add New Address Card Slot -->
+            <a class="bg-white/50 dark:bg-slate-900/50 flex flex-col items-center justify-center border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-3xl text-center shadow-sm group cursor-pointer p-8 hover:bg-orange-50/20 dark:hover:bg-orange-950/10 hover:border-orange-500 dark:hover:border-orange-500 hover:transition-colors hover:ease-out hover:duration-300" href="/<%= '@' + user?.username %>/address-add">
+              <div class="bg-orange-50 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 
+            h-14 w-14 flex items-center justify-center rounded-2xl mb-3 group-hover:scale-110 transition-transform ease-in-out duration-300">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+              </div>
+              <h3 class="text-slate-900 dark:text-white text-base font-montserrat font-bold group-hover:text-orange-600 dark:group-hover:text-orange-400 hover:transition-colors">
+                Add Another Address
+              </h3>
+              <p class="text-slate-500 dark:text-slate-400 text-xs font-inter leading-relaxed max-w-xs mt-1">
+                Save another apartment, house, or company shipping location.
+              </p>
+            </a>
+          </div>
+        </div>
+        <% } %>
+      </div>
+    </section>
+  </main>
+  <!-- Footer -->
+  <%- include("../partials/footer") %>
+  <!-- Scripts -->
+  <script src="/js/script.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/user.js"></script>
+</body>
+
+</html>

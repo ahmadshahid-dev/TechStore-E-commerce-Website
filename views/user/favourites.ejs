@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Wishlist & Favourites | TechStore</title>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/output.css" />
+</head>
+
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-orange-500 selection:text-white">
+  <!-- Header -->
+  <%- include("../partials/header") %>
+  <!-- Main -->
+  <main>
+    <!-- Page Header -->
+    <section class="bg-gradient-to-b from-rose-50/50 via-white to-slate-50 dark:from-slate-900 dark:via-slate-900/80 dark:to-slate-950 border-b border-slate-200/80 dark:border-slate-800/80 
+     py-8 sm:py-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Breadcrumb Navigation -->
+        <nav class="text-slate-500 dark:text-slate-400 text-xs font-inter font-medium flex items-center gap-x-2 mb-1.5">
+          <a href="/" class="hover:text-orange-600 dark:hover:text-orange-500 hover:transition-colors">Home</a>
+          <svg class="text-slate-400 h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+          <span class="text-slate-800 dark:text-slate-200 font-semibold">Favourites</span>
+        </nav>
+        <!-- Header Content & Counter -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div class="flex flex-col gap-2.5">
+            <h1 class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-extrabold leading-none tracking-tight flex items-center gap-x-2.5">
+              <span class=" bg-rose-50 dark:bg-rose-500/10 text-rose-500 dark:text-rose-400 h-10 w-10  border border-rose-200/60 dark:border-rose-500/20 rounded-2xl shadow-sm inline-flex items-center justify-center">
+                <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                </svg>
+              </span>
+              My Saved <span class="text-orange-600 dark:text-orange-400">Favourites</span>
+            </h1>
+            <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter">
+              Save your favourite gear and shop anytime with ease and confidence.
+            </p>
+          </div>
+          <!-- Items Saved Badge -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl flex items-center gap-x-3 shadow-sm self-start sm:self-auto p-3.5">
+            <div class="bg-rose-500 h-2.5 w-2.5 rounded-full animate-pulse"></div>
+            <div class="block">
+              <p class="text-slate-400 text-[0.6875rem] font-inter font-bold uppercase tracking-wider">Items saved</p>
+              <div class="flex items-center gap-x-1.5">
+                <span class="text-slate-900 dark:text-white text-xl font-montserrat font-bold" id="items-count">
+                  <%= favItems ? favItems.length : 0 %>
+                </span>
+                <p class="text-slate-500 text-xs font-inter font-medium" id="countText">
+                  Item<%= favItems && favItems.length !== 1 ? 's' : '' %>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Favourites Products Section -->
+    <section class="border-b border-slate-200 dark:border-slate-800 py-8 sm:py-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Empty Favorites State -->
+        <div class="<%= favItems.length === 0 ? 'block' : 'hidden' %> flex flex-col items-center justify-center text-center max-w-xl mx-auto py-5" id="empty">
+          <div class="relative h-24 w-24 mb-6">
+            <div class="bg-rose-500/15 dark:bg-rose-500/10 absolute inset-0 rounded-full blur-2xl"></div>
+            <div class="bg-rose-50 dark:bg-rose-500/10 text-rose-500 dark:text-rose-400 relative h-24 w-24 border-2 border-rose-200 dark:border-rose-500/20 rounded-full flex items-center justify-center">
+              <svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+            </div>
+          </div>
+          <h2 class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-bold leading-none mb-3">
+            No Favourites Yet
+          </h2>
+          <p class="text-slate-600 dark:text-slate-400 text-sm font-inter leading-relaxed mb-6">
+            Start building your wishlist by saving your favorite tech products. You will be able to easily find and compare them later.
+          </p>
+          <a href="/" class="bg-orange-600 text-white rounded-2xl shadow-lg shadow-orange-600/25 inline-flex items-center gap-2 py-4 px-8 mb-8 hover:bg-orange-700 active:scale-[0.98] transition ease-out duration-[250ms]">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span class="text-sm font-montserrat font-semibold">Explore Products</span>
+          </a>
+          <div class="w-full border-t border-slate-200 dark:border-slate-800 pt-6">
+            <p class="text-slate-400 text-xs font-inter font-semibold uppercase tracking-wider mb-4">
+              Popular Categories
+            </p>
+            <div class="flex flex-wrap justify-center gap-2.5">
+              <a class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-xs font-inter font-semibold border border-slate-200 dark:border-slate-800 rounded-xl hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-orange-400 py-2 px-4" href="/category/headphones">
+                🎧 Headphones
+              </a>
+              <a class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-xs font-inter font-semibold border border-slate-200 dark:border-slate-800 rounded-xl hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-orange-400 py-2 px-4" href="/category/keyboards">
+                ⌨️ Keyboards
+              </a>
+              <a class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-xs font-inter font-semibold border border-slate-200 dark:border-slate-800 rounded-xl hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-orange-400 py-2 px-4" href="/category/mice">
+                🖱️ Mice
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- Populated Favorites Content -->
+        <div id="content-container">
+          <% if(favItems && favItems.length > 0) { %>
+          <!-- Top Controls -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+            <p class="text-slate-600 dark:text-slate-400 text-sm font-inter">
+              These are your saved products. Add any to your cart to start shopping.
+            </p>
+            <button class="bg-rose-50 hover:bg-rose-100 dark:bg-rose-500/10 dark:hover:bg-rose-500/20 text-rose-600 dark:text-rose-400  inline-flex border items-center self-start sm:self-auto gap-2 border-rose-200/60 dark:border-rose-500/20 rounded-xl shadow-sm cursor-pointer active:scale-95 py-2.5 px-3.5" id="unfavall-btn" type="button">
+              <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"></path>
+              </svg>
+              <span class="text-xs font-montserrat font-semibold leading-none">Clear All</span>
+            </button>
+          </div>
+          <!-- Products Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <% favItems.forEach((item) => { %>
+            <%- include("../partials/product", { product: item }) %>
+            <% }) %>
+          </div>
+          <!-- Action Buttons -->
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4 border-t border-slate-200 dark:border-slate-800 pt-8 sm:pt-10 mt-8 sm:mt-10">
+            <a href="/shop" class="bg-orange-600 text-white w-full sm:w-auto inline-flex 
+          items-center justify-center gap-2.5 rounded-2xl shadow-lg shadow-orange-600/25 py-3.5 
+          px-8 hover:bg-orange-700 active:scale-[0.98]  transition ease-out duration-[250ms]">
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+              </svg>
+              <span class="text-sm font-montserrat font-semibold">Continue Shopping</span>
+            </a>
+            <a href="/<%= '@' + user?.username %>/cart" class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 
+          sm:w-auto inline-flex items-center justify-center gap-2 shadow-sm border border-slate-200 dark:border-slate-800 rounded-2xl py-[0.8125rem] px-6 hover:bg-slate-50 hover:transition dark:hover:bg-slate-800 w-full">
+              <svg class="text-orange-500 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+              </svg>
+              <span class="text-sm font-montserrat font-semibold">View Cart</span>
+            </a>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </section>
+    <!-- Benefits Section (Show Only When Empty) -->
+    <section class="<%= !favItems || favItems.length === 0 ? 'block' : 'hidden' %> bg-slate-100/25 dark:bg-slate-950/65 backdrop-blur-md py-8 sm:py-10 lg:py-12" id="fav-benefits">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-bold leading-none text-center mb-8 sm:mb-10">
+          Why Save <span class="text-orange-600 dark:text-orange-500">Favourites?</span>
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <!-- Quick Access -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800  rounded-3xl p-6 hover:border-orange-500/40 dark:hover:border-orange-500/40 group">
+            <div class="bg-orange-100 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 
+            h-12 w-12 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <h3 class="text-slate-900 dark:text-white text-base font-montserrat font-bold mb-2">Quick Access</h3>
+            <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter leading-relaxed">
+              Find your favourite products instantly without searching again. They are always one click away.
+            </p>
+          </div>
+          <!-- Compare Easily -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800  rounded-3xl p-6 hover:border-orange-500/40 dark:hover:border-orange-500/40 group">
+            <div class="bg-rose-100 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 
+            h-12 w-12 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <h3 class="text-slate-900 dark:text-white text-base font-montserrat font-bold mb-2">Compare Easily</h3>
+            <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter leading-relaxed">
+              Keep track of multiple products and compare prices, specs, and features at your own pace.
+            </p>
+          </div>
+          <!-- Price Tracking -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800  rounded-3xl p-6 hover:border-orange-500/40 dark:hover:border-orange-500/40 group">
+            <div class="bg-amber-100 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 
+            h-12 w-12 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 class="text-slate-900 dark:text-white text-base font-montserrat font-bold mb-2">Price Tracking</h3>
+            <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter leading-relaxed">
+              Monitor price changes and never miss out on exclusive seasonal deals for products you love.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- Footer -->
+  <%- include("../partials/footer") %>
+  <!-- Scripts -->
+  <script src="/js/script.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/user.js"></script>
+</body>
+
+</html>

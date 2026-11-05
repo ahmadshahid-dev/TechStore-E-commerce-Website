@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Admin Product Management Dashboard - TechStore" />
+  <title>Manage Products | TechStore Admin</title>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/output.css" />
+</head>
+
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased min-h-screen flex flex-col font-inter selection:bg-orange-500 selection:text-white">
+
+  <!-- Admin Header Partial -->
+  <%- include("../partials/header") %>
+
+  <div class="flex-grow flex">
+    
+
+    <!-- Main Workspace Container -->
+    <main class="flex-grow p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
+
+      <!-- ==================== 1. BREADCRUMBS & TOP BAR ==================== -->
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div>
+          <nav aria-label="Breadcrumb" class="mb-2">
+            <ol class="flex items-center space-x-2 text-xs font-medium text-slate-500 dark:text-slate-400">
+              <li><a href="/admin/dashboard" class="hover:text-orange-600 transition-colors">Admin</a></li>
+              <li><span>/</span></li>
+              <li class="text-slate-900 dark:text-white font-semibold">Products</li>
+            </ol>
+          </nav>
+          <h1 class="text-2xl sm:text-3xl font-black font-montserrat text-slate-900 dark:text-white tracking-tight">
+            Manage <span class="text-orange-600 dark:text-orange-500">Products</span>
+          </h1>
+          <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+            Add, update inventory, edit pricing, and control stock status across your store.
+          </p>
+        </div>
+
+        <!-- Primary Top Actions -->
+        <div class="flex items-center gap-3">
+          <a href="/admin/products/new" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold font-montserrat shadow-md shadow-orange-600/25 transition-all cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Add New Product
+          </a>
+        </div>
+      </div>
+
+      <!-- ==================== 2. KPI / STATS CARDS ==================== -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
+        
+        <!-- Total Products -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Catalog</span>
+            <div class="w-9 h-9 rounded-xl bg-orange-100 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 flex items-center justify-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+              </svg>
+            </div>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <span class="text-2xl sm:text-3xl font-black font-montserrat text-slate-900 dark:text-white" id="stat-total-products">
+              <%= typeof products !== 'undefined' ? products.length : 18 %>
+            </span>
+            <span class="text-xs text-slate-400 font-semibold">Active Items</span>
+          </div>
+        </div>
+
+        <!-- In Stock -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">In Stock</span>
+            <div class="w-9 h-9 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <span class="text-2xl sm:text-3xl font-black font-montserrat text-slate-900 dark:text-white" id="stat-instock-products">
+              <%= typeof products !== 'undefined' ? products.filter(p => (p.stockQuantity || 0) > 5).length : 15 %>
+            </span>
+            <span class="text-xs text-emerald-600 font-semibold">Healthy Inventory</span>
+          </div>
+        </div>
+
+        <!-- Low / Out of Stock -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Low / Out of Stock</span>
+            <div class="w-9 h-9 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <span class="text-2xl sm:text-3xl font-black font-montserrat text-slate-900 dark:text-white" id="stat-lowstock-products">
+              <%= typeof products !== 'undefined' ? products.filter(p => (p.stockQuantity || 0) <= 5).length : 3 %>
+            </span>
+            <span class="text-xs text-amber-600 font-semibold">Restock Needed</span>
+          </div>
+        </div>
+
+        <!-- Featured & Deals -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Featured Deals</span>
+            <div class="w-9 h-9 rounded-xl bg-purple-100 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <span class="text-2xl sm:text-3xl font-black font-montserrat text-slate-900 dark:text-white" id="stat-deals-products">
+              <%= typeof products !== 'undefined' ? products.filter(p => p.tag === 'Deal' || p.tag === 'Best-Sell').length : 6 %>
+            </span>
+            <span class="text-xs text-purple-600 font-semibold">Promotional</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ==================== 3. SEARCH & CATEGORY FILTER TOOLBAR ==================== -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 shadow-sm mb-6 space-y-4">
+        
+        <!-- Search Input & Stock Dropdown Row -->
+        <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+          
+          <!-- Search Bar -->
+          <div class="relative flex-grow max-w-md">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+            </span>
+            <input
+              type="text"
+              id="productSearchInput"
+              placeholder="Search by title, SKU, or tags..."
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
+            />
+          </div>
+
+          <!-- Stock Status & Clear Button -->
+          <div class="flex items-center gap-2.5">
+            <select id="stockFilterSelect" class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-xl px-3 py-2.5 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 cursor-pointer">
+              <option value="All">All Stock Levels</option>
+              <option value="InStock">In Stock (> 5)</option>
+              <option value="LowStock">Low Stock (1 - 5)</option>
+              <option value="OutOfStock">Out of Stock (0)</option>
+            </select>
+
+            <button id="clearProductFilterBtn" class="px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-semibold transition cursor-pointer">
+              Clear
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Filter Chips: Categories Tabs -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar border-t border-slate-100 dark:border-slate-800/80 pt-3">
+          <button class="product-category-chip active-chip bg-orange-600 text-white text-xs font-montserrat font-bold whitespace-nowrap cursor-pointer rounded-xl shadow-sm shadow-orange-600/20 py-2 px-4 transition" data-category="All">
+            All Products
+          </button>
+          <button class="product-category-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 transition" data-category="headphones">
+            🎧 Headphones
+          </button>
+          <button class="product-category-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 transition" data-category="keyboards">
+            ⌨️ Keyboards
+          </button>
+          <button class="product-category-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 transition" data-category="mice">
+            🖱️ Gaming Mice
+          </button>
+        </div>
+
+      </div>
+
+      <!-- ==================== 4. PRODUCTS TABLE CARD ==================== -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
+        
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse" id="products-table">
+            
+            <!-- Table Header -->
+            <thead>
+              <tr class="bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider font-montserrat">
+                <th class="py-3.5 px-4 sm:px-6">Product Details</th>
+                <th class="py-3.5 px-4">Category</th>
+                <th class="py-3.5 px-4">Price</th>
+                <th class="py-3.5 px-4">Inventory</th>
+                <th class="py-3.5 px-4">Tag</th>
+                <th class="py-3.5 px-4 sm:px-6 text-right">Actions</th>
+              </tr>
+            </thead>
+
+            <!-- Table Body -->
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-xs sm:text-sm font-medium" id="products-tbody">
+              
+              <% if (typeof products !== 'undefined' && products.length > 0) { %>
+                <% products.forEach(function(product) { %>
+                  <tr 
+                    class="product-row hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors"
+                    data-product-title="<%= product.name || '' %>"
+                    data-product-sku="<%= product.sku || '' %>"
+                    data-product-category="<%= (product.category || '').toLowerCase() %>"
+                    data-product-stock="<%= product.stockQuantity || 0 %>"
+                  >
+                    <!-- Product Details: Image + Title + SKU -->
+                    <td class="py-4 px-4 sm:px-6">
+                      <div class="flex items-center gap-3.5">
+                        <div class="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 p-1.5 border border-slate-200 dark:border-slate-700/60 flex-shrink-0 overflow-hidden">
+                          <img 
+                            src="<%= product.image ? (product.image.startsWith('/') ? product.image : '/' + product.image) : '/images/placeholder.jpg' %>" 
+                            alt="<%= product.name %>" 
+                            class="w-full h-full object-contain hover:scale-105 transition-transform" 
+                          />
+                        </div>
+                        <div class="min-w-0 max-w-xs sm:max-w-sm">
+                          <span class="font-bold text-slate-900 dark:text-white block truncate mb-0.5" title="<%= product.name %>">
+                            <%= product.name %>
+                          </span>
+                          <span class="font-mono text-[11px] text-slate-400">
+                            SKU: <%= product.sku || 'N/A' %>
+                          </span>
+                        </div>
+                      </div>
+                    </td>
+
+                    <!-- Category Badge -->
+                    <td class="py-4 px-4">
+                      <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 capitalize">
+                        <%= product.category || 'General' %>
+                      </span>
+                    </td>
+
+                    <!-- Price Column -->
+                    <td class="py-4 px-4 font-montserrat">
+                      <span class="font-bold text-slate-900 dark:text-white block">
+                        Rs. <%= product.currentPrice ? product.currentPrice.toLocaleString() : '0' %>
+                      </span>
+                      <% if (product.originalPrice && product.originalPrice > product.currentPrice) { %>
+                        <span class="text-[11px] text-slate-400 line-through">
+                          Rs. <%= product.originalPrice.toLocaleString() %>
+                        </span>
+                      <% } %>
+                    </td>
+
+                    <!-- Inventory Stock -->
+                    <td class="py-4 px-4">
+                      <% 
+                        const qty = product.stockQuantity || 0;
+                        let stockPill = 'bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800';
+                        let stockText = qty + ' in stock';
+                        if (qty === 0) {
+                          stockPill = 'bg-rose-100 dark:bg-rose-950/70 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-800';
+                          stockText = 'Out of Stock';
+                        } else if (qty <= 5) {
+                          stockPill = 'bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-800';
+                          stockText = qty + ' low stock';
+                        }
+                      %>
+                      <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-semibold <%= stockPill %>">
+                        <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
+                        <%= stockText %>
+                      </span>
+                    </td>
+
+                    <!-- Promo Tag -->
+                    <td class="py-4 px-4">
+                      <% if (product.tag) { %>
+                        <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-orange-100 dark:bg-orange-950 text-orange-700 dark:text-orange-400">
+                          <%= product.tag %>
+                        </span>
+                      <% } else { %>
+                        <span class="text-slate-400 text-xs">—</span>
+                      <% } %>
+                    </td>
+
+                    <!-- Actions -->
+                    <td class="py-4 px-4 sm:px-6 text-right">
+                      <div class="flex items-center justify-end gap-2">
+                        <!-- Quick Edit Modal Trigger -->
+                        <button 
+                          type="button"
+                          class="quick-edit-btn p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950/40 transition cursor-pointer"
+                          data-product='<%- JSON.stringify(product) %>'
+                          title="Quick Edit Product"
+                        >
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                          </svg>
+                        </button>
+
+                        <!-- View Live Product / PDP -->
+                        <a 
+                          href="/category/<%= (product.category || '').toLowerCase() %>/<%= product.sku %>" 
+                          target="_blank"
+                          class="p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                          title="View on Storefront"
+                        >
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                          </svg>
+                        </a>
+
+                        <!-- Delete Button -->
+                        <button 
+                          type="button"
+                          class="delete-product-btn p-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition cursor-pointer"
+                          data-product-id="<%= product._id %>"
+                          data-product-name="<%= product.name %>"
+                          title="Delete Product"
+                        >
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                          </svg>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                <% }); %>
+              <% } else { %>
+                
+                <!-- Mock Sample Product 1 -->
+                <tr class="product-row hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors" data-product-title="Apex Pro Wireless Bluetooth Headphones" data-product-sku="HEAD-BLK-001" data-product-category="headphones" data-product-stock="97">
+                  <td class="py-4 px-4 sm:px-6">
+                    <div class="flex items-center gap-3.5">
+                      <div class="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 p-1.5 border border-slate-200 dark:border-slate-700/60 flex-shrink-0 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=150&q=80" alt="Apex Pro Headphones" class="w-full h-full object-contain" />
+                      </div>
+                      <div class="min-w-0 max-w-xs sm:max-w-sm">
+                        <span class="font-bold text-slate-900 dark:text-white block truncate mb-0.5">Apex Pro Wireless Bluetooth Headphones</span>
+                        <span class="font-mono text-[11px] text-slate-400">SKU: HEAD-BLK-001</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="py-4 px-4">
+                    <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">headphones</span>
+                  </td>
+                  <td class="py-4 px-4 font-montserrat">
+                    <span class="font-bold text-slate-900 dark:text-white block">Rs. 4,999</span>
+                    <span class="text-[11px] text-slate-400 line-through">Rs. 5,000</span>
+                  </td>
+                  <td class="py-4 px-4">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-semibold bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800">
+                      <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
+                      97 in stock
+                    </span>
+                  </td>
+                  <td class="py-4 px-4">
+                    <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-orange-100 dark:bg-orange-950 text-orange-700 dark:text-orange-400">New</span>
+                  </td>
+                  <td class="py-4 px-4 sm:px-6 text-right">
+                    <div class="flex items-center justify-end gap-2">
+                      <button type="button" class="quick-edit-btn p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950/40 transition cursor-pointer" title="Quick Edit">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Mock Sample Product 2 -->
+                <tr class="product-row hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors" data-product-title="Viper Ultra Light Wireless Mouse 26K DPI" data-product-sku="MICE-WHT-002" data-product-category="mice" data-product-stock="3">
+                  <td class="py-4 px-4 sm:px-6">
+                    <div class="flex items-center gap-3.5">
+                      <div class="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 p-1.5 border border-slate-200 dark:border-slate-700/60 flex-shrink-0 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?auto=format&fit=crop&w=150&q=80" alt="Viper Mouse" class="w-full h-full object-contain" />
+                      </div>
+                      <div class="min-w-0 max-w-xs sm:max-w-sm">
+                        <span class="font-bold text-slate-900 dark:text-white block truncate mb-0.5">Viper Ultra Light Wireless Mouse 26K DPI</span>
+                        <span class="font-mono text-[11px] text-slate-400">SKU: MICE-WHT-002</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="py-4 px-4">
+                    <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">mice</span>
+                  </td>
+                  <td class="py-4 px-4 font-montserrat">
+                    <span class="font-bold text-slate-900 dark:text-white block">Rs. 12,499</span>
+                  </td>
+                  <td class="py-4 px-4">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-semibold bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-800">
+                      <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
+                      3 low stock
+                    </span>
+                  </td>
+                  <td class="py-4 px-4">
+                    <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-orange-100 dark:bg-orange-950 text-orange-700 dark:text-orange-400">Deal</span>
+                  </td>
+                  <td class="py-4 px-4 sm:px-6 text-right">
+                    <div class="flex items-center justify-end gap-2">
+                      <button type="button" class="quick-edit-btn p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950/40 transition cursor-pointer" title="Quick Edit">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
+              <% } %>
+
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ==================== 5. EMPTY SEARCH STATE ==================== -->
+        <div id="no-products-found" class="hidden py-12 text-center">
+          <div class="w-16 h-16 mx-auto rounded-2xl bg-orange-100 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 flex items-center justify-center mb-3">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+            </svg>
+          </div>
+          <h3 class="text-base font-bold text-slate-900 dark:text-white mb-1">No Products Match Your Filter</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto mb-4">
+            Try searching for a different keyword or clear your active category tabs.
+          </p>
+          <button id="resetProductsFromEmptyBtn" class="px-4 py-2 rounded-xl bg-orange-600 text-white text-xs font-bold hover:bg-orange-700 transition cursor-pointer">
+            Reset All Filters
+          </button>
+        </div>
+
+        <!-- Table Footer / Pagination -->
+        <div class="p-4 sm:p-5 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+          <span>Showing <strong class="text-slate-900 dark:text-white" id="visible-products-count">2</strong> items</span>
+          <div class="flex items-center gap-2">
+            <button class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-800 disabled:opacity-50" disabled>Previous</button>
+            <span class="px-3 py-1.5 rounded-lg bg-orange-600 text-white font-bold">1</span>
+            <button class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-800 disabled:opacity-50" disabled>Next</button>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ==================== 6. QUICK EDIT PRODUCT MODAL ==================== -->
+  <div id="productQuickModal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden relative animate-in fade-in zoom-in-95 duration-200">
+      
+      <!-- Modal Header -->
+      <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        <div>
+          <span class="text-xs font-mono font-bold text-orange-600 dark:text-orange-400" id="modal-product-sku">SKU: HEAD-BLK-001</span>
+          <h2 class="text-lg font-black font-montserrat text-slate-900 dark:text-white">Quick Edit Product</h2>
+        </div>
+        <button type="button" id="closeProductModal" class="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Quick Edit Form -->
+      <form id="quickEditForm" action="/admin/products/quick-update" method="POST" class="p-6 space-y-4">
+        <input type="hidden" name="productId" id="modal-form-product-id" value="" />
+
+        <!-- Title -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Product Title</label>
+          <input 
+            type="text" 
+            name="name" 
+            id="modal-input-product-name" 
+            class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+            required
+          />
+        </div>
+
+        <!-- Prices Row -->
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Sale Price (Rs.)</label>
+            <input 
+              type="number" 
+              name="currentPrice" 
+              id="modal-input-product-price" 
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+              required
+            />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Stock Quantity</label>
+            <input 
+              type="number" 
+              name="stockQuantity" 
+              id="modal-input-product-stock" 
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Category & Tag Row -->
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Category</label>
+            <select name="category" id="modal-select-product-category" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 cursor-pointer">
+              <option value="headphones">Headphones</option>
+              <option value="keyboards">Keyboards</option>
+              <option value="mice">Gaming Mice</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Promo Tag</label>
+            <select name="tag" id="modal-select-product-tag" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 cursor-pointer">
+              <option value="">None</option>
+              <option value="New">New Arrival</option>
+              <option value="Deal">Deal</option>
+              <option value="Best-Sell">Best Seller</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-end gap-2.5">
+          <button type="button" id="closeProductModalBottom" class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 transition cursor-pointer">
+            Cancel
+          </button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs shadow-md shadow-orange-600/20 transition cursor-pointer">
+            Save Changes
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ==================== 7. DELETE CONFIRMATION MODAL ==================== -->
+  <div id="deleteModal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-md shadow-2xl p-6 text-center space-y-4">
+      <div class="w-14 h-14 mx-auto rounded-2xl bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+        </svg>
+      </div>
+      <div>
+        <h3 class="text-lg font-black font-montserrat text-slate-900 dark:text-white">Delete Product?</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1" id="delete-product-name-text">
+          Are you sure you want to remove this product from the store catalog?
+        </p>
+      </div>
+      <form id="deleteProductForm" action="/admin/products/delete" method="POST" class="flex items-center justify-center gap-3 pt-2">
+        <input type="hidden" name="productId" id="delete-modal-product-id" value="" />
+        <button type="button" id="cancelDeleteBtn" class="w-1/2 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-xs hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">
+          Cancel
+        </button>
+        <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-md shadow-rose-600/20 transition cursor-pointer">
+          Yes, Delete
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Footer Partial -->
+  <%- include("../partials/footer") %>
+
+  <!-- ==================== 8. CLIENT-SIDE JS SCRIPT ==================== -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const productSearchInput = document.getElementById("productSearchInput");
+      const stockFilterSelect = document.getElementById("stockFilterSelect");
+      const clearProductFilterBtn = document.getElementById("clearProductFilterBtn");
+      const resetProductsFromEmptyBtn = document.getElementById("resetProductsFromEmptyBtn");
+      const categoryChips = document.querySelectorAll(".product-category-chip");
+      const productRows = document.querySelectorAll(".product-row");
+      const noProductsFound = document.getElementById("no-products-found");
+      const visibleCountEl = document.getElementById("visible-products-count");
+
+      let currentCategory = "All";
+
+      // Function: Filter Product Table Rows
+      function filterProducts() {
+        const query = (productSearchInput?.value || "").toLowerCase().trim();
+        const stockFilter = stockFilterSelect?.value || "All";
+        let count = 0;
+
+        productRows.forEach(row => {
+          const title = (row.dataset.productTitle || "").toLowerCase();
+          const sku = (row.dataset.productSku || "").toLowerCase();
+          const category = (row.dataset.productCategory || "").toLowerCase();
+          const stock = parseInt(row.dataset.productStock || "0", 10);
+
+          // Matching Query
+          const matchesQuery = !query || title.includes(query) || sku.includes(query);
+
+          // Matching Category
+          const matchesCategory = currentCategory === "All" || category === currentCategory.toLowerCase();
+
+          // Matching Stock Level
+          let matchesStock = true;
+          if (stockFilter === "InStock") matchesStock = stock > 5;
+          if (stockFilter === "LowStock") matchesStock = stock > 0 && stock <= 5;
+          if (stockFilter === "OutOfStock") matchesStock = stock === 0;
+
+          if (matchesQuery && matchesCategory && matchesStock) {
+            row.style.display = "";
+            count++;
+          } else {
+            row.style.display = "none";
+          }
+        });
+
+        // Update count & empty state
+        if (visibleCountEl) visibleCountEl.textContent = count;
+        if (noProductsFound) {
+          if (count === 0) {
+            noProductsFound.classList.remove("hidden");
+          } else {
+            noProductsFound.classList.add("hidden");
+          }
+        }
+      }
+
+      // Category chips click listener
+      categoryChips.forEach(chip => {
+        chip.addEventListener("click", (e) => {
+          e.preventDefault();
+          categoryChips.forEach(c => {
+            c.className = "product-category-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 transition";
+          });
+          chip.className = "product-category-chip active-chip bg-orange-600 text-white text-xs font-montserrat font-bold whitespace-nowrap cursor-pointer rounded-xl shadow-sm shadow-orange-600/20 py-2 px-4 transition";
+          currentCategory = chip.getAttribute("data-category") || "All";
+          filterProducts();
+        });
+      });
+
+      // Inputs listeners
+      productSearchInput?.addEventListener("input", filterProducts);
+      stockFilterSelect?.addEventListener("change", filterProducts);
+
+      // Reset filters function
+      function resetFilters() {
+        if (productSearchInput) productSearchInput.value = "";
+        if (stockFilterSelect) stockFilterSelect.value = "All";
+        categoryChips.forEach(c => {
+          const isAll = c.getAttribute("data-category") === "All";
+          c.className = isAll
+            ? "product-category-chip active-chip bg-orange-600 text-white text-xs font-montserrat font-bold whitespace-nowrap cursor-pointer rounded-xl shadow-sm shadow-orange-600/20 py-2 px-4 transition"
+            : "product-category-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 transition";
+        });
+        currentCategory = "All";
+        filterProducts();
+      }
+
+      clearProductFilterBtn?.addEventListener("click", resetFilters);
+      resetProductsFromEmptyBtn?.addEventListener("click", resetFilters);
+
+      // ==================== QUICK EDIT MODAL ====================
+      const productQuickModal = document.getElementById("productQuickModal");
+      const closeProductModal = document.getElementById("closeProductModal");
+      const closeProductModalBottom = document.getElementById("closeProductModalBottom");
+
+      document.querySelectorAll(".quick-edit-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          try {
+            const rawData = btn.getAttribute("data-product");
+            if (rawData) {
+              const product = JSON.parse(rawData);
+              document.getElementById("modal-form-product-id").value = product._id || "";
+              document.getElementById("modal-product-sku").textContent = "SKU: " + (product.sku || "N/A");
+              document.getElementById("modal-input-product-name").value = product.name || "";
+              document.getElementById("modal-input-product-price").value = product.currentPrice || 0;
+              document.getElementById("modal-input-product-stock").value = product.stockQuantity || 0;
+              document.getElementById("modal-select-product-category").value = (product.category || "headphones").toLowerCase();
+              document.getElementById("modal-select-product-tag").value = product.tag || "";
+            }
+          } catch(e) {
+            console.log("Quick edit modal preview render");
+          }
+          productQuickModal?.classList.remove("hidden");
+        });
+      });
+
+      [closeProductModal, closeProductModalBottom].forEach(btn => {
+        btn?.addEventListener("click", () => {
+          productQuickModal?.classList.add("hidden");
+        });
+      });
+
+      // ==================== DELETE MODAL ====================
+      const deleteModal = document.getElementById("deleteModal");
+      const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
+
+      document.querySelectorAll(".delete-product-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const prodId = btn.getAttribute("data-product-id");
+          const prodName = btn.getAttribute("data-product-name");
+          document.getElementById("delete-modal-product-id").value = prodId;
+          document.getElementById("delete-product-name-text").textContent = `Are you sure you want to delete "${prodName}" from catalog?`;
+          deleteModal?.classList.remove("hidden");
+        });
+      });
+
+      cancelDeleteBtn?.addEventListener("click", () => {
+        deleteModal?.classList.add("hidden");
+      });
+
+    });
+  </script>
+
+</body>
+
+</html>
