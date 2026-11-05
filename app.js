@@ -64,7 +64,7 @@ const app = express();
 app.use(express.json());
 // EJS View Engine Setup;
 app.set("view engine", "ejs");
-app.set("views", path.join(Directory, "views"));
+app.set("views", "views");
 // CSS and JS Files Middleware;
 app.use(express.static(path.join("public")));
 // Upload Files Middleware;
