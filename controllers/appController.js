@@ -14,7 +14,7 @@ Website GET Home Controller
 const getHome = async (req, res, next) => {
   try {
     const products = await Product.find({ status: "Active" }).lean();
-    res.render(path.join(Directory, "views/pages/home"), {
+    res.render("pages/home", {
       currentPage: "Home",
       isLoggedIn: req.session.isLoggedIn,
       user: req.session.user,
