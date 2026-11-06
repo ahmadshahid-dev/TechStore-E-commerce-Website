@@ -1,5 +1,5 @@
 // Import;
 const path = require("path");
-const Directory = path.dirname(require.main.filename);
+const Directory = path.join(__dirname, "..");
 // Export;
 module.exports = Directory;

@@ -74,11 +74,13 @@ const store = new mongoDbStore({
   uri: process.env.MONGODB_URI,
   collection: "sessions",
 });
+store.on("error", (err) => console.error("Session store error:", err));
 // Body Parser Middleware;
 app.use(express.urlencoded({ extended: true }));
 //Session Handling Middleware;
-app.set('trust proxy', 1)
-app.use(session({
+app.set("trust proxy", 1);
+app.use(
+  session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
@@ -92,7 +94,8 @@ app.use(session({
   }),
 );
 // Multer Fields Middleware;
-app.use(multer(multerOptions).fields([
+app.use(
+  multer(multerOptions).fields([
     { name: "image", maxCount: 1 },
     { name: "pdpImage", maxCount: 1 },
     { name: "profileImg", maxCount: 1 },
@@ -184,11 +187,12 @@ app.use((req, res, next) => {
 // PORT;
 const PORT = process.env.PORT;
 // Database Connection;
-try {
-  mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI).catch((err) => {
+  console.log(`Mongoose Not Connected! ${err}`);
+});
+if (!process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`server starting on address : http://localhost:${PORT}`);
   });
-} catch (error) {
-  console.log(`Mongoose Not Connected! ${error}`);
 }
+module.exports = app;
