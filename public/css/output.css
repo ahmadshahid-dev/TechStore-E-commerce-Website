@@ -4334,11 +4334,6 @@
       display: none;
     }
   }
-  .xl\:grid-cols-4 {
-    @media (width >= 80rem) {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-  }
   .dark\:divide-slate-800 {
     &:where(.dark, .dark *) {
       :where(& > :not(:last-child)) {
