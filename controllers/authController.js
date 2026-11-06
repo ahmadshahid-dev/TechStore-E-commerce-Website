@@ -170,6 +170,10 @@ const postLogin = [
       }
       const ua = new UAParser(req.headers["user-agent"]).getResult();
       const geo = geoip.lookup(req.ip);
+      const rawCity = req.headers["x-vercel-ip-city"];
+      const city = rawCity ? decodeURIComponent(rawCity) : geo?.city;
+      const country = req.headers["x-vercel-ip-country"] || geo?.country;
+      const location = [city, country].filter(Boolean).join(", ") || "Unknown";
       if (user.twoFctrVerification) {
         const otp = crypto.randomInt(100000, 1000000).toString();
         let redirectTo = req.session.redirectTo || "/";
@@ -185,9 +189,7 @@ const postLogin = [
           id: crypto.randomUUID(),
           userAgent: `${ua.os.name || "Unknown"} — ${ua.browser.name || "Unknown"}`,
           ip: req.ip,
-          location: geo
-            ? `${geo.city || "Unknown"}, ${geo.country}`
-            : "Unknown",
+          location,
           createdAt: new Date(),
         };
         req.session.pendingRedirectTo = redirectTo;
@@ -258,9 +260,7 @@ const postLogin = [
           id: crypto.randomUUID(),
           userAgent: `${ua.os.name || "Unknown"} — ${ua.browser.name || "Unknown"}`,
           ip: req.ip,
-          location: geo
-            ? `${geo.city || "Unknown"}, ${geo.country}`
-            : "Unknown",
+          location,
           createdAt: new Date(),
         };
         req.session.save((error) => {
