@@ -1,8 +1,6 @@
 /* ***********************************
                 Imports
 *********************************** */
-const path = require("path");
-const Directory = require("../utils/util");
 const { regenerateSession, saveSession } = require("../utils/auth");
 const { check, validationResult } = require("express-validator");
 const User = require("../models/userModel");
@@ -20,7 +18,7 @@ const DUMMY_PASSWORD_HASH = bcrypt.hashSync(
 Website GET Signup Controller
 *********************************** */
 const getSignup = (req, res, next) => {
-  res.render(path.join(Directory, "views/auth/signup"), {
+  res.render("auth/signup", {
     currentPage: "Signup",
     isLoggedIn: false,
     user: {},
@@ -127,7 +125,7 @@ Website GET Login Controller
 *********************************** */
 const getLogin = (req, res, next) => {
   if (!req.query.redirected) delete req.session.redirectTo;
-  res.render(path.join(Directory, "views/auth/login"), {
+  res.render("auth/login", {
     currentPage: "Login",
     isLoggedIn: false,
     user: {},
@@ -187,11 +185,16 @@ const postLogin = [
           id: crypto.randomUUID(),
           userAgent: `${ua.os.name || "Unknown"} — ${ua.browser.name || "Unknown"}`,
           ip: req.ip,
-          location: geo ? `${geo.city || "Unknown"}, ${geo.country}` : "Unknown",
+          location: geo
+            ? `${geo.city || "Unknown"}, ${geo.country}`
+            : "Unknown",
           createdAt: new Date(),
         };
         req.session.pendingRedirectTo = redirectTo;
-        req.session.otpHash = crypto.createHash("sha256").update(otp).digest("hex");
+        req.session.otpHash = crypto
+          .createHash("sha256")
+          .update(otp)
+          .digest("hex");
         req.session.otpExpires = Date.now() + 5 * 60 * 1000;
         await saveSession(req);
         const transporter = nodemailer.createTransport({
@@ -255,7 +258,9 @@ const postLogin = [
           id: crypto.randomUUID(),
           userAgent: `${ua.os.name || "Unknown"} — ${ua.browser.name || "Unknown"}`,
           ip: req.ip,
-          location: geo ? `${geo.city || "Unknown"}, ${geo.country}` : "Unknown",
+          location: geo
+            ? `${geo.city || "Unknown"}, ${geo.country}`
+            : "Unknown",
           createdAt: new Date(),
         };
         req.session.save((error) => {
@@ -300,12 +305,24 @@ const post2fOTPReceived = [
         errors: errors.array(),
       });
     }
-    const { pendingUser, pendingDevice, pendingRedirectTo, otpHash, otpExpires } = req.session;
+    const {
+      pendingUser,
+      pendingDevice,
+      pendingRedirectTo,
+      otpHash,
+      otpExpires,
+    } = req.session;
     const { OTPCode } = req.body;
     try {
-      if (!pendingUser || !pendingDevice || !otpHash || !otpExpires || Date.now() > otpExpires) {
+      if (
+        !pendingUser ||
+        !pendingDevice ||
+        !otpHash ||
+        !otpExpires ||
+        Date.now() > otpExpires
+      ) {
         return res.status(400).json({
-          type: "error", 
+          type: "error",
           message: "Invalid or expired OTP!",
         });
       }
@@ -321,12 +338,13 @@ const post2fOTPReceived = [
       const hashOut = Buffer.from(otpHash, "hex");
       if (!crypto.timingSafeEqual(hashIn, hashOut)) {
         return res.status(400).json({
-          type: "error", 
+          type: "error",
           message: "Invalid or expired OTP!",
         });
       }
       let redirectTo = pendingRedirectTo || "/";
-      if (!redirectTo.startsWith("/") || redirectTo.startsWith("//")) redirectTo = "/";
+      if (!redirectTo.startsWith("/") || redirectTo.startsWith("//"))
+        redirectTo = "/";
       await regenerateSession(req);
       req.session.isLoggedIn = true;
       req.session.user = {
@@ -337,14 +355,19 @@ const post2fOTPReceived = [
       };
       req.session.sessionVersion = pendingUser.sessionVersion;
       req.session.device = {
-        ...pendingDevice,  
+        ...pendingDevice,
         createdAt: new Date(),
       };
       await saveSession(req);
       return res.status(200).json({
         type: "success",
         message: "Logged In!",
-        redirect: redirectTo !== "/" ? redirectTo : pendingUser.role === "admin" ? "/admin/dashboard" : "/",
+        redirect:
+          redirectTo !== "/"
+            ? redirectTo
+            : pendingUser.role === "admin"
+              ? "/admin/dashboard"
+              : "/",
       });
     } catch (error) {
       console.error("2 Factor Authentication OTP error:", error);
@@ -370,7 +393,7 @@ const postLogout = (req, res, next) => {
 Website GET Forgot Password Controller
 *********************************** */
 const getForgotPassword = (req, res, next) => {
-  res.render(path.join(Directory, "views/auth/forgot"), {
+  res.render("auth/forgot", {
     currentPage: "Forgot Password",
     isLoggedIn: false,
     user: {},
@@ -457,7 +480,7 @@ const getResetPassword = (req, res, next) => {
       message: "Invalid or expired reset token",
     });
   }
-  res.render(path.join(Directory, "views/auth/reset"), {
+  res.render("auth/reset", {
     currentPage: "Reset Password",
     isLoggedIn: false,
     user: {},

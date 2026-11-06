@@ -1,8 +1,6 @@
 /* ***********************************
                Imports
 *********************************** */
-const path = require("path");
-const Directory = require("../utils/util");
 const Product = require("../models/productModel");
 /* ***********************************
 Website GET Headphones/Keyboards/Mice Controller
@@ -14,7 +12,7 @@ const getCategoryProducts = (category, page) => {
         .select("image category name sku currentPrice originalPrice")
         .lean()
         .limit(10);
-      res.render(path.join(Directory, `views/categories/${category}`), {
+      res.render(`categories/${category}`, {
         currentPage: page,
         isLoggedIn: req.session.isLoggedIn,
         user: req.session.user,
@@ -65,7 +63,7 @@ const getPdp = async (req, res, next) => {
       .select("image category name sku currentPrice originalPrice")
       .lean()
       .limit(4);
-    res.render(path.join(Directory, "views/pages/pdp"), {
+    res.render("pages/pdp", {
       currentPage: "Product Detail Page",
       isLoggedIn: req.session.isLoggedIn,
       user: req.session.user,

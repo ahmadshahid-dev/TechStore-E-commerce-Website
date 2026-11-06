@@ -2,7 +2,6 @@
                Imports
 *********************************** */
 const path = require("path");
-const Directory = require("../utils/util");
 const {
   validateId,
   deleteUploadedImgs,
@@ -36,7 +35,7 @@ const getDashboard = async (req, res, next) => {
       (sum, deliverdItem) => sum + deliverdItem.grandTotal,
       0,
     );
-    res.render(path.join(Directory, "views/admin/dashboard"), {
+    res.render("admin/dashboard", {
       currentPage: "Dashboard",
       isLoggedIn: req.session.isLoggedIn,
       user: req.session.user,
@@ -68,7 +67,7 @@ const getManageProducts = async (req, res, next) => {
         .lean(),
       Product.countDocuments(filter),
     ]);
-    res.render(path.join(Directory, "views/admin/manage-products"), {
+    res.render("admin/manage-products", {
       currentPage: "Manage Products",
       isLoggedIn: req.session.isLoggedIn,
       user: req.session.user,
@@ -85,7 +84,7 @@ const getManageProducts = async (req, res, next) => {
 Website GET Admin Add Product Controller
 *********************************** */
 const getAddProduct = (req, res, next) => {
-  res.render(path.join(Directory, "views/admin/product-add-edit"), {
+  res.render("admin/product-add-edit", {
     currentPage: "Add Product",
     isLoggedIn: req.session.isLoggedIn,
     user: req.session.user,
@@ -228,7 +227,7 @@ const getEditProduct = async (req, res, next) => {
         message: "Product Not Found!",
       });
     }
-    res.render(path.join(Directory, "views/admin/product-add-edit"), {
+    res.render("admin/product-add-edit", {
       currentPage: "Edit Product",
       isLoggedIn: req.session.isLoggedIn,
       user: req.session.user,
@@ -446,7 +445,7 @@ Website GET Admin Manage Products Controller
 *********************************** */
 const getManageOrders = (req, res, next) => {
   try {
-    res.render(path.join(Directory, "views/admin/manage-orders"), {
+    res.render("admin/manage-orders", {
       currentPage: "Manage Orders",
       isLoggedIn: req.session.isLoggedIn,
       user: req.session.user,
@@ -462,7 +461,7 @@ Website GET Admin Manage Products Controller
 *********************************** */
 const getManageUsers = (req, res, next) => {
   try {
-    res.render(path.join(Directory, "views/admin/manage-users"), {
+    res.render("admin/manage-users", {
       currentPage: "Manage Users",
       isLoggedIn: req.session.isLoggedIn,
       user: req.session.user,

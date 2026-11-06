@@ -2,8 +2,6 @@
                Imports
 *********************************** */
 const fs = require("fs/promises");
-const path = require("path");
-const Directory = require("../utils/util");
 const {
   validateId,
   deleteUploadedImgs,
@@ -68,7 +66,7 @@ const getProfile = async (req, res, next) => {
         message: "User Not Found!",
       });
     }
-    res.render(path.join(Directory, "views/user/profile"), {
+    res.render("user/profile", {
       currentPage: "Profile Overview",
       isLoggedIn: req.session.isLoggedIn,
       user: req.session.user,
@@ -238,7 +236,7 @@ const getAddressBook = async (req, res, next) => {
   try {
     const addresses = await Address.find({ userId }).lean();
     const totalAddresses = addresses.length;
-    return res.render(path.join(Directory, "views/user/address-book"), {
+    return res.render("user/address-book", {
       currentPage: "Address Book",
       isLoggedIn: req.session.isLoggedIn,
       user: req.session.user,
@@ -255,7 +253,7 @@ const getAddressBook = async (req, res, next) => {
 Website GET Address Add Controller
 *********************************** */
 const getAddressAdd = (req, res, next) => {
-  return res.render(path.join(Directory, "views/user/address-add-edit"), {
+  return res.render("user/address-add-edit", {
     currentPage: "Address Add",
     isLoggedIn: req.session.isLoggedIn,
     user: req.session.user,
@@ -440,7 +438,7 @@ const getAddressEdit = async (req, res, next) => {
         message: "Address Not Found!",
       });
     }
-    return res.render(path.join(Directory, "views/user/address-add-edit"), {
+    return res.render("user/address-add-edit", {
       currentPage: "Address Edit",
       isLoggedIn: req.session.isLoggedIn,
       user: req.session.user,
@@ -713,7 +711,7 @@ const getPrivacySecurity = async (req, res, next) => {
         expires: { $gt: new Date() },
     }).toArray();
     const sessions = fetchingSessions.map((d) => ({ ...d.session.device, isCurrent: d._id === req.sessionID })).sort((a, b) => b.isCurrent - a.isCurrent || new Date(b.createdAt) - new Date(a.createdAt));
-    res.render(path.join(Directory, "views/user/privacy-security"), {
+    res.render("user/privacy-security", {
       currentPage: "",
       isLoggedIn: req.session.isLoggedIn,
       user: req.session.user,
@@ -756,7 +754,7 @@ const getFavourites = async (req, res, next) => {
         currentPrice: item.currentPrice,
         originalPrice: item.originalPrice,
       }));
-    res.render(path.join(Directory, "views/user/favourites"), {
+    res.render("user/favourites", {
       currentPage: "Favourites",
       isLoggedIn: req.session.isLoggedIn,
       user: req.session.user,
@@ -897,7 +895,7 @@ const getCart = async (req, res, next) => {
         originalPrice: item.productId.originalPrice,
         quantity: item.quantity,
       }));
-    res.render(path.join(Directory, "views/user/cart"), {
+    res.render("user/cart", {
       currentPage: "Cart",
       isLoggedIn: req.session.isLoggedIn,
       user: req.session.user,
@@ -1115,7 +1113,7 @@ const getCheckout = async (req, res, next) => {
     if (data.status !== 200) {
       if (data.redirect) return res.redirect(data.redirect || "/");
     }
-    return res.render(path.join(Directory, "views/user/checkout"), {
+    return res.render("user/checkout", {
       currentPage: "Checkout",
       isLoggedIn: req.session.isLoggedIn,
       user: req.session.user,
@@ -1338,7 +1336,7 @@ const getOrderSuccess = async (req, res, next) => {
         message: "Order Not Found!",
       });
     }
-    res.render(path.join(Directory, "views/user/order-success"), {
+    res.render("user/order-success", {
       currentPage: "Order Tracking",
       isLoggedIn: req.session.isLoggedIn,
       user: req.session.user,
@@ -1356,7 +1354,7 @@ Website GET My Orders Controller
 const getMyOrders = async (req, res, next) => {
   const userId = req.session.user.userId;
   const orders = await Order.find({ userId });
-  res.render(path.join(Directory, "views/user/my-orders"), {
+  res.render("user/my-orders", {
     currentPage: "My Orders",
     isLoggedIn: req.session.isLoggedIn,
     user: req.session.user,
@@ -1368,7 +1366,7 @@ const getMyOrders = async (req, res, next) => {
 Website GET Order Tracking Controller
 *********************************** */
 const getOrderTracking = (req, res, next) => {
-  res.render(path.join(Directory, "views/user/order-tracking"), {
+  res.render("user/order-tracking", {
     currentPage: "Order Tracking",
     isLoggedIn: req.session.isLoggedIn,
     user: req.session.user,
