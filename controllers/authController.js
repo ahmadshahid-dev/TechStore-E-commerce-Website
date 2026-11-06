@@ -422,7 +422,7 @@ const postForgotPassword = [
           errors: errors.array(),
         });
       }
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ email }).select("email");
       if (!user) {
         return res.status(200).json({
           type: "success",
