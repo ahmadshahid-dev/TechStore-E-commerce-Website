@@ -157,7 +157,7 @@
                 <div class="relative">
                   <div class="bg-slate-100 dark:bg-slate-800 w-28 h-28 sm:w-32 sm:h-32 border-4 border-orange-100 dark:border-orange-950/60 rounded-full shadow-inner flex items-center justify-center overflow-hidden">
                     <% if (_user.profileImg) { %>
-                    <img class="h-full w-full object-cover" src="/uploads/<%= _user.profileImg %>" alt="<%= _user.name %>" />
+                    <img class="h-full w-full object-cover" src="<%= _user.profileImg %>" alt="<%= _user.name %>" />
                     <% } else { %>
                     <span class="text-orange-600 dark:text-orange-400 text-4xl font-montserrat font-black">
                       <%= _user.name ? _user.name.charAt(0).toUpperCase() : 'U' %>
