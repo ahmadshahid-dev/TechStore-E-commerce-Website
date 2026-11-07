@@ -1,12 +1,8 @@
 /* ***********************************
                Imports
 *********************************** */
-const path = require("path");
-const {
-  validateId,
-  deleteUploadedImgs,
-  deleteImages,
-} = require("../utils/validate");
+const { validateId } = require("../utils/validate");
+const { uploadImage, deleteImages } = require("../utils/cloudinary");
 const User = require("../models/userModel");
 const Product = require("../models/productModel");
 const Order = require("../models/orderModel");
@@ -165,8 +161,10 @@ const postAddProduct = [
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      await deleteUploadedImgs(req.files);
-      return res.status(422).json({ type: "error", errors: errors.array() });
+      return res.status(422).json({
+        type: "error",
+        errors: errors.array(),
+      });
     }
     const {
       category,
@@ -179,12 +177,28 @@ const postAddProduct = [
       stockQuantity,
       description,
     } = req.body;
+    const uploadImgs = [];
+    const imgUpload = req.files?.image?.[0];
+    const pdpImgUpload = req.files?.pdpImage?.[0];
+    if (!imgUpload || !pdpImgUpload) {
+      return res.status(422).json({
+        type: "error",
+        errors: [
+          { path: "image", msg: "Image is required!" },
+          { path: "pdpImage", msg: "Pdp image is required!" },
+        ],
+      });
+    }
     try {
-      const image = "products/" + req.files.image[0].filename;
-      const pdpImage = "products/" + req.files.pdpImage[0].filename;
+      const image = await uploadImage(imgUpload, "products");
+      uploadImgs.push(image.publicId);
+      const pdpImage = await uploadImage(pdpImgUpload, "products");
+      uploadImgs.push(pdpImage.publicId);
       await Product.create({
-        image,
-        pdpImage,
+        image: image.url,
+        imagePublicId: image.publicId,
+        pdpImage: pdpImage.url,
+        pdpImagePublicId: pdpImage.publicId,
         category,
         name,
         color,
@@ -201,7 +215,7 @@ const postAddProduct = [
         redirect: "/admin/manage-products",
       });
     } catch (error) {
-      await deleteUploadedImgs(req.files);
+      await deleteImages(uploadImgs);
       console.error("Add product error:", error);
       return next(error);
     }
@@ -323,7 +337,6 @@ const putEditProduct = [
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      await deleteUploadedImgs(req.files);
       return res.status(422).json({ type: "error", errors: errors.array() });
     }
     const {
@@ -340,31 +353,37 @@ const putEditProduct = [
       description,
     } = req.body;
     if (!validateId(_id)) {
-      await deleteUploadedImgs(req.files);
       return res.status(400).json({
         type: "error",
         message: "Invalid product!",
       });
     }
     let saved = false;
+    const uploadedImgs = [];
+    const replacedImgs = [];
+    const imgUpload = req.files?.image?.[0];
+    const pdpImgUpload = req.files?.pdpImage?.[0];
     try {
       const product = await Product.findById(_id);
       if (!product) {
-        await deleteUploadedImgs(req.files);
         return res.status(404).json({
           type: "error",
           message: "Product Not Found!",
         });
       }
-      const newImage = req.files?.image?.[0];
-      const oldImage = product.image;
-      if (newImage) {
-        product.image = `products/${newImage.filename}`;
+      if (imgUpload) {
+        const img = await uploadImage(imgUpload, "products");
+        uploadedImgs.push(img.publicId);
+        replacedImgs.push(product.imagePublicId);
+        product.image = img.url;
+        product.imagePublicId = img.publicId;
       }
-      const newPdpImage = req.files?.pdpImage?.[0];
-      const oldPdpImage = product.pdpImage;
-      if (newPdpImage) {
-        product.pdpImage = `products/${newPdpImage.filename}`;
+      if (pdpImgUpload) {
+        const pdpImg = await uploadImage(pdpImgUpload, "products");
+        uploadedImgs.push(pdpImg.publicId);
+        replacedImgs.push(product.pdpImagePublicId);
+        product.pdpImage = pdpImg.url;
+        product.pdpImagePublicId = pdpImg.publicId;
       }
       Object.assign(product, {
         category,
@@ -380,14 +399,7 @@ const putEditProduct = [
       });
       await product.save();
       saved = true;
-      if (newImage && oldImage) {
-        const imagePath = path.join(Directory, "uploads", oldImage);
-        await deleteImages(imagePath);
-      }
-      if (newPdpImage && oldPdpImage) {
-        const imagePath = path.join(Directory, "uploads", oldPdpImage);
-        await deleteImages(imagePath);
-      }
+      await deleteImages(replacedImgs);
       return res.status(200).json({
         type: "success",
         message: "Product Updated!",
@@ -395,7 +407,7 @@ const putEditProduct = [
       });
     } catch (error) {
       if (!saved) {
-      await deleteUploadedImgs(req.files);
+        await deleteImages(uploadedImgs);
       }
       console.error("Updated product error:", error);
       return next(error);
@@ -421,14 +433,7 @@ const deleteProduct = async (req, res, next) => {
         message: "Product Not Found!",
       });
     }
-    if (product.image) {
-      const imagePath = path.join(Directory, "uploads", product.image);
-      await deleteImages(imagePath);
-    }
-    if (product.pdpImage) {
-      const pdpImagePath = path.join(Directory, "uploads", product.pdpImage);
-      await deleteImages(pdpImagePath);
-    }
+    await deleteImages([product.imagePublicId, product.pdpImagePublicId]);
     const productsCounting = await Product.countDocuments();
     return res.status(200).json({
       type: "success",

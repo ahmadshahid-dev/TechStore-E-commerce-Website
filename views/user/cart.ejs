@@ -113,7 +113,7 @@
               <!-- Left Side: Image & Product Details -->
               <div class="flex items-center gap-3.5 sm:gap-4 w-full sm:w-auto min-w-0">
                 <a class="bg-slate-50 dark:bg-slate-800/60 h-20 w-20 flex-shrink-0 flex items-center justify-center border border-slate-100 dark:border-slate-800/80 rounded-xl sm:rounded-2xl group overflow-hidden" href="/category/<%= item.category %>/<%= item.sku %>">
-                  <img class="h-full w-full object-contain group-hover:scale-105 transition-transform ease-out duration-300" src="/uploads/<%= item.image %>" loading="lazy" alt="<%= item.name %>" />
+                  <img class="h-full w-full object-contain group-hover:scale-105 transition-transform ease-out duration-300" src="<%= item.image %>" loading="lazy" alt="<%= item.name %>" />
                 </a>
                 <div class="flex flex-col gap-y-1.5 min-w-0 flex-1">
                   <a href="/category/<%= item.category %>/<%= item.sku %>" class="group">

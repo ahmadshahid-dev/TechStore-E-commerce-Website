@@ -1,13 +1,9 @@
 /* ***********************************
                Imports
 *********************************** */
-const fs = require("fs/promises");
 const path = require("path");
-const {
-  validateId,
-  deleteUploadedImgs,
-  deleteImages,
-} = require("../utils/validate");
+const { validateId } = require("../utils/validate");
+const { uploadImage, deleteImages } = require("../utils/cloudinary");
 const { getCheckoutData } = require("../utils/checkout");
 const User = require("../models/userModel");
 const Product = require("../models/productModel");
@@ -147,7 +143,7 @@ const putEditProfile = [
       return true;
     }),
   check("phone")
-    .optional()
+    .optional({ values: "falsy" })
     .trim()
     .isMobilePhone("en-PK")
     .withMessage("Please enter a valid phone number!")
@@ -165,7 +161,6 @@ const putEditProfile = [
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      await deleteUploadedImgs(req.files);
       return res.status(422).json({
         type: "error",
         errors: errors.array(),
@@ -175,19 +170,23 @@ const putEditProfile = [
     const { firstName, lastName, gender, dateOfBirth, username, phone } =
       req.body;
     let saved = false;
+    const uploadedImgs = [];
+    const replacedImgs = [];
+    const profileImg = req.files?.profileImg?.[0];
     try {
       const user = await User.findById(userId);
       if (!user) {
-        await deleteUploadedImgs(req.files);
         return res.status(404).json({
           type: "error",
           message: "User Not Found!",
         });
       }
-      const newProfileImg = req.files?.profileImg?.[0];
-      const oldProfileImg = user.profileImg;
-      if (newProfileImg) {
-        user.profileImg = `users/${newProfileImg.filename}`;
+      if (profileImg) {
+        const img = await uploadImage(profileImg, "users");
+        uploadedImgs.push(img.publicId);
+        replacedImgs.push(user.profileImgPublicId);
+        user.profileImg = img.url;
+        user.profileImgPublicId = img.publicId;
       }
       Object.assign(user, {
         firstName,
@@ -199,18 +198,7 @@ const putEditProfile = [
       });
       await user.save();
       saved = true;
-      if (newProfileImg && oldProfileImg) {
-        const oldProfileImgPath = path.join(
-          Directory,
-          "uploads",
-          oldProfileImg,
-        );
-        try {
-          await fs.unlink(oldProfileImgPath);
-        } catch (error) {
-          console.error("Old img delete error:", error);
-        }
-      }
+      await deleteImages(replacedImgs);
       req.session.user.username = username;
       req.session.save((error) => {
         if (error) return next(error);
@@ -222,7 +210,7 @@ const putEditProfile = [
       });
     } catch (error) {
       if (!saved) {
-        await deleteUploadedImgs(req.files);
+        await deleteImages(uploadedImgs);
       }
       console.error("Update profile error:", error);
       return next(error);
@@ -706,12 +694,22 @@ Website GET Privacy Security Controller
 const getPrivacySecurity = async (req, res, next) => {
   const userId = req.session.user?.userId;
   try {
-    const _user = await User.findById(userId).select("+email +verificationStatus +twoFctrVerification").lean();
-    const fetchingSessions = await Sessions().find({
+    const _user = await User.findById(userId)
+      .select("+email +verificationStatus +twoFctrVerification")
+      .lean();
+    const fetchingSessions = await Sessions()
+      .find({
         "session.user.userId": req.session.user.userId,
         expires: { $gt: new Date() },
-    }).toArray();
-    const sessions = fetchingSessions.map((d) => ({ ...d.session.device, isCurrent: d._id === req.sessionID })).sort((a, b) => b.isCurrent - a.isCurrent || new Date(b.createdAt) - new Date(a.createdAt));
+      })
+      .toArray();
+    const sessions = fetchingSessions
+      .map((d) => ({ ...d.session.device, isCurrent: d._id === req.sessionID }))
+      .sort(
+        (a, b) =>
+          b.isCurrent - a.isCurrent ||
+          new Date(b.createdAt) - new Date(a.createdAt),
+      );
     res.render("user/privacy-security", {
       currentPage: "",
       isLoggedIn: req.session.isLoggedIn,
@@ -1662,19 +1660,17 @@ const DeleteAccountAndData = [
     }
     const userId = req.session.user.userId;
     try {
-      await Address.deleteMany({ userId });
-      await Order.deleteMany({ userId });
-      const user = await User.findByIdAndDelete(userId);
+      const user = await User.findById(userId);
       if (!user) {
         return res.status(404).json({
           type: "error",
           message: "User Not Found!",
         });
       }
-      if (user.profileImg) {
-        const imagePath = path.join(Directory, "uploads", user.profileImg);
-        await deleteImages(imagePath);
-      }
+      await Address.deleteMany({ userId });
+      await Order.deleteMany({ userId });
+      await User.deleteOne({ _id: userId });
+      await deleteImages(user.profileImgPublicId);
       req.session.destroy((error) => {
         if (error) return next(error);
         res.clearCookie("connect.sid");

@@ -1,7 +1,6 @@
 // Imports;
 const express = require("express");
 const {auth, admin} = require("../utils/auth");
-const {imgsValidation} = require("../utils/validate");
 const controllers = require("../controllers/adminController");
 const adminRoutes = express.Router();
 // Website GET Admin Dashboard Route;
@@ -11,7 +10,7 @@ adminRoutes.get("/manage-products", auth("page"), admin, controllers.getManagePr
 // Website GET Admin Add Product Route;
 adminRoutes.get("/product-add", auth("page"), admin, controllers.getAddProduct);
 // Website POST Admin Add Product Route;
-adminRoutes.post("/product-add", auth("api"), admin, imgsValidation, controllers.postAddProduct);
+adminRoutes.post("/product-add", auth("api"), admin, controllers.postAddProduct);
 // Website GET Admin Edit Product Route;
 adminRoutes.get("/product-edit/:id", auth("page"), admin, controllers.getEditProduct);
 // Website PUT Admin Edit Product Route;

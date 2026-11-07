@@ -10,6 +10,9 @@ const userSchema = mongoose.Schema(
     profileImg: {
       type: String,
     },
+    profileImgPublicId: {
+      type: String,
+    },
     firstName: {
       type: String,
       minlength: [2, "First name must be at least 2 characters!"],

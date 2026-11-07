@@ -1,59 +1,40 @@
 // Imports;
+const env = require("dotenv");
+env.config();
 const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 const multer = require("multer");
 const session = require("express-session");
 const mongoDbStore = require("connect-mongodb-session")(session);
-const env = require("dotenv");
 // Local Routes;
 const appRoutes = require("./routes/appRoutes");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const categoriesRoutes = require("./routes/categoriesRoutes");
-env.config();
-// Random String Generator for Unique File Names;
-const randomString = (length) => {
-  let result = "";
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return result;
-};
 // Multer Storage Configuration;
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    if (file.fieldname === "image" || file.fieldname === "pdpImage") {
-      cb(null, "uploads/products");
-    } else if (file.fieldname === "profileImg") {
-      cb(null, "uploads/users");
-    } else {
-      cb(new Error("Invalid file field"), null);
-    }
-  },
-
-  filename: (req, file, cb) => {
-    cb(null, randomString(5) + "-" + file.originalname);
-  },
-});
+const storage = multer.memoryStorage();
 // Multer File Filter;
 const fileFilter = (req, file, cb) => {
-  if (["image/jpg", "image/jpeg", "image/png"].includes(file.mimetype)) {
+  if (
+    ["image/jpg", "image/jpeg", "image/png", "image/webp"].includes(
+      file.mimetype,
+    )
+  ) {
     cb(null, true);
   } else {
-    cb(null, false);
+    const error = new Error("Only JPG, JPEG, PNG and WEBP images are allowed!");
+    error.code = "INVALID_FILE_TYPE";
+    error.field = file.fieldname;
+    cb(error);
   }
 };
 // Multer Options;
 const multerOptions = {
   storage,
   fileFilter,
-  limits: {
-    fileSize: 5 * 1024 * 1024,
-  },
+  limits: { fileSize: 2 * 1024 * 1024, files: 3 },
 };
 // DataBase;
 const { default: mongoose } = require("mongoose");
@@ -67,8 +48,6 @@ app.set("view engine", "ejs");
 app.set("views", path.join(Directory, "views"));
 // CSS and JS Files Middleware;
 app.use(express.static(path.join(Directory, "public")));
-// Upload Files Middleware;
-app.use("/uploads", express.static(path.join(Directory, "uploads")));
 // MongoDB Store;
 const store = new mongoDbStore({
   uri: process.env.MONGODB_URI,
@@ -94,8 +73,7 @@ app.use(
   }),
 );
 // Multer Fields Middleware;
-app.use(
-  multer(multerOptions).fields([
+app.use(multer(multerOptions).fields([
     { name: "image", maxCount: 1 },
     { name: "pdpImage", maxCount: 1 },
     { name: "profileImg", maxCount: 1 },
@@ -131,9 +109,16 @@ app.use((error, req, res, next) => {
       errors: [
         {
           path: error.field || "image",
-          msg: "File size must not exceed 5 MB!",
+          msg: "File size must not exceed 2 MB!",
         },
       ],
+    });
+  }
+  // Upload Img Format Errors;
+  if (error.code === "INVALID_FILE_TYPE") {
+    return res.status(422).json({
+      type: "error",
+      errors: [{ path: error.field || "image", msg: error.message }],
     });
   }
   // Validation Errors;

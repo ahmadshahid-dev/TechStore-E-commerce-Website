@@ -10,7 +10,6 @@
 </head>
 
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased selection:bg-orange-500 selection:text-white">
-
   <!-- Header -->
   <%- include("../partials/header") %>
   <!-- Main  -->
@@ -77,7 +76,7 @@
                 <!-- Preview Box -->
                 <div class="bg-slate-50 dark:bg-slate-800/40 h-35 w-full flex items-center justify-center border border-slate-200 dark:border-slate-800 rounded-xl p-3 overflow-hidden">
                   <% if(editing && product.image) { %>
-                  <img class="max-h-full max-w-full object-contain" id="imagePreview" src="/uploads/<%= product.image %>" alt="Thumbnail Preview" />
+                  <img class="max-h-full max-w-full object-contain" id="imagePreview" src="<%= product.image %>" alt="Thumbnail Preview" />
                   <% } else { %>
                   <div class="text-slate-400 flex items-center gap-1.5" id="imgPreviewEmpty">
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -109,7 +108,7 @@
                 <!-- Preview Box -->
                 <div class="bg-slate-50 dark:bg-slate-800/40 h-35 w-full flex items-center justify-center border border-slate-200 dark:border-slate-800 rounded-xl p-3 overflow-hidden">
                   <% if(editing && product.pdpImage) { %>
-                  <img class="max-h-full max-w-full object-contain" id="pdpImagePreview" src="/uploads/<%= product.pdpImage %>" alt="PDP Preview" />
+                  <img class="max-h-full max-w-full object-contain" id="pdpImagePreview" src="<%= product.pdpImage %>" alt="PDP Preview" />
                   <% } else { %>
                   <div class="text-slate-400 flex items-center gap-1.5" id="pdpPreviewEmpty">
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
