@@ -1,7 +1,6 @@
 /* ***********************************
                Imports
 *********************************** */
-const path = require("path");
 const { validateId } = require("../utils/validate");
 const { uploadImage, deleteImages } = require("../utils/cloudinary");
 const { getCheckoutData } = require("../utils/checkout");

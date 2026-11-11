@@ -8,7 +8,7 @@ const getCheckoutData = async (sessionUser) => {
   if (!userId || !username) {
     return {
       status: 401,
-      message: "User Not LoggedIn!",
+      message: "Login Required!",
       redirect: "/auth/login",
     };
   }

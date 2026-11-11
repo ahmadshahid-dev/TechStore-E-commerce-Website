@@ -40,7 +40,8 @@ Website GET Home Controller
 *********************************** */
 const getShop = async (req, res, next) => {
   try {
-    const search = typeof req.query.search === "string" ? req.query.search.trim() : "";
+    const search =
+      typeof req.query.search === "string" ? req.query.search.trim() : "";
     const products = await Product.find(
       search
         ? {
@@ -50,12 +51,15 @@ const getShop = async (req, res, next) => {
             },
           }
         : {},
-    ).limit(search ? 5 : 10).lean();
+    )
+      .limit(search ? 5 : 10)
+      .lean();
     if (req.get("X-Requested-With") === "XMLHttpRequest") {
       let productHTML = "";
       for (const product of products) {
         productHTML += await new Promise((resolve, reject) => {
-          res.render("partials/product",
+          res.render(
+            "partials/product",
             { currentPage: "Shop", product },
             (error, html) => {
               if (error) return reject(error);
@@ -66,8 +70,8 @@ const getShop = async (req, res, next) => {
       }
       return res.status(200).json({
         type: "success",
-        productHTML, 
-        countItems : products.length
+        productHTML,
+        countItems: products.length,
       });
     }
     return res.render("pages/shop", {

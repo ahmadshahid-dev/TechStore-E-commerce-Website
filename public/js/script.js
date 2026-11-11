@@ -572,11 +572,11 @@ function showToast(message, type = "error") {
     document.body.appendChild(container);
   }
   const toast = document.createElement("div");
-  toast.className = `bg-white/95 dark:bg-slate-900/95 text-slate-800 dark:text-slate-100 max-w-sm flex items-center gap-x-2.5 border border-slate-200/90 dark:border-slate-800 rounded-2xl shadow-2xl backdrop-blur-md py-3 px-4.5 opacity-0 translate-y-3 transition ease-out duration-300 select-none`;
+  toast.className = `bg-white/95 dark:bg-slate-900/95 text-slate-800 dark:text-slate-100 max-w-sm flex items-center gap-x-2.5 border border-slate-200/90 dark:border-slate-800 rounded-2xl shadow-2xl backdrop-blur-md py-2.5 px-4.5 opacity-0 translate-y-3 transition ease-out duration-300 select-none`;
   const svg = document.createElement("div");
   const msg = document.createElement("p");
   const close = document.createElement("button");
-  msg.className = `text-xs sm:text-sm font-inter font-medium leading-snug flex-1`;
+  msg.className = `text-xs font-inter leading-snug flex-1`;
   close.className = `text-slate-400 text-xs font-medium ml-1.5 focus:outline-none cursor-pointer hover:text-slate-600 dark:hover:text-slate-200`;
   close.type = "button";
   close.setAttribute("aria-label", "Close");

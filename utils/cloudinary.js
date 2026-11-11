@@ -32,7 +32,7 @@ exports.uploadImage = (file, folder) =>
       },
     );
     stream.end(file.buffer);
-  });
+});
 // Deletes one or more images from Cloudinary by their public IDs;
 exports.deleteImages = async (publicIds) => {
   const ids = [].concat(publicIds).filter(Boolean);

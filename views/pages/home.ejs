@@ -13,7 +13,7 @@
   <meta property="og:url" content="https://www.techstore.com/" />
   <meta property="og:image" content="https://www.techstore.com/og-image.jpg" />
   <title>Home | TechStore</title>
-  <link rel="preload" as="image" href="/background.jpg" fetchpriority="high" />
+  <link rel="preload" as="image" href="/background.png" fetchpriority="high" />
   <!-- Stylesheet -->
   <link rel="stylesheet" href="/css/output.css" />
 </head>
@@ -60,11 +60,11 @@ antialiased selection:bg-orange-500 selection:text-white">
   <%- include("../partials/header") %>
   <main>
     <!-- ==================== 1. HERO BANNER SECTION ==================== -->
-    <section class="relative py-16 sm:py-18 md:py-20 overflow-hidden" role="banner">
+    <section class="relative py-16 sm:py-18 lg:py-20 overflow-hidden" role="banner">
       <!-- Hero Background Image -->
-      <div class="bg-[url('/website-bg.jpg')] bg-center bg-cover bg-no-repeat absolute inset-0" aria-hidden="true"></div>
+      <div class="bg-[url('/background.png')] bg-center bg-cover bg-no-repeat absolute inset-0" aria-hidden="true"></div>
       <!-- Gradient Dark Overlay -->
-      <div class="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-slate-950/55 to-slate-950/60" aria-hidden="true"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-slate-950/65 via-slate-950/70 to-slate-950/75" aria-hidden="true"></div>
       <!-- Hero Content Container -->
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col items-center relative z-10">
@@ -76,7 +76,7 @@ antialiased selection:bg-orange-500 selection:text-white">
             </span>
           </div>
           <!-- Main Heading -->
-          <h1 class="text-white text-[2.15rem] sm:text-[3.50rem] font-inter font-extrabold leading-[2.55rem] sm:leading-[3.65rem] text-center max-w-5xl mx-auto">
+          <h1 class="text-white text-[2.15rem] sm:text-[3.625rem] font-manrope font-black leading-[2.55rem] sm:leading-[3.65rem] text-center max-w-5xl mx-auto">
             Upgrade Your Tech Setup For
             <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-400">
               Work & Gaming
@@ -88,26 +88,24 @@ antialiased selection:bg-orange-500 selection:text-white">
             <span id="element" class="text-orange-400 font-bold" aria-hidden="true"></span>
           </div>
           <!-- Paragraph Description -->
-          <p class="text-slate-300 text-[0.97rem] sm:text-[1.065rem] font-inter leading-relaxed text-center max-w-2xl lg:max-w-[750px] mx-auto mb-[1.875rem]">
-            High-Quality Headphones With Rich Immersive Sound. Enjoy Performance-Driven Keyboards
-            Designed for Speed and Lasting Comfort. Control Every Move With Precision Gaming Mice
-            Built for Accuracy and Durability.
+          <p class="text-slate-300 text-[0.9065rem] sm:text-base font-inter leading-relaxed text-center max-w-2xl lg:max-w-3xl mx-auto mb-[1.565rem]">
+            High-Quality Headphones With Rich, Immersive Sound. Enjoy Performance-Driven Keyboards Designed for Speed, Lasting Comfort, and Exceptional Everyday Gaming Performance.
           </p>
           <!-- CTA Buttons -->
           <div class="flex flex-col sm:flex-row w-full sm:w-auto items-center justify-center gap-5 mb-10">
-            <a class="bg-orange-600 text-white w-full sm:w-auto flex items-center justify-center gap-x-2 py-3.5 px-8 rounded-xl shadow-lg shadow-orange-500/25 hover:bg-orange-700 hover:shadow-orange-500/40 active:scale-[0.98] transition ease-out duration-[250ms]" href="/shop">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-              </svg>
-              <span class="text-sm sm:text-base font-montserrat font-semibold">Shop Now</span>
-            </a>
-            <a class="bg-blue-950/15 dark:bg-slate-900/60 text-white w-full sm:w-auto flex items-center justify-center gap-x-2 py-[0.8125rem] px-8 rounded-xl border border-white/20 box-border backdrop-blur-md cursor-pointer hover:bg-blue-950/25 dark:hover:bg-slate-900/90" onclick="document.getElementById('categories').scrollIntoView()">
-              <span class="text-sm sm:text-base font-montserrat font-semibold">
+            <a class="bg-slate-950/70 text-slate-200 w-full sm:w-auto flex items-center justify-center gap-x-2 py-[0.8125rem] px-8 rounded-xl border border-white/20 box-border backdrop-blur-sm cursor-pointer hover:bg-slate-950/90 transition ease-out duration-[250ms]" onclick="document.getElementById('categories').scrollIntoView()">
+              <span class="text-sm sm:text-base font-manrope font-semibold">
                 Explore Categories
               </span>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
               </svg>
+            </a>
+            <a class="bg-orange-600 text-white w-full sm:w-auto flex items-center justify-center gap-x-2 py-3.5 px-8 rounded-xl shadow-lg shadow-orange-500/25 hover:bg-orange-700 hover:shadow-orange-500/40 active:scale-[0.98] transition ease-out duration-[250ms]" href="/shop">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+              </svg>
+              <span class="text-sm sm:text-base font-montserrat font-semibold">Shop Now</span>
             </a>
           </div>
           <!-- Trust Mini Badges -->
@@ -136,7 +134,7 @@ antialiased selection:bg-orange-500 selection:text-white">
     </section>
     <!-- ==================== 2. SHOP BY CATEGORY SECTION ==================== -->
     <section class="border-b border-slate-200/80 dark:border-slate-800/80 py-8
-    sm:py-10 lg:py-12" id="categories">
+    sm:py-10 lg:py-12 scroll-mt-15 sm:scroll-mt-12 overflow-hidden" id="categories">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Section Header -->
         <div class="max-w-md mx-auto text-center mb-8 sm:mb-10">

@@ -28,7 +28,7 @@ exports.auth = (type = "api") => async (req, res, next) => {
     } catch (_) {}
     return res.status(401).json({
       type: "error",
-      message: "User not logged in!",
+      message: "Login Required!",
       redirect: "/auth/login?redirected=1",
     });
   };
