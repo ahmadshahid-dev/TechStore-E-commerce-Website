@@ -59,6 +59,8 @@ userRoutes.put('/email-update', handleRateLimit(2), auth('api'), controller.putC
 userRoutes.put('/password-update', handleRateLimit(3), auth('api'), controller.putChangePassword);
 // Website PUT 2 Factor Authentication Route;
 userRoutes.put('/2F-auth', handleRateLimit(2), auth('api'), controller.put2FactorAuth);
+// Website POST Sign Out All Route;
+userRoutes.post('/sign-out-all', auth('api'), controller.postSignOutAll);
 // Website DELETE Account Route;
 userRoutes.delete('/account-delete', handleRateLimit(1), auth('api'), controller.DeleteAccountAndData);
 // Exports;

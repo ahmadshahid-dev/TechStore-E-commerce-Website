@@ -1640,6 +1640,24 @@ const put2FactorAuth = [
   },
 ];
 /* ***********************************
+Website POST Sign Out All Controller
+*********************************** */
+const postSignOutAll = async (req, res, next) => {
+  try {
+    const userId = req.session.user.userId;
+    await User.updateOne({ _id: userId }, { $inc: { sessionVersion: 1 } });
+    await Sessions().deleteMany({ "session.user.userId": userId });
+    req.session.destroy((err) => {
+      if (err) return next(err);
+      res.clearCookie("connect.sid");
+      res.redirect("/auth/login");
+    });
+  } catch (error) {
+    console.error("Sign Out All error:", error);
+    next(error);
+  }
+};
+/* ***********************************
 Website DELETE Account & Data Controller
 *********************************** */
 const DeleteAccountAndData = [
@@ -1716,5 +1734,6 @@ module.exports = {
   putChangeEmail,
   putChangePassword,
   put2FactorAuth,
+  postSignOutAll,
   DeleteAccountAndData,
 };

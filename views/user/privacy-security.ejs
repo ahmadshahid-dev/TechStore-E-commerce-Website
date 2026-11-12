@@ -279,9 +279,11 @@
                 </p>
               </div>
             </div>
-            <button class="text-rose-600 dark:text-rose-400 text-xs font-montserrat font-bold hover:underline shrink-0 cursor-pointer" type="button">
-              Sign Out All Other Sessions
-            </button>
+            <form action="/sign-out-all" method="POST">
+              <button class="text-rose-600 dark:text-rose-400 text-xs font-montserrat font-bold hover:underline shrink-0 cursor-pointer" type="submit">
+                Sign Out All Other Sessions
+              </button>
+            </form>
           </div>
           <!-- Sessions List -->
           <% sessions.forEach((session) => { %>
