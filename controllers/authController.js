@@ -191,6 +191,7 @@ const postLogin = [
           ip: req.ip,
           location,
           createdAt: new Date(),
+          lastActiveAt: new Date(),
         };
         req.session.pendingRedirectTo = redirectTo;
         req.session.otpHash = crypto
@@ -262,6 +263,7 @@ const postLogin = [
           ip: req.ip,
           location,
           createdAt: new Date(),
+          lastActiveAt: new Date(),
         };
         req.session.save((error) => {
           if (error) return next(error);
@@ -357,6 +359,7 @@ const post2fOTPReceived = [
       req.session.device = {
         ...pendingDevice,
         createdAt: new Date(),
+        lastActiveAt: new Date(),
       };
       await saveSession(req);
       return res.status(200).json({

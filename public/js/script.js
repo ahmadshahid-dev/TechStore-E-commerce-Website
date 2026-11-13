@@ -679,15 +679,6 @@ const UIAddressUpdate = (address) => {
     .join(", ");
 };
 /* ***********************************
-             Delete Address
-*********************************** */
-const deleteAddress = (addressId) => {
-  const address = document.getElementById(`address-${addressId}`);
-  if (address) {
-    address.remove();
-  }
-};
-/* ***********************************
           UI Address Update
 *********************************** */
 const orderTrackUpdate = (order) => {

@@ -14,6 +14,7 @@
   <%- include("../partials/header") %>
   <!-- Main -->
   <main>
+    <!-- ==================== PRIVACY/SECURITY SECTIONS & BREADCRUMB ==================== -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
       <!-- ==================== 1. BREADCRUMB & HEADER ==================== -->
       <div class="mb-5">
@@ -279,39 +280,44 @@
                 </p>
               </div>
             </div>
-            <form action="/sign-out-all" method="POST">
-              <button class="text-rose-600 dark:text-rose-400 text-xs font-montserrat font-bold hover:underline shrink-0 cursor-pointer" type="submit">
-                Sign Out All Other Sessions
-              </button>
-            </form>
+            <button class="text-rose-600 dark:text-rose-400 text-xs font-montserrat font-bold hover:underline shrink-0 cursor-pointer" id="signOutAllBtn" type="button">
+              Sign Out All Other Sessions
+            </button>
           </div>
           <!-- Sessions List -->
           <% sessions.forEach((session) => { %>
-          <div class="space-y-3">
-            <!-- Current Active Device -->
-            <div class="bg-orange-50/50 dark:bg-orange-500/5 border border-orange-200/60 dark:border-orange-500/20 flex items-center justify-between flex-wrap gap-3 rounded-2xl p-4">
-              <div class="flex items-center gap-3">
-                <div class="bg-orange-100 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 h-10 w-10 text-lg font-bold flex items-center justify-center shrink-0 rounded-xl">
-                  <%= session.userAgent === "Windows — Chrome" ? '💻' : '📱' %>
-                </div>
-                <div class="flex flex-col gap-y-0.75">
-                  <div class="flex items-center gap-x-2">
-                    <span class="text-slate-900 dark:text-white text-xs sm:text-sm font-montserrat font-bold leading-none"><%= session.userAgent %></span>
-                    <% if(session.isCurrent) { %>
-                    <span class="bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 text-[0.6250rem] font-montserrat font-bold truncate border border-emerald-200/50 rounded-md py-0.5 px-2">Current Device</span>
-                    <% } %>
-                  </div>
-                  <span class="text-slate-500 text-[0.6875rem] font-inter">IP:
-                    <%= session.ip %> • <%= session.location %>
-                  </span>
-                </div>
+          <!-- Current Active Device -->
+          <div class="bg-orange-50/50 dark:bg-orange-500/5 border border-orange-200/60 dark:border-orange-500/20 flex items-center justify-between flex-wrap gap-3 rounded-2xl p-4" id="session-<%= session.id %>">
+            <div class="flex items-center gap-3">
+              <div class="bg-orange-100 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 h-10 w-10 text-lg font-bold flex items-center justify-center shrink-0 rounded-xl">
+                <%= session.userAgent === "Windows — Chrome" ? '💻' : '📱' %>
               </div>
-              <% if(!session.isCurrent && session.id) { %>
-              <form id="sessionRevokeForm" data-deviceId="<%= session.id %>">
-                <button class="text-rose-600 text-xs font-montserrat font-semibold border border-rose-200/60 dark:border-rose-900/40 hover:bg-rose-50 dark:hover:bg-rose-500/10 py-1.5 px-3 rounded-xl cursor-pointer hover:transition-colors hover:ease-out hover:duration-[250ms]" type="submit">Revoke Access</button>
-              </form>
-              <% } %>
+              <div class="flex flex-col gap-y-0.75">
+                <div class="flex items-center gap-x-2">
+                  <span class="text-slate-900 dark:text-white text-xs sm:text-sm font-montserrat font-bold leading-none"><%= session.userAgent %></span>
+                  <% if(session.isCurrent) { %>
+                  <span class="bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 text-[0.6250rem] font-montserrat font-bold truncate border border-emerald-200/50 rounded-md py-0.5 px-2">Current Device</span>
+                  <% } %>
+                </div>
+                <span class="text-slate-500 text-[0.6875rem] font-inter">IP:
+                  <%= session.ip %> • <%= session.location %>
+                </span>
+              </div>
             </div>
+            <!-- Creating & Last Access Session -->
+            <div class="flex flex-col gap-y-0.5">
+              <span class="text-slate-500 text-[0.6875rem] font-inter">Created:
+                <%= new Date(session.createdAt).toLocaleString().toUpperCase() %>
+              </span>
+              <span class="text-slate-500 text-[0.6875rem] font-inter">
+                Last Active: <%= new Date(session.lastActiveAt).toLocaleString().toUpperCase() %>
+              </span>
+            </div>
+            <% if(!session.isCurrent && session.id) { %>
+            <form class="sessionRevokeForms" data-device-id="<%= session.id %>">
+              <button class="text-rose-600 text-xs font-montserrat font-semibold border border-rose-200/60 dark:border-rose-900/40 hover:bg-rose-50 dark:hover:bg-rose-500/10 py-1.5 px-3 rounded-xl cursor-pointer hover:transition-colors hover:ease-out hover:duration-[250ms]" type="submit">Revoke Access</button>
+            </form>
+            <% } %>
           </div>
           <%  }); %>
         </section>
@@ -384,7 +390,7 @@
         </section>
       </div>
     </div>
-    <!-- ==================== 4. TWO-FACTOR AUTH MODAL ==================== -->
+    <!-- ==================== TWO-FACTOR AUTH MODAL ==================== -->
     <div class="bg-slate-950/60 backdrop-blur-sm items-center justify-center fixed inset-0 z-50 p-4 overflow-y-auto hidden" id="2FModel">
       <div class="bg-white dark:bg-slate-900 relative w-full max-w-md border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl space-y-5 p-6 sm:p-8 overflow-hidden transition-transform ease-in-out duration-300">
         <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
@@ -439,7 +445,7 @@
         </form>
       </div>
     </div>
-    <!-- ==================== 5. DELETE ACCOUNT MODAL ==================== -->
+    <!-- ==================== DELETE ACCOUNT MODAL ==================== -->
     <div class="bg-slate-950/60 backdrop-blur-sm items-center justify-center fixed inset-0 z-50 p-4 overflow-y-auto hidden" id="deleteModel">
       <div class="bg-white dark:bg-slate-900 relative w-full max-w-md border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl space-y-5 p-6 sm:p-8 overflow-hidden transition-transform ease-in-out duration-300">
         <div class="flex items-center gap-3">

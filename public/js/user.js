@@ -17,6 +17,8 @@ const orderTrackForm = document.getElementById("orderTrackForm");
 const emailUpdateForm = document.getElementById("emailUpdateForm");
 const passwordUpdateForm = document.getElementById("passwordUpdateForm");
 const _2factorAuthForm = document.getElementById("2FactorAuthForm");
+const sessionRevokeForms = document.querySelectorAll(".sessionRevokeForms");
+const signOutAllBtn = document.getElementById("signOutAllBtn");
 const accountDeletebtn = document.getElementById("accountDeletebtn");
 /* ***********************************
            Update Profile
@@ -187,7 +189,7 @@ async function handleDeleteAddress(event, btn, addressId) {
     if (authenticationCheck(response, data)) return;
     responseIsNotOk(response, data);
     if (data.type === "success") {
-      deleteAddress(addressId);
+      document.getElementById(`address-${addressId}`).remove();
       showToast(data.message, data.type);
       checkRemainingProducts(data.countAddress);
     }
@@ -606,6 +608,52 @@ async function handle2FactorAuth(event) {
   }
 }
 /* ***********************************
+        Session Revoke/Logout 
+*********************************** */
+async function handleSessionRevoke(event, sessionId) {
+  event.preventDefault();
+  try {
+    const response = await fetch(`/session-revoke/${sessionId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await response.json();
+    if (authenticationCheck(response, data)) return;
+    responseIsNotOk(response, data);
+    if (data.type === "success") {
+      document.getElementById(`session-${sessionId}`)?.remove();
+      showToast(data.message, data.type);
+    }
+  } catch (error) {
+    console.error("Session Revoke error:", error);
+    showToast(error.message || "Something went wrong!");
+  }
+}
+/* ***********************************
+         Sign Out All Sessions
+*********************************** */
+async function handleSignOutAll(event) {
+  event.preventDefault();
+  try {
+    const response = await fetch("/sign-out-all", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await response.json();
+    if (authenticationCheck(response, data)) return;
+    responseIsNotOk(response, data);
+    if (data.type === "success") {
+      showToast(data.message, data.type);
+      setTimeout(() => {
+        window.location.href = data.redirect;
+      }, 800);
+    }
+  } catch (error) {
+    console.error("Sign Out All error:", error);
+    showToast(error.message || "Something went wrong!");
+  }
+}
+/* ***********************************
            Account Deleting
 *********************************** */
 async function handleDeleteAccount(event) {
@@ -725,4 +773,12 @@ orderTrackForm?.addEventListener("submit", orderTrack);
 emailUpdateForm?.addEventListener("submit", handleEmailUpdate);
 passwordUpdateForm?.addEventListener("submit", handlePasswordUpdate);
 _2factorAuthForm?.addEventListener("submit", handle2FactorAuth);
+sessionRevokeForms?.forEach((form) => {
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const sessionId = form.dataset.deviceId;
+    handleSessionRevoke(event, sessionId);
+  });
+});
+signOutAllBtn?.addEventListener("click", handleSignOutAll);
 accountDeletebtn?.addEventListener("click", handleDeleteAccount);

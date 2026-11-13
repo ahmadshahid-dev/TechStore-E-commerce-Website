@@ -693,22 +693,19 @@ Website GET Privacy Security Controller
 const getPrivacySecurity = async (req, res, next) => {
   const userId = req.session.user?.userId;
   try {
-    const _user = await User.findById(userId)
-      .select("+email +verificationStatus +twoFctrVerification")
-      .lean();
-    const fetchingSessions = await Sessions()
-      .find({
-        "session.user.userId": req.session.user.userId,
-        expires: { $gt: new Date() },
-      })
-      .toArray();
-    const sessions = fetchingSessions
-      .map((d) => ({ ...d.session.device, isCurrent: d._id === req.sessionID }))
-      .sort(
-        (a, b) =>
-          b.isCurrent - a.isCurrent ||
-          new Date(b.createdAt) - new Date(a.createdAt),
-      );
+    const [_user, fetchingSessions] = await Promise.all([
+      User.findById(userId)
+        .select("+email +verificationStatus +twoFctrVerification")
+        .lean(),
+      Sessions()
+        .find({
+          "session.user.userId": userId,
+          expires: { $gt: new Date() },
+        })
+        .toArray(),
+    ]);
+    const sessions = fetchingSessions.map((d) => ({ ...d.session.device, isCurrent: d._id === req.sessionID })).sort((a, b) => b.isCurrent - a.isCurrent || (b.lastActive || b.createdAt) - (a.lastActive || a.createdAt));
+    console.log("Sessions:", sessions);
     res.render("user/privacy-security", {
       currentPage: "",
       isLoggedIn: req.session.isLoggedIn,
@@ -1142,7 +1139,7 @@ const checkoutValidations = async (req, res, next) => {
     }
     return res.status(200).json({
       type: "success",
-      redirect: `/@${data.username}/checkout`,
+      redirect: `/@${encodeURIComponent(data.username)}/checkout`,
     });
   } catch (error) {
     console.error("Checkout Data fetching error:", error);
@@ -1640,21 +1637,51 @@ const put2FactorAuth = [
   },
 ];
 /* ***********************************
+Website POST Revoke Session Controller
+*********************************** */
+const postRevokeSession = async (req, res, next) => {
+  const deviceId = req.params.id;
+  const userId = req.session.user.userId;
+  try {
+    if (deviceId === req.session.device?.id) {
+      return res.status(400).json({
+        type: "error",
+        message: "Cannot revoke current session!",
+      });
+    }
+    await Sessions().deleteOne({
+      "session.user.userId": userId,
+      "session.device.id": deviceId,
+    });
+    return res.status(200).json({
+      type: "success",
+      message: "Session Revoked!",
+    });
+  } catch (error) {
+    console.error("Revoke Session error:", error);
+    return next(error);
+  }
+};
+/* ***********************************
 Website POST Sign Out All Controller
 *********************************** */
 const postSignOutAll = async (req, res, next) => {
+  const userId = req.session.user.userId;
   try {
-    const userId = req.session.user.userId;
     await User.updateOne({ _id: userId }, { $inc: { sessionVersion: 1 } });
     await Sessions().deleteMany({ "session.user.userId": userId });
-    req.session.destroy((err) => {
-      if (err) return next(err);
+    return req.session.destroy((error) => {
+      if (error) return next(error);
       res.clearCookie("connect.sid");
-      res.redirect("/auth/login");
+      res.json({
+        type: "success",
+        message: "All Sessions Signed Out!",
+        redirect: "/auth/login",
+      });
     });
   } catch (error) {
     console.error("Sign Out All error:", error);
-    next(error);
+    return next(error);
   }
 };
 /* ***********************************
@@ -1734,6 +1761,7 @@ module.exports = {
   putChangeEmail,
   putChangePassword,
   put2FactorAuth,
+  postRevokeSession,
   postSignOutAll,
   DeleteAccountAndData,
 };
