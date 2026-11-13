@@ -190,8 +190,8 @@ const postLogin = [
           userAgent: `${ua.os.name || "Unknown"} — ${ua.browser.name || "Unknown"}`,
           ip: req.ip,
           location,
-          createdAt: new Date(),
-          lastActiveAt: new Date(),
+          createdAt: Date.now(),
+          lastActiveAt: Date.now(),
         };
         req.session.pendingRedirectTo = redirectTo;
         req.session.otpHash = crypto
@@ -262,8 +262,8 @@ const postLogin = [
           userAgent: `${ua.os.name || "Unknown"} — ${ua.browser.name || "Unknown"}`,
           ip: req.ip,
           location,
-          createdAt: new Date(),
-          lastActiveAt: new Date(),
+          createdAt: Date.now(),
+          lastActiveAt: Date.now(),
         };
         req.session.save((error) => {
           if (error) return next(error);
@@ -358,8 +358,8 @@ const post2fOTPReceived = [
       req.session.sessionVersion = pendingUser.sessionVersion;
       req.session.device = {
         ...pendingDevice,
-        createdAt: new Date(),
-        lastActiveAt: new Date(),
+        createdAt: Date.now(),
+        lastActiveAt: Date.now(),
       };
       await saveSession(req);
       return res.status(200).json({

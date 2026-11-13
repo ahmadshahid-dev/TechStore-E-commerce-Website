@@ -2,6 +2,7 @@
 const { URL } = require("url");
 const User = require("../models/userModel");
 const rateLimit = require("express-rate-limit");
+const ACTIVITY_INTERVAL = 5 * 60 * 1000;
 exports.handleRateLimit = (max) => rateLimit({
   windowMs: 15 * 60 * 1000,
   max,
@@ -49,6 +50,11 @@ exports.auth = (type = "api") => async (req, res, next) => {
       });
     }
     req.user = user;
+    const device = req.session.device;
+    if (device && Date.now() - (device.lastActiveAt || 0) > ACTIVITY_INTERVAL) {
+      device.lastActiveAt = Date.now();
+      return req.session.save((error) => (error ? next(error) : next()));
+    }
     return next();
   } catch (error) {
     return next(error);

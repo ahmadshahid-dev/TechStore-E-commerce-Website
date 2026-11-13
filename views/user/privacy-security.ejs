@@ -281,7 +281,7 @@
               </div>
             </div>
             <button class="text-rose-600 dark:text-rose-400 text-xs font-montserrat font-bold hover:underline shrink-0 cursor-pointer" id="signOutAllBtn" type="button">
-              Sign Out All Other Sessions
+              Sign Out All Devices
             </button>
           </div>
           <!-- Sessions List -->
@@ -319,7 +319,10 @@
             </div>
             <% if(!session.isCurrent && session.id) { %>
             <form class="sessionRevokeForms" data-device-id="<%= session.id %>">
-              <button class="text-rose-600 text-xs font-montserrat font-semibold border border-rose-200/60 dark:border-rose-900/40 hover:bg-rose-50 dark:hover:bg-rose-500/10 py-1.5 px-3 rounded-xl cursor-pointer hover:transition-colors hover:ease-out hover:duration-[250ms]" type="submit">Revoke Access</button>
+              <button class="border border-rose-200/60 dark:border-rose-900/40 flex items-center justify-center gap-x-1.5 py-1.5 px-3 rounded-xl cursor-pointer hover:bg-rose-50 dark:hover:bg-rose-500/10 hover:transition-colors hover:ease-out hover:duration-[250ms] disabled:opacity-50 disabled:cursor-not-allowed" type="submit">
+                <span class="Spinner h-3.5 w-3.5 border-[3px] border-rose-500 border-t-white shrink-0 rounded-full animate-spin drop-shadow-[0_0_4px_rgba(249,115,22,0.6)] hidden"></span>
+                <span class="Text text-rose-600 text-xs font-montserrat font-semibold">Revoke Access</span>
+              </button>
             </form>
             <% } %>
           </div>
