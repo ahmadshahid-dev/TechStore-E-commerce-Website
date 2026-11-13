@@ -704,8 +704,13 @@ const getPrivacySecurity = async (req, res, next) => {
         })
         .toArray(),
     ]);
-    const sessions = fetchingSessions.map((d) => ({ ...d.session.device, isCurrent: d._id === req.sessionID })).sort((a, b) => b.isCurrent - a.isCurrent || (b.lastActive || b.createdAt) - (a.lastActive || a.createdAt));
-    console.log("Sessions:", sessions);
+    if (!_user) {
+      return res.status(404).json({
+        type: "error",
+        message: "User Not Found!",
+      });
+    }
+    const sessions = fetchingSessions.map((d) => ({ ...d.session.device, isCurrent: d._id === req.sessionID })).sort((a, b) => b.isCurrent - a.isCurrent || new Date(b.createdAt) - new Date(a.createdAt));
     res.render("user/privacy-security", {
       currentPage: "",
       isLoggedIn: req.session.isLoggedIn,
