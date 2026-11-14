@@ -31,7 +31,7 @@ const getCheckoutData = async (sessionUser) => {
     return {
       status: 404,
       message: "Your cart is empty!",
-      redirect: `/@${encodeURIComponent(username)}/cart`,
+      redirect: `/@${username}/cart`,
     };
   }
   const address = await Address.findOne({ userId, isDefault: true }).lean();
@@ -39,7 +39,7 @@ const getCheckoutData = async (sessionUser) => {
     return {
       status: 404,
       message: "Please Set Your Address Firstly!",
-      redirect: `/@${encodeURIComponent(username)}/address-book`,
+      redirect: `/@${username}/address-book`,
       returnToCheckout: true,
     };
   }

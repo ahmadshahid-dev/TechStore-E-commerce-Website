@@ -111,6 +111,16 @@ const userSchema = mongoose.Schema(
       select: false,
       default: undefined,
     },
+    verifyEmailToken: {
+      type: String,
+      select: false,
+      default: undefined,
+    },
+    verifyEmailTokenExpires: {
+      type: Date,
+      select: false,
+      default: undefined,
+    },
     sessionVersion: {
       type: Number,
       select: false,

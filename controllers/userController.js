@@ -23,6 +23,16 @@ const hasValidBcryptLength = (value) => {
   }
   return true;
 };
+const nodemailer = require("nodemailer");
+const transporter = nodemailer.createTransport({
+  host: process.env.MAIL_HOST,
+  port: process.env.MAIL_PORT,
+  secure: process.env.MAIL_SECURE === "true",
+  auth: {
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASS,
+  },
+});
 const { default: mongoose } = require("mongoose");
 const Sessions = () => mongoose.connection.collection("sessions");
 const productAndUser = async (productId, userId) => {
@@ -204,7 +214,7 @@ const putEditProfile = [
         return res.status(200).json({
           type: "success",
           message: "Profile Updated!",
-          redirect: `/@${encodeURIComponent(username)}/profile-overview`,
+          redirect: `/@${username}/profile-overview`,
         });
       });
     } catch (error) {
@@ -392,8 +402,8 @@ const postAddressAdd = [
       const returnToCheckout = req.session.returnToCheckout;
       if (returnToCheckout) delete req.session.returnToCheckout;
       const redirecting = returnToCheckout
-        ? `/@${encodeURIComponent(username)}/checkout`
-        : `/@${encodeURIComponent(username)}/address-book`;
+        ? `/@${username}/checkout`
+        : `/@${username}/address-book`;
       return res.status(201).json({
         type: "success",
         message: "Address Added!",
@@ -594,7 +604,7 @@ const putAddressEdit = [
       return res.status(200).json({
         type: "success",
         message: "Address Updated!",
-        redirect: `/@${encodeURIComponent(username)}/address-book`,
+        redirect: `/@${username}/address-book`,
       });
     } catch (error) {
       console.error("Address Edit error:", error);
@@ -635,9 +645,7 @@ const setDefaultAddress = async (req, res, next) => {
     });
     const returnToCheckout = req.session.returnToCheckout;
     if (returnToCheckout) delete req.session.returnToCheckout;
-    const redirecting = returnToCheckout
-      ? `/@${encodeURIComponent(username)}/checkout`
-      : null;
+    const redirecting = returnToCheckout ? `/@${username}/checkout` : null;
     return res.status(200).json({
       type: "success",
       message: "Set as Default Address!",
@@ -710,7 +718,13 @@ const getPrivacySecurity = async (req, res, next) => {
         message: "User Not Found!",
       });
     }
-    const sessions = fetchingSessions.map((d) => ({ ...d.session.device, isCurrent: d._id === req.sessionID })).sort((a, b) => b.isCurrent - a.isCurrent || (b.lastActiveAt || b.createdAt) - (a.lastActiveAt || a.createdAt));
+    const sessions = fetchingSessions
+      .map((d) => ({ ...d.session.device, isCurrent: d._id === req.sessionID }))
+      .sort(
+        (a, b) =>
+          b.isCurrent - a.isCurrent ||
+          (b.lastActiveAt || b.createdAt) - (a.lastActiveAt || a.createdAt),
+      );
     res.render("user/privacy-security", {
       currentPage: "",
       isLoggedIn: req.session.isLoggedIn,
@@ -1144,7 +1158,7 @@ const checkoutValidations = async (req, res, next) => {
     }
     return res.status(200).json({
       type: "success",
-      redirect: `/@${encodeURIComponent(data.username)}/checkout`,
+      redirect: `/@${data.username}/checkout`,
     });
   } catch (error) {
     console.error("Checkout Data fetching error:", error);
@@ -1216,7 +1230,7 @@ const postCheckout = [
         return res.status(404).json({
           type: "error",
           message: "Your cart is empty!",
-          redirect: `/@${encodeURIComponent(username)}/cart`,
+          redirect: `/@${username}/cart`,
         });
       }
       const quantityInvalid = cartItems.some(
@@ -1303,7 +1317,7 @@ const postCheckout = [
       return res.status(201).json({
         type: "success",
         message: "Order Placed Successfully!",
-        redirect: `/@${encodeURIComponent(username)}/order-success/${order.orderId}`,
+        redirect: `/@${username}/order-success/${order.orderId}`,
       });
     } catch (error) {
       if (session.inTransaction()) {
@@ -1426,6 +1440,155 @@ const postOrderTracking = [
   },
 ];
 /* ***********************************
+Website POST Email Verification Sending Controller
+*********************************** */
+const postEmailVerifySend = async (req, res, next) => {
+  const userId = req.session.user.userId;
+  try {
+    const user = await User.findById(userId).select(
+      "+email +verificationStatus",
+    );
+    if (!user) {
+      return res.status(404).json({
+        type: "error",
+        message: "User Not Found!",
+      });
+    }
+    if (user.verificationStatus === "Verified") {
+      return res.status(200).json({
+        type: "success",
+        message: "Email is already verified!",
+      });
+    }
+    const verifyURL = process.env.VERIFY_URL;
+    if (!verifyURL) {
+      throw new Error("VERIFY_URL is not configured.");
+    }
+    const token = crypto.randomBytes(32).toString("hex");
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+    const updateResult = await User.updateOne(
+      { _id: userId, verificationStatus: { $ne: "Verified" } },
+      {
+        verifyEmailToken: hashedToken,
+        verifyEmailTokenExpires: Date.now() + 15 * 60 * 1000,
+      },
+    );
+    if (updateResult.matchedCount === 0) {
+      return res.status(200).json({
+        type: "success",
+        message: "Email is already verified!",
+      });
+    }
+    const verifyLink = `${verifyURL}/${encodeURIComponent(token)}`;
+    try {
+      await transporter.sendMail({
+        from: process.env.MAIL_FROM,
+        to: user.email,
+        subject: "Verify Your Email",
+        html: ` 
+          <div style="font-family: Arial, Helvetica, sans-serif; text-align: left; max-width: 600px; padding: 10px 0;">
+          <!-- Logo -->
+          <div style="color: #0f172a; font-size: 22px; font-family: Arial, Helvetica, sans-serif; font-weight: 800; line-height: 1.5; margin-bottom: 12px;">
+          Tech<span style="color: #ea580c;">Store</span>
+          </div>
+          <!-- Heading -->
+          <h2 style="color: #0f172a; font-size: 20px; font-family: Arial, Helvetica, sans-serif; font-weight: 700; margin: 0 0 8px;">
+          ✅ Email Verification
+          </h2>
+          <!-- Description -->
+          <p style="color: #64748b; font-size: 14px; font-family: Arial, Helvetica, sans-serif; line-height: 1.5; margin: 0 0 18px; max-width: 500px">
+          Use the verification Link below to complete your email verification for <strong>${user.email}</strong>:
+          </p>
+          <!-- Verification Button -->
+          <a href="${verifyLink}" style=" background-color: #ea580c; color: #ffffff; font-size: 14px; font-family: Arial, Helvetica, sans-serif; font-weight: 600; line-height: 1.25; padding: 12.5px 20px; border-radius: 12px; text-decoration: none;">
+          Verify Email
+          </a>
+          <!-- Expiry Notice -->
+          <p style="color: #8a98ac; font-size: 12px; font-family: Arial, Helvetica, sans-serif; line-height: 1.5; margin: 18px 0 0;">
+          ⏱️ This link will expire in <strong style="color: #0f172a;">15 minutes</strong>. Do not share it with anyone.
+          </p>
+          </div>
+          `,
+      });
+    } catch (mailError) {
+      try {
+        await User.updateOne(
+          {
+            _id: userId,
+            verifyEmailToken: hashedToken,
+          },
+          {
+            $unset: {
+              verifyEmailToken: 1,
+              verifyEmailTokenExpires: 1,
+            },
+          },
+        );
+      } catch (cleanupError) {
+        console.error("Verify Token cleanup failed:", cleanupError);
+      }
+      throw mailError;
+    }
+    return res.status(200).json({
+      type: "success",
+      message: "Verification link sent to your email!",
+    });
+  } catch (error) {
+    console.error("Email verification Sending error:", error);
+    return next(error);
+  }
+};
+/* ***********************************
+Website GET Email Verified Controller
+*********************************** */
+const getEmailVerified = async (req, res, next) => {
+  const token = req.params.token;
+  if (typeof token !== "string" || !/^[a-fA-F0-9]{64}$/.test(token)) {
+    return res.status(400).json({
+      type: "error",
+      message: "Invalid or Expired Verification Token!",
+    });
+  }
+  try {
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+    const user = await User.findOneAndUpdate(
+      {
+        verifyEmailToken: hashedToken,
+        verifyEmailTokenExpires: { $gt: Date.now() },
+        verificationStatus: { $ne: "Verified" },
+      },
+      {
+        $set: {
+          verificationStatus: "Verified",
+        },
+        $unset: {
+          verifyEmailToken: 1,
+          verifyEmailTokenExpires: 1,
+        },
+      },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
+    if (!user) {
+      return res.status(400).json({
+        type: "error",
+        message: "Invalid or Expired Verification Token!",
+      });
+    }
+    return res.render("user/email-verified", {
+      currentPage: "Email Verified",
+      isLoggedIn: req.session.isLoggedIn,
+      user: req.session.user,
+      search: "",
+    });
+  } catch (error) {
+    console.error("Email verified error:", error);
+    return next(error);
+  }
+};
+/* ***********************************
 Website PUT/Change Email Controller
 *********************************** */
 const putChangeEmail = [
@@ -1485,7 +1648,7 @@ const putChangeEmail = [
       return res.status(200).json({
         type: "success",
         message: "Email Updated!",
-        redirect: `/@${encodeURIComponent(username)}/profile-overview`,
+        redirect: `/@${username}/profile-overview`,
       });
     } catch (error) {
       console.error("PUT Email error:", error);
@@ -1681,7 +1844,7 @@ const postSignOutAll = async (req, res, next) => {
       res.json({
         type: "success",
         message: "All Sessions Signed Out!",
-        redirect: "/auth/login",
+        redirect: "/",
       });
     });
   } catch (error) {
@@ -1763,6 +1926,8 @@ module.exports = {
   getMyOrders,
   getOrderTracking,
   postOrderTracking,
+  postEmailVerifySend,
+  getEmailVerified,
   putChangeEmail,
   putChangePassword,
   put2FactorAuth,

@@ -12,7 +12,7 @@ authRoutes.get("/login", controllers.getLogin);
 // Website POST Login Route;
 authRoutes.post("/login", handleRateLimit(5), controllers.postLogin);
 // Website POST 2 Factor OTP Received Route;
-authRoutes.post('/2Factor-OTP', handleRateLimit(2), requirePending2FA, controllers.post2fOTPReceived);
+authRoutes.post('/2Factor-OTP', handleRateLimit(3), requirePending2FA, controllers.post2fOTPReceived);
 // Website POST Logout Route;
 authRoutes.post("/logout", controllers.postLogout);
 // Website GET Forgot Password Route;

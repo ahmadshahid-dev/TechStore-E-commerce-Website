@@ -14,6 +14,7 @@ const buyBtn = document.getElementById("buy-btn");
 const checkoutBtn = document.getElementById("checkout-btn");
 const checkoutForm = document.getElementById("checkout-form");
 const orderTrackForm = document.getElementById("orderTrackForm");
+const emailVerifyBtn = document.getElementById("emailVerifyBtn");
 const emailUpdateForm = document.getElementById("emailUpdateForm");
 const passwordUpdateForm = document.getElementById("passwordUpdateForm");
 const _2factorAuthForm = document.getElementById("2FactorAuthForm");
@@ -472,6 +473,35 @@ async function orderTrack(event) {
   }
 }
 /* ***********************************
+          Email Verification
+*********************************** */
+async function handleEmailVerify(event) {
+  event.preventDefault();
+  if (emailVerifyBtn) {
+    loadingSet(emailVerifyBtn, "Sending...");
+  }
+  try {
+    const response = await fetch("/email-verify", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    responseIsNotOk(response, data);
+    if (data.type === "success") {
+      showToast(data.message, data.type);
+    }
+  } catch (error) {
+    console.error("Email verification error:", error);
+    showToast(error.message || "Something went wrong!");
+  } finally {
+    if (emailVerifyBtn) {
+      loadingReset(emailVerifyBtn, "Send Verification Link");
+    }
+  }
+}
+/* ***********************************
          Email Update/Change
 *********************************** */
 async function handleEmailUpdate(event) {
@@ -612,6 +642,11 @@ async function handle2FactorAuth(event) {
 *********************************** */
 async function handleSessionRevoke(event, sessionId) {
   event.preventDefault();
+  const form = event.target;
+  const revokeBtn = form.querySelector("button[type='submit']");
+  if (revokeBtn) {
+    loadingSet(revokeBtn, "Revoking...");
+  }
   try {
     const response = await fetch(`/session-revoke/${sessionId}`, {
       method: "POST",
@@ -627,6 +662,10 @@ async function handleSessionRevoke(event, sessionId) {
   } catch (error) {
     console.error("Session Revoke error:", error);
     showToast(error.message || "Something went wrong!");
+  } finally {
+    if (revokeBtn) {
+      loadingReset(revokeBtn, "Revoke");
+    }
   }
 }
 /* ***********************************
@@ -770,6 +809,7 @@ checkoutBtn?.addEventListener("click", () => {
 });
 checkoutForm?.addEventListener("submit", postCheckout);
 orderTrackForm?.addEventListener("submit", orderTrack);
+emailVerifyBtn?.addEventListener("click", handleEmailVerify);
 emailUpdateForm?.addEventListener("submit", handleEmailUpdate);
 passwordUpdateForm?.addEventListener("submit", handlePasswordUpdate);
 _2factorAuthForm?.addEventListener("submit", handle2FactorAuth);
