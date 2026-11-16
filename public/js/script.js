@@ -335,9 +335,8 @@ passwordInput?.addEventListener("input", () => {
     const bar = document.getElementById(`strength-${i}`);
     if (!bar) return;
     if (i <= strength) {
-      bar.className = `flex-1 h-1 rounded-full transition-colors ${
-        colors[Math.min(strength - 1, 3)]
-      }`;
+      bar.className = `flex-1 h-1 rounded-full transition-colors ${colors[Math.min(strength - 1, 3)]
+        }`;
     } else {
       bar.className = "bg-gray-200 dark:bg-gray-700 h-1 flex-1 rounded-full";
     }
@@ -732,8 +731,13 @@ categoryChips.forEach((chip) => {
     event.preventDefault();
     const category = chip.getAttribute("data-category") || "All";
     categoryChips.forEach((chip) => {
-      chip.className =
-        "category-chip bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer border border-slate-200 dark:border-slate-800 rounded-xl py-2 px-4 hover:bg-slate-100 dark:hover:bg-slate-800 hover:transition hover:ease-out hover:duration-[250ms]";
+      if (window.location.href === "http://localhost:3000/shop") {
+        chip.className =
+          "category-chip bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer border border-slate-200 dark:border-slate-800 rounded-xl py-2 px-4 hover:bg-slate-100 dark:hover:bg-slate-800 hover:transition hover:ease-out hover:duration-[250ms]";
+      } else {
+        chip.className =
+          "category-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 hover:transition hover:ease-out hover:duration-[250ms]"
+      }
     });
     chip.className =
       "category-chip active-chip bg-orange-600 text-white text-xs font-montserrat font-bold whitespace-nowrap cursor-pointer rounded-xl shadow-sm shadow-orange-600/25 py-2 px-4";
@@ -743,20 +747,35 @@ categoryChips.forEach((chip) => {
 /* ***********************************
          Category Filteration
 *********************************** */
-function filterCategory(category) {
+const prdctSearchInput = document.getElementById("prdctSearchInput");
+const prdctStockFilter = document.getElementById("prdctStockFilter");
+const sortSelect = document.getElementById("sort-select");
+let currentCategory = "All";
+function filterCategory(category = currentCategory) {
+  currentCategory = category;
+  const query = (prdctSearchInput?.value || "").toLowerCase().trim();
+  const stockFilter = prdctStockFilter?.value || "All";
+  const CATEGORY = category.toLowerCase();
   let products = document.querySelectorAll(".product-item");
   if (products.length === 0) {
     products = document.querySelectorAll(".product-card");
   }
   let visibleCount = 0;
   products.forEach((product) => {
-    const attributeCategory =
-      product.getAttribute("data-category") || product.dataset.category || "";
-    const prdctCatgoryBadge =
-      product.querySelector("span")?.textContent.trim() || "";
-    const productCategory = attributeCategory || prdctCatgoryBadge;
-    if (category === "All" || productCategory.includes(category)) {
-      product.style.display = "block";
+    const attributeCategory = (product.dataset.category || "").toLowerCase();
+    const prdctCatgoryBadge = product.querySelector("span")?.textContent.trim() || "";
+    const prdctCategory = attributeCategory || prdctCatgoryBadge;
+    const prdctName = (product.dataset.title || "").toLowerCase();
+    const prdctSku = (product.dataset.sku || "").toLowerCase();
+    const prdctStock = parseInt(product.dataset.stock || "0", 10);
+    const matchesCategory = CATEGORY === "all" || prdctCategory.includes(CATEGORY);
+    const matchesQuery = !query || prdctName.includes(query) || prdctSku.includes(query);
+    let matchesStock = true;
+    if (stockFilter === "InStock") matchesStock = prdctStock > 5;
+    if (stockFilter === "LowStock") matchesStock = prdctStock > 0 && prdctStock <= 5;
+    if (stockFilter === "OutOfStock") matchesStock = prdctStock === 0;
+    if (matchesCategory && matchesQuery && matchesStock) {
+      product.style.display = "";
       visibleCount++;
     } else {
       product.style.display = "none";
@@ -764,10 +783,15 @@ function filterCategory(category) {
   });
   checkRemainingProducts(visibleCount);
 }
+prdctSearchInput?.addEventListener("input", () => filterCategory());
+prdctStockFilter?.addEventListener("change", () => filterCategory());
 /* ***********************************
          Reset Category Chips
 *********************************** */
 function resetCategoryChips() {
+  if (prdctSearchInput) prdctSearchInput.value = "";
+  if (prdctStockFilter) prdctStockFilter.value = "All";
+  if (sortSelect) sortSelect.value = "default";
   categoryChips.forEach((chip) => {
     const isAll = chip.dataset.category === "All";
     chip.className = isAll
@@ -779,13 +803,17 @@ function resetCategoryChips() {
 /* ***********************************
              Clear Filters
 *********************************** */
-const clearFilterBtn = document.getElementById("clearFilterBtn");
-clearFilterBtn?.addEventListener("click", async (event) => {
+const clearFilterBtn = document.querySelectorAll(".clearFilterBtn");
+clearFilterBtn?.forEach((btn) => {
+btn.addEventListener("click", async (event) => {
   event.preventDefault();
-  searchInput.value = "";
-  await shopSearch(event);
+  if (searchInput) {
+    searchInput.value = "";
+    await shopSearch(event);
+  }
   resetCategoryChips();
 });
+})
 /* ***********************************
            Products Sorting
 *********************************** */
@@ -805,7 +833,6 @@ function sortProducts(criteria) {
   });
   cards.forEach((card) => grid.appendChild(card));
 }
-const sortSelect = document.getElementById("sort-select");
 sortSelect?.addEventListener("change", (event) => {
   const value = event.target.value;
   sortProducts(value);
@@ -817,6 +844,16 @@ const openTriggers = document.querySelectorAll(".openTrigger");
 openTriggers.forEach((trigger) => {
   trigger.addEventListener("click", () => {
     const tragetId = trigger.dataset.model;
+    if (tragetId === "deleteModel") {
+      const prdctNameTxt = document.getElementById("prdctNameTxt");
+      const modelPrductDelBtn = document.getElementById("prdctDeleteBtn");
+      const prdctId = trigger.dataset.productId;
+      const prdctName = trigger.dataset.productName;
+      if (prdctNameTxt && modelPrductDelBtn) {
+        prdctNameTxt.textContent = prdctName;
+        modelPrductDelBtn.setAttribute("data-product-id", prdctId)
+      }
+    }
     const modelDialog = document.getElementById(tragetId);
     if (!modelDialog) return;
     modelDialog.classList.remove("hidden");
@@ -824,7 +861,7 @@ openTriggers.forEach((trigger) => {
     document.body.style.overflow = "hidden";
     const closeTrigger = document.querySelector(".closeTrigger");
     const cancelTrigger = modelDialog.querySelector(".cancelTrigger");
-    if (!closeTrigger || !closeTrigger) return;
+    if (!cancelTrigger) return;
     function closeModel() {
       modelDialog.classList.add("hidden");
       modelDialog.classList.remove("flex");

@@ -1,7 +1,6 @@
 /* ***********************************
                 Imports
 *********************************** */
-const { regenerateSession, saveSession } = require("../utils/auth");
 const { check, validationResult } = require("express-validator");
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
@@ -23,6 +22,8 @@ const transporter = nodemailer.createTransport({
     pass: process.env.MAIL_PASS,
   },
 });
+const { safeRedirectPath } = require("../utils/regex");
+const { regenerateSession, saveSession } = require("../utils/auth");
 /* ***********************************
 Website GET Signup Controller
 *********************************** */
@@ -147,8 +148,14 @@ const postLogin = [
   check("identifier")
     .trim()
     .notEmpty()
-    .withMessage("Email/Username is required!"),
+    .withMessage("Email/Username is required!")
+    .bail()
+    .isLength({ min: 3, max: 100 })
+    .withMessage("Invalid credentials!")
+    .bail()
+    .customSanitizer((value) => value.toLowerCase()),
   check("password")
+    .trim()
     .notEmpty()
     .withMessage("Password is required!")
     .bail()
@@ -177,6 +184,12 @@ const postLogin = [
           errors: [{ path: "identifier", msg: "Invalid credentials!" }],
         });
       }
+      if(user.status === "Block") {
+        return res.status(403).json({
+          type: "error",
+          message: "Your account has been blocked. Please contact support.",
+        });
+      }
       const ua = new UAParser(req.headers["user-agent"]).getResult();
       const geo = geoip.lookup(req.ip);
       const rawCity = req.headers["x-vercel-ip-city"];
@@ -185,7 +198,11 @@ const postLogin = [
       const location = [city, country].filter(Boolean).join(", ") || "Unknown";
       if (user.twoFctrVerification) {
         const otp = crypto.randomInt(100000, 1000000).toString();
-        let redirectTo = req.session.redirectTo || "/";
+        let redirectTo = safeRedirectPath(req.session.redirectTo, "/");
+        if (redirectTo.startsWith("/@")) {
+          redirectTo = redirectTo.replace(/^\/@[^/]+/, `/@${user.username}`);
+        }
+        delete req.session.redirectTo;
         await regenerateSession(req);
         req.session.pendingUser = {
           userId: user._id.toString(),
@@ -203,10 +220,7 @@ const postLogin = [
           lastActiveAt: Date.now(),
         };
         req.session.pendingRedirectTo = redirectTo;
-        req.session.otpHash = crypto
-          .createHash("sha256")
-          .update(otp)
-          .digest("hex");
+        req.session.otpHash = crypto.createHash("sha256").update(otp).digest("hex");
         req.session.otpExpires = Date.now() + 5 * 60 * 1000;
         await saveSession(req);
         try {
@@ -271,10 +285,11 @@ const postLogin = [
         }
         return res.status(200).json({
           type: "success",
+          message: "Verification code sent to your email!",
           F2verification: true,
         });
       }
-      let redirectTo = req.session.redirectTo || "/";
+      let redirectTo = safeRedirectPath(req.session.redirectTo, "/");
       if (redirectTo.startsWith("/@")) {
         redirectTo = redirectTo.replace(/^\/@[^/]+/, `/@${user.username}`);
       }
@@ -376,9 +391,10 @@ const post2fOTPReceived = [
           message: "Invalid or expired OTP!",
         });
       }
-      let redirectTo = pendingRedirectTo || "/";
-      if (!redirectTo.startsWith("/") || redirectTo.startsWith("//"))
-        redirectTo = "/";
+      let redirectTo = safeRedirectPath(pendingRedirectTo, "/");
+      if (redirectTo.startsWith("/@")) {
+        redirectTo = redirectTo.replace(/^\/@[^/]+/, `/@${pendingUser.username}`);
+      }
       await regenerateSession(req);
       req.session.isLoggedIn = true;
       req.session.user = {
@@ -592,7 +608,10 @@ const postResetPassword = [
       });
     }
     try {
-      const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+      const hashedToken = crypto
+        .createHash("sha256")
+        .update(token)
+        .digest("hex");
       const hashedPassword = await bcrypt.hash(password, BCRYPT_ROUNDS);
       const user = await User.findOneAndUpdate(
         {
