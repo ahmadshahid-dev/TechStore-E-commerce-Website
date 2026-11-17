@@ -45,11 +45,11 @@ const getShop = async (req, res, next) => {
     const products = await Product.find(
       search
         ? {
-          name: {
-            $regex: escapeRegex(search),
-            $options: "i",
-          },
-        }
+            name: {
+              $regex: escapeRegex(search),
+              $options: "i",
+            },
+          }
         : {},
     )
       .limit(search ? 5 : 10)
@@ -60,7 +60,13 @@ const getShop = async (req, res, next) => {
         productHTML += await new Promise((resolve, reject) => {
           res.render(
             "partials/product",
-            { currentPage: "Shop", product },
+            {
+              currentPage: "Shop",
+              isLoggedIn: req.session.isLoggedIn,
+              user: req.session.user,
+              search,
+              product,
+            },
             (error, html) => {
               if (error) return reject(error);
               resolve(html);

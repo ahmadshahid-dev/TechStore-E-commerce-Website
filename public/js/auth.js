@@ -18,9 +18,7 @@ async function handleSignup(event) {
   try {
     const response = await fetch("/auth/signup", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: jsonHeaders(),
       body: JSON.stringify(Object.fromEntries(formData)),
     });
     const data = await response.json();
@@ -61,9 +59,7 @@ async function handleLogin(event) {
   try {
     const response = await fetch("/auth/login", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: jsonHeaders(),
       body: JSON.stringify(Object.fromEntries(formData)),
     });
     const data = await response.json();
@@ -79,6 +75,7 @@ async function handleLogin(event) {
     if (data.type === "success") {
       form.querySelectorAll(".error").forEach((el) => (el.textContent = ""));
       if (data.F2verification) {
+        setCsrf(data.csrfToken);
         const modalDialog = document.getElementById("2fOTPModel");
         const f2closeTrigger = document.getElementById("2fCloseModel");
         if (modalDialog) {
@@ -119,7 +116,7 @@ async function handle2FactorOTP(event) {
   try {
     const response = await fetch("/auth/2Factor-OTP", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: jsonHeaders(),
       body: JSON.stringify(Object.fromEntries(formData)),
     });
     const data = await response.json();
@@ -167,9 +164,7 @@ async function handleForgotPassword(event) {
   try {
     const response = await fetch("/auth/forgot-password", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: jsonHeaders(),
       body: JSON.stringify(Object.fromEntries(formData)),
     });
     const data = await response.json();
@@ -212,9 +207,7 @@ async function handleResetPassword(event, token) {
       `/auth/reset-password/${encodeURIComponent(token)}`,
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: jsonHeaders(),
         body: JSON.stringify(Object.fromEntries(formData)),
       },
     );

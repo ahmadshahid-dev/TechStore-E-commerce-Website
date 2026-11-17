@@ -3,7 +3,6 @@ const env = require("dotenv");
 env.config();
 const path = require("path");
 const express = require("express");
-const bodyParser = require("body-parser");
 const multer = require("multer");
 const session = require("express-session");
 const mongoDbStore = require("connect-mongodb-session")(session);
@@ -39,7 +38,11 @@ const multerOptions = {
 // DataBase;
 const { default: mongoose } = require("mongoose");
 // Directory Utility;
-const Directory = require("./utils/util");
+const {
+  Directory,
+  csrfSynchronisedProtection,
+  generateToken,
+} = require("./utils/util");
 // Express App Initialization;
 const app = express();
 app.use(express.json());
@@ -53,31 +56,36 @@ const store = new mongoDbStore({
   uri: process.env.MONGODB_URI,
   collection: "sessions",
 });
-store.on("error", (err) => console.error("Session store error:", err));
+store.on("error", (error) => console.error("Session store error:", error));
 // Body Parser Middleware;
 app.use(express.urlencoded({ extended: true }));
 //Session Handling Middleware;
 app.set("trust proxy", 1);
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    store: store,
-    cookie: {
-      httpOnly: true,
-      secure: process.env.SESSION_SECURE === "true",
-      sameSite: "lax",
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-    },
-  }),
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  store: store,
+  cookie: {
+    secure: process.env.SESSION_SECURE === "true",
+    sameSite: "lax",
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  },
+}),
 );
+// CSRF Protection;
+app.use(csrfSynchronisedProtection);
+app.use((req, res, next) => {
+  res.locals.csrfToken = generateToken(req);
+  next();
+});
 // Multer Fields Middleware;
 app.use(multer(multerOptions).fields([
-    { name: "image", maxCount: 1 },
-    { name: "pdpImage", maxCount: 1 },
-    { name: "profileImg", maxCount: 1 },
-  ]),
+  { name: "image", maxCount: 1 },
+  { name: "pdpImage", maxCount: 1 },
+  { name: "profileImg", maxCount: 1 },
+]),
 );
 // Routes Middlewares;
 app.use(appRoutes);
@@ -87,6 +95,13 @@ app.use("/admin", adminRoutes);
 app.use("/category", categoriesRoutes);
 // Error Handling Middleware;
 app.use((error, req, res, next) => {
+  // EBADCSRFTOKEN Errors;
+  if (error.code === "EBADCSRFTOKEN") {
+  return res.status(403).json({
+    type: "error",
+    message: "Session expired. Please refresh the page and try again.",
+  });
+  }
   // MongoDB Errors;
   if (error.code === 11000) {
     const field = Object.keys(error.keyValue || {})[0] || "field";

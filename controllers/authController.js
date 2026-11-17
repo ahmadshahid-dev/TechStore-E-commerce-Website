@@ -22,6 +22,7 @@ const transporter = nodemailer.createTransport({
     pass: process.env.MAIL_PASS,
   },
 });
+const { generateToken } = require("../utils/util");
 const { safeRedirectPath } = require("../utils/regex");
 const { regenerateSession, saveSession } = require("../utils/auth");
 /* ***********************************
@@ -184,7 +185,7 @@ const postLogin = [
           errors: [{ path: "identifier", msg: "Invalid credentials!" }],
         });
       }
-      if(user.status === "Block") {
+      if (user.status === "Block") {
         return res.status(403).json({
           type: "error",
           message: "Your account has been blocked. Please contact support.",
@@ -204,6 +205,7 @@ const postLogin = [
         }
         delete req.session.redirectTo;
         await regenerateSession(req);
+        generateToken(req, true);
         req.session.pendingUser = {
           userId: user._id.toString(),
           name: user.name,
@@ -220,7 +222,10 @@ const postLogin = [
           lastActiveAt: Date.now(),
         };
         req.session.pendingRedirectTo = redirectTo;
-        req.session.otpHash = crypto.createHash("sha256").update(otp).digest("hex");
+        req.session.otpHash = crypto
+          .createHash("sha256")
+          .update(otp)
+          .digest("hex");
         req.session.otpExpires = Date.now() + 5 * 60 * 1000;
         await saveSession(req);
         try {
@@ -287,6 +292,7 @@ const postLogin = [
           type: "success",
           message: "Verification code sent to your email!",
           F2verification: true,
+          csrfToken: generateToken(req),
         });
       }
       let redirectTo = safeRedirectPath(req.session.redirectTo, "/");
@@ -296,6 +302,7 @@ const postLogin = [
       delete req.session.redirectTo;
       req.session.regenerate((error) => {
         if (error) return next(error);
+        generateToken(req, true);
         req.session.isLoggedIn = true;
         req.session.user = {
           userId: user._id.toString(),
@@ -393,9 +400,13 @@ const post2fOTPReceived = [
       }
       let redirectTo = safeRedirectPath(pendingRedirectTo, "/");
       if (redirectTo.startsWith("/@")) {
-        redirectTo = redirectTo.replace(/^\/@[^/]+/, `/@${pendingUser.username}`);
+        redirectTo = redirectTo.replace(
+          /^\/@[^/]+/,
+          `/@${pendingUser.username}`,
+        );
       }
       await regenerateSession(req);
+      generateToken(req, true);
       req.session.isLoggedIn = true;
       req.session.user = {
         userId: pendingUser.userId,

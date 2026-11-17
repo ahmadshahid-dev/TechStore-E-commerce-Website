@@ -19,9 +19,7 @@ async function postContact(event) {
   try {
     const response = await fetch("/contact", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: jsonHeaders(),
       body: JSON.stringify(Object.fromEntries(formData)),
     });
     const data = await response.json();
@@ -93,12 +91,14 @@ async function shopSearch(event) {
     const response = await fetch(`/shop?${params}`, {
       headers: {
         "X-Requested-With": "XMLHttpRequest",
+        "x-csrf-token": getCsrf(),
       },
     });
     const data = await response.json();
     responseIsNotOk(response, data);
     if (data.type === "success") {
       productsContainer.innerHTML = data.productHTML;
+      bindProductActions(productsContainer)
       checkRemainingProducts(data.countItems);
     }
   } catch (error) {
@@ -119,9 +119,7 @@ async function postNewsletter(event) {
   try {
     const response = await fetch("/news-letter", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: jsonHeaders(),
       body: JSON.stringify(Object.fromEntries(formData)),
     });
     const data = await response.json();
@@ -154,9 +152,7 @@ async function handleLogout() {
   try {
     const response = await fetch("/auth/logout", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: jsonHeaders(),
     });
     const data = await response.json();
     responseIsNotOk(response, data);

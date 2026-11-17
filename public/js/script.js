@@ -335,8 +335,9 @@ passwordInput?.addEventListener("input", () => {
     const bar = document.getElementById(`strength-${i}`);
     if (!bar) return;
     if (i <= strength) {
-      bar.className = `flex-1 h-1 rounded-full transition-colors ${colors[Math.min(strength - 1, 3)]
-        }`;
+      bar.className = `flex-1 h-1 rounded-full transition-colors ${
+        colors[Math.min(strength - 1, 3)]
+      }`;
     } else {
       bar.className = "bg-gray-200 dark:bg-gray-700 h-1 flex-1 rounded-full";
     }
@@ -736,7 +737,7 @@ categoryChips.forEach((chip) => {
           "category-chip bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer border border-slate-200 dark:border-slate-800 rounded-xl py-2 px-4 hover:bg-slate-100 dark:hover:bg-slate-800 hover:transition hover:ease-out hover:duration-[250ms]";
       } else {
         chip.className =
-          "category-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 hover:transition hover:ease-out hover:duration-[250ms]"
+          "category-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 hover:transition hover:ease-out hover:duration-[250ms]";
       }
     });
     chip.className =
@@ -763,16 +764,20 @@ function filterCategory(category = currentCategory) {
   let visibleCount = 0;
   products.forEach((product) => {
     const attributeCategory = (product.dataset.category || "").toLowerCase();
-    const prdctCatgoryBadge = product.querySelector("span")?.textContent.trim() || "";
+    const prdctCatgoryBadge =
+      product.querySelector("span")?.textContent.trim() || "";
     const prdctCategory = attributeCategory || prdctCatgoryBadge;
     const prdctName = (product.dataset.title || "").toLowerCase();
     const prdctSku = (product.dataset.sku || "").toLowerCase();
     const prdctStock = parseInt(product.dataset.stock || "0", 10);
-    const matchesCategory = CATEGORY === "all" || prdctCategory.includes(CATEGORY);
-    const matchesQuery = !query || prdctName.includes(query) || prdctSku.includes(query);
+    const matchesCategory =
+      CATEGORY === "all" || prdctCategory.includes(CATEGORY);
+    const matchesQuery =
+      !query || prdctName.includes(query) || prdctSku.includes(query);
     let matchesStock = true;
     if (stockFilter === "InStock") matchesStock = prdctStock > 5;
-    if (stockFilter === "LowStock") matchesStock = prdctStock > 0 && prdctStock <= 5;
+    if (stockFilter === "LowStock")
+      matchesStock = prdctStock > 0 && prdctStock <= 5;
     if (stockFilter === "OutOfStock") matchesStock = prdctStock === 0;
     if (matchesCategory && matchesQuery && matchesStock) {
       product.style.display = "";
@@ -805,15 +810,15 @@ function resetCategoryChips() {
 *********************************** */
 const clearFilterBtn = document.querySelectorAll(".clearFilterBtn");
 clearFilterBtn?.forEach((btn) => {
-btn.addEventListener("click", async (event) => {
-  event.preventDefault();
-  if (searchInput) {
-    searchInput.value = "";
-    await shopSearch(event);
-  }
-  resetCategoryChips();
+  btn.addEventListener("click", async (event) => {
+    event.preventDefault();
+    if (searchInput) {
+      searchInput.value = "";
+      await shopSearch(event);
+    }
+    resetCategoryChips();
+  });
 });
-})
 /* ***********************************
            Products Sorting
 *********************************** */
@@ -851,7 +856,7 @@ openTriggers.forEach((trigger) => {
       const prdctName = trigger.dataset.productName;
       if (prdctNameTxt && modelPrductDelBtn) {
         prdctNameTxt.textContent = prdctName;
-        modelPrductDelBtn.setAttribute("data-product-id", prdctId)
+        modelPrductDelBtn.setAttribute("data-product-id", prdctId);
       }
     }
     const modelDialog = document.getElementById(tragetId);
@@ -925,4 +930,40 @@ function loadingReset(btn, defualtText) {
   btn.querySelector(".Spinner").classList.add("hidden");
   if (!defualtText) return;
   btn.querySelector(".Text").textContent = defualtText;
+}
+/* ***********************************
+                CSRF
+*********************************** */
+function getCsrf() {
+  return document.querySelector('meta[name="csrf-token"]')?.content;
+}
+function setCsrf(token) {
+  if (token) {
+    document
+      .querySelector('meta[name="csrf-token"]')
+      ?.setAttribute("content", token);
+  }
+}
+function jsonHeaders() {
+  return { "Content-Type": "application/json", "x-csrf-token": getCsrf() };
+}
+/* ***********************************
+           Products Actions
+*********************************** */
+function bindProductActions(target = document) {
+  target.querySelectorAll(".fav-btn").forEach((btn) => {
+    btn.addEventListener("click", (event) => {
+      event.preventDefault();
+      const productId = btn.dataset.productId;
+      addToFavourites(event, btn, productId);
+    });
+  });
+  target.querySelectorAll(".cart-btn").forEach((btn) => {
+    btn.addEventListener("click", (event) => {
+      event.preventDefault();
+      const productId = btn.dataset.productId;
+      const quantity = 1;
+      addToCart(event, btn, productId, quantity);
+    });
+  });
 }

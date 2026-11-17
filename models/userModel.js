@@ -129,7 +129,7 @@ const userSchema = mongoose.Schema(
     twoFctrVerification: {
       type: Boolean,
       select: false,
-      defualt: false,
+      default: false,
     },
     status: {
       type: String,

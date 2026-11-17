@@ -35,6 +35,10 @@ async function updateProfile(event) {
   try {
     const response = await fetch("/profile-edit", {
       method: "PUT",
+      headers: {
+        "X-Requested-With": "fetch",
+        "x-csrf-token": getCsrf(),
+      },
       body: formData,
     });
     const data = await response.json();
@@ -76,9 +80,7 @@ async function handleAddAddress(event) {
   try {
     const response = await fetch("/address-add", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: jsonHeaders(),
       body: JSON.stringify(Object.fromEntries(formData)),
     });
     const data = await response.json();
@@ -120,9 +122,7 @@ async function handleEditAddress(event) {
   try {
     const response = await fetch("/address-edit", {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: jsonHeaders(),
       body: JSON.stringify(Object.fromEntries(formData)),
     });
     const data = await response.json();
@@ -158,6 +158,7 @@ async function setDefaultAddress(event, addressId) {
   try {
     const response = await fetch(`/set-default-address/${addressId}`, {
       method: "POST",
+      headers: jsonHeaders(),
     });
     const data = await response.json();
     if (authenticationCheck(response, data)) return;
@@ -185,6 +186,7 @@ async function handleDeleteAddress(event, btn, addressId) {
   try {
     const response = await fetch(`/address-delete/${addressId}`, {
       method: "DELETE",
+      headers: jsonHeaders(),
     });
     const data = await response.json();
     if (authenticationCheck(response, data)) return;
@@ -216,9 +218,7 @@ async function addToFavourites(event, btn, productId) {
   try {
     const response = await fetch(`/favourites/${productId}`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: jsonHeaders(),
     });
     const data = await response.json();
     if (authenticationCheck(response, data)) return;
@@ -246,9 +246,7 @@ async function removeFromFavourites(event, btn, productId) {
   try {
     const response = await fetch(`/favourites/remove/${productId}`, {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: jsonHeaders(),
     });
     const data = await response.json();
     if (authenticationCheck(response, data)) return;
@@ -282,9 +280,7 @@ async function addToCart(event, btn, productId, quantity) {
   try {
     const response = await fetch(`/cart/${productId}`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: jsonHeaders(),
       body: JSON.stringify({ quantity }),
     });
     const data = await response.json();
@@ -310,9 +306,7 @@ async function updateCartQuantity(productId) {
   try {
     const response = await fetch(`/cart/quantity-update/${productId}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: jsonHeaders(),
       body: JSON.stringify({ quantity }),
     });
     const data = await response.json();
@@ -338,6 +332,7 @@ async function removeFromCart(event, btn, productId) {
   try {
     const response = await fetch(`/cart/remove/${productId}`, {
       method: "DELETE",
+      headers: jsonHeaders(),
     });
     const data = await response.json();
     if (authenticationCheck(response, data)) return;
@@ -367,7 +362,10 @@ async function getCheckout() {
   try {
     const response = await fetch("/checkout-validations", {
       method: "GET",
-      headers: { "X-Requested-With": "fetch" },
+      headers: {
+        "X-Requested-With": "fetch",
+        "x-csrf-token": getCsrf(),
+      },
     });
     const data = await response.json();
     if (data.type === "error") {
@@ -404,7 +402,7 @@ async function postCheckout(event) {
   try {
     const response = await fetch("/checkout", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: jsonHeaders(),
       body: JSON.stringify(Object.fromEntries(formData)),
     });
     const data = await response.json();
@@ -446,7 +444,7 @@ async function orderTrack(event) {
   try {
     const response = await fetch("/order-tracking", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: jsonHeaders(),
       body: JSON.stringify(Object.fromEntries(formData)),
     });
     const data = await response.json();
@@ -483,9 +481,7 @@ async function handleEmailVerify(event) {
   try {
     const response = await fetch("/email-verify", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: jsonHeaders(),
     });
     const data = await response.json();
     responseIsNotOk(response, data);
@@ -515,7 +511,7 @@ async function handleEmailUpdate(event) {
   try {
     const response = await fetch("/email-update", {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: jsonHeaders(),
       body: JSON.stringify(Object.fromEntries(formData)),
     });
     const data = await response.json();
@@ -557,7 +553,7 @@ async function handlePasswordUpdate(event) {
   try {
     const response = await fetch("/password-update", {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: jsonHeaders(),
       body: JSON.stringify(Object.fromEntries(formData)),
     });
     const data = await response.json();
@@ -599,7 +595,7 @@ async function handle2FactorAuth(event) {
   try {
     const response = await fetch("/2F-auth", {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: jsonHeaders(),
       body: JSON.stringify(Object.fromEntries(formData)),
     });
     const data = await response.json();
@@ -650,7 +646,7 @@ async function handleSessionRevoke(event, sessionId) {
   try {
     const response = await fetch(`/session-revoke/${sessionId}`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: jsonHeaders(),
     });
     const data = await response.json();
     if (authenticationCheck(response, data)) return;
@@ -676,7 +672,7 @@ async function handleSignOutAll(event) {
   try {
     const response = await fetch("/sign-out-all", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: jsonHeaders(),
     });
     const data = await response.json();
     if (authenticationCheck(response, data)) return;
@@ -705,7 +701,7 @@ async function handleDeleteAccount(event) {
   try {
     const response = await fetch("/account-delete", {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: jsonHeaders(),
       body: JSON.stringify({ Confirmation }),
     });
     const data = await response.json();

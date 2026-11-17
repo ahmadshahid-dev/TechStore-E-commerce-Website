@@ -11,11 +11,15 @@ async function handleAddProduct(event) {
   const formData = new FormData(form);
   const prdctAddBtn = form.querySelector("button[type='submit']");
   if (prdctAddBtn) {
-    loadingSet(prdctAddBtn, "Publishing...")
+    loadingSet(prdctAddBtn, "Publishing...");
   }
   try {
     const response = await fetch("/admin/product-add", {
       method: "POST",
+      headers: {
+        "X-Requested-With": "fetch",
+        "x-csrf-token": getCsrf(),
+      },
       body: formData,
     });
     const data = await response.json();
@@ -39,7 +43,7 @@ async function handleAddProduct(event) {
     showToast(error.message || "Something went wrong!");
   } finally {
     if (prdctAddBtn) {
-      loadingReset(prdctAddBtn, "Publish Product")
+      loadingReset(prdctAddBtn, "Publish Product");
     }
   }
 }
@@ -52,11 +56,15 @@ async function handleUpdateProduct(event) {
   const formData = new FormData(form);
   const prdctUpdateBtn = form.querySelector("button[type='submit']");
   if (prdctUpdateBtn) {
-    loadingSet(prdctUpdateBtn, "Updating...")
+    loadingSet(prdctUpdateBtn, "Updating...");
   }
   try {
     const response = await fetch("/admin/product-edit", {
       method: "PUT",
+      headers: {
+        "X-Requested-With": "fetch",
+        "x-csrf-token": getCsrf(),
+      },
       body: formData,
     });
     const data = await response.json();
@@ -80,7 +88,7 @@ async function handleUpdateProduct(event) {
     showToast(error.message || "Something went wrong!");
   } finally {
     if (prdctUpdateBtn) {
-      loadingReset(prdctUpdateBtn, "Update Product")
+      loadingReset(prdctUpdateBtn, "Update Product");
     }
   }
 }
@@ -90,11 +98,12 @@ async function handleUpdateProduct(event) {
 async function handleDeleteProduct(event, productId) {
   event.preventDefault();
   if (prdctDeleteBtn) {
-    loadingSet(prdctDeleteBtn, "Deleting...")
+    loadingSet(prdctDeleteBtn, "Deleting...");
   }
   try {
     const response = await fetch(`/admin/product-delete/${productId}`, {
       method: "DELETE",
+      headers: jsonHeaders(),
     });
     const data = await response.json();
     if (authenticationCheck(response, data)) return;
@@ -115,7 +124,7 @@ async function handleDeleteProduct(event, productId) {
     showToast(error.message || "Something went wrong!");
   } finally {
     if (prdctDeleteBtn) {
-      loadingReset(prdctDeleteBtn, "Yes, Delete")
+      loadingReset(prdctDeleteBtn, "Yes, Delete");
     }
   }
 }
