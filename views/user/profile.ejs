@@ -10,7 +10,8 @@
   <link rel="stylesheet" href="/css/output.css" />
 </head>
 
-<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased selection:bg-orange-500 selection:text-white">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 selection:bg-orange-500
+ selection:text-white antialiased">
   <!-- Header -->
   <%- include("../partials/header") %>
   <!-- Main -->
@@ -27,9 +28,10 @@
               <span class="text-slate-800 dark:text-slate-200 font-semibold">Account Dashboard</span>
             </nav>
             <h1 class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-extrabold leading-none tracking-tight">
-              Welcome back, <span class="text-orange-600 dark:text-orange-400"><%= _user.name.split(" ")[0] %></span> 👋
+              Welcome back, <span class="text-orange-600 dark:text-orange-400">
+                <%= _user.name.split(" ")[0] %></span> 👋
             </h1>
-            <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-inter">
+            <p class=" text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-inter">
               Manage your personal credentials, order histories, addresses, and purchase activity.
             </p>
           </div>
@@ -61,7 +63,8 @@
           <!-- Card 1: Total Orders Placed -->
           <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl p-5 shadow-sm flex flex-col justify-between hover:border-orange-500/40 hover:transition-colors hover:ease-in-out hover:duration-300">
             <div class="flex items-center justify-between mb-2.5">
-              <span class="text-slate-400 text-xs font-inter font-semibold uppercase tracking-wider">Total Orders</span>
+              <span class="text-slate-400 text-xs font-inter font-semibold uppercase tracking-wider">Total
+                Orders</span>
               <div class="bg-orange-50 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 h-10 w-10 rounded-xl flex items-center justify-center">
                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -89,7 +92,8 @@
           <!-- Card 2: Shopping Cart -->
           <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl p-5 shadow-sm flex flex-col justify-between hover:border-orange-500/40 hover:transition-colors hover:ease-in-out hover:duration-300">
             <div class="flex items-center justify-between mb-2.5">
-              <span class="text-slate-400 text-xs font-inter font-semibold uppercase tracking-wider">Shopping Cart</span>
+              <span class="text-slate-400 text-xs font-inter font-semibold uppercase tracking-wider">Shopping
+                Cart</span>
               <div class="bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 h-10 w-10 rounded-xl flex items-center justify-center">
                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -109,7 +113,8 @@
           <!-- Card 3: Saved Wishlist -->
           <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl p-5 shadow-sm flex flex-col justify-between hover:border-orange-500/40 hover:transition-colors hover:ease-in-out hover:duration-300">
             <div class="flex items-center justify-between mb-2.5">
-              <span class="text-slate-400 text-xs font-inter font-semibold uppercase tracking-wider">Saved Wishlist</span>
+              <span class="text-slate-400 text-xs font-inter font-semibold uppercase tracking-wider">Saved
+                Wishlist</span>
               <div class="bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 h-10 w-10 rounded-xl flex items-center justify-center">
                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -129,7 +134,8 @@
           <!-- Card 4: Address Book -->
           <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl p-5 shadow-sm flex flex-col justify-between hover:border-orange-500/40 hover:transition-colors hover:ease-in-out hover:duration-300">
             <div class="flex items-center justify-between mb-2.5">
-              <span class="text-slate-400 text-xs font-inter font-semibold uppercase tracking-wider">Saved Addresses</span>
+              <span class="text-slate-400 text-xs font-inter font-semibold uppercase tracking-wider">Saved
+                Addresses</span>
               <div class="bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 h-10 w-10 rounded-xl flex items-center justify-center">
                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -179,7 +185,7 @@
                 </div>
                 <!-- Verification Status Badge -->
                 <div class="inline-flex items-center gap-1.5 rounded-full py-1 px-3 <%= _user.verificationStatus === 'Verified' ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/60' : 'bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-900/60' %>">
-                  <% if (_user.verificationStatus === 'Verified') { %>
+                  <% if (_user.verificationStatus==='Verified' ) { %>
                   <svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                   </svg>
@@ -199,7 +205,9 @@
                   </div>
                   <div class="flex flex-col gap-y-0.5">
                     <p class="text-slate-400 text-[0.6250rem] font-inter uppercase font-semibold">Email</p>
-                    <p class="text-slate-600 dark:text-slate-300 text-xs font-inter font-medium truncate"><%= _user.email %></p>
+                    <p class="text-slate-600 dark:text-slate-300 text-xs font-inter font-medium truncate">
+                      <%= _user.email %>
+                    </p>
                   </div>
                 </div>
                 <div class="flex items-center gap-x-3">
@@ -210,7 +218,9 @@
                   </div>
                   <div class="flex flex-col gap-y-0.5">
                     <p class="text-slate-400 text-[0.6250rem] font-inter uppercase font-semibold">Phone</p>
-                    <p class="text-slate-600 dark:text-slate-300 text-xs font-inter font-medium truncate"><%= _user.phone || 'Not provided' %></p>
+                    <p class="text-slate-600 dark:text-slate-300 text-xs font-inter font-medium truncate">
+                      <%= _user.phone || 'Not provided' %>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -256,7 +266,8 @@
                  w-full flex items-center justify-between rounded-xl py-2 px-4 hover:bg-purple-50 hover:text-purple-600 dark:hover:bg-purple-950/30 dark:hover:text-purple-400" href="/@<%= _user.username %>/privacy-security">
                   <div class="flex items-center gap-x-2.5">
                     <svg class="text-purple-500 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                      </path>
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     </svg>
                     <span class="text-xs font-montserrat font-semibold leading-none">Privacy & Security</span>
@@ -275,7 +286,8 @@
               <div class="text-xs font-inter border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between pt-6">
                 <span class="text-slate-500 dark:text-slate-400">Member Since:</span>
                 <span class="text-slate-800 dark:text-slate-200 font-montserrat font-semibold">
-                  <%= _user.createdAt ? new Date(_user.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short' }) : '2026' %>
+                  <%= _user.createdAt ? new Date(_user.createdAt).toLocaleDateString('en-US', { year: 'numeric' ,
+                      month: 'short' }) : '2026' %>
                 </span>
               </div>
             </div>
@@ -296,22 +308,32 @@
               </div>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div class="space-y-1">
-                  <span class="text-slate-400 text-xs font-inter font-semibold uppercase tracking-wider block">First Name</span>
-                  <p class="text-slate-800 dark:text-slate-200 text-sm font-inter font-medium"><%= _user.firstName || 'Not provided' %></p>
-                </div>
-                <div class="space-y-1">
-                  <span class="text-slate-400 text-xs font-inter font-semibold uppercase tracking-wider block">Last Name</span>
-                  <p class="text-slate-800 dark:text-slate-200 text-sm font-inter font-medium"><%= _user.lastName || 'Not provided' %></p>
-                </div>
-                <div class="space-y-1">
-                  <span class="text-slate-400 text-xs font-inter font-semibold uppercase tracking-wider block">Date of Birth</span>
+                  <span class="text-slate-400 text-xs font-inter font-semibold uppercase tracking-wider block">First
+                    Name</span>
                   <p class="text-slate-800 dark:text-slate-200 text-sm font-inter font-medium">
-                    <%= _user.dateOfBirth ? new Date(_user.dateOfBirth).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'Not provided' %>
+                    <%= _user.firstName || 'Not provided' %>
+                  </p>
+                </div>
+                <div class="space-y-1">
+                  <span class="text-slate-400 text-xs font-inter font-semibold uppercase tracking-wider block">Last
+                    Name</span>
+                  <p class="text-slate-800 dark:text-slate-200 text-sm font-inter font-medium">
+                    <%= _user.lastName || 'Not provided' %>
+                  </p>
+                </div>
+                <div class="space-y-1">
+                  <span class="text-slate-400 text-xs font-inter font-semibold uppercase tracking-wider block">Date of
+                    Birth</span>
+                  <p class="text-slate-800 dark:text-slate-200 text-sm font-inter font-medium">
+                    <%= _user.dateOfBirth ? new Date(_user.dateOfBirth).toLocaleDateString('en-US', { year: 'numeric'
+                        , month: 'long' , day: 'numeric' }) : 'Not provided' %>
                   </p>
                 </div>
                 <div class="space-y-1">
                   <span class="text-slate-400 text-xs font-inter font-semibold uppercase tracking-wider block">Gender</span>
-                  <p class="text-slate-800 dark:text-slate-200 text-sm font-inter font-medium capitalize"><%= _user.gender || 'Not specified' %></p>
+                  <p class="text-slate-800 dark:text-slate-200 text-sm font-inter font-medium capitalize">
+                    <%= _user.gender || 'Not specified' %>
+                  </p>
                 </div>
               </div>
             </div>
@@ -353,10 +375,14 @@
                     <%= primaryAddress.stateAddress %>
                   </p>
                   <p class="text-slate-600 dark:text-slate-300 text-xs font-inter font-semibold">
-                    <%= primaryAddress.city %>, <%= primaryAddress.province %> - <span class="text-orange-600 dark:text-orange-400"><%= primaryAddress.postalCode %></span>
+                    <%= primaryAddress.city %>, <%= primaryAddress.province %> - <span class="text-orange-600 dark:text-orange-400">
+                      <%= primaryAddress.postalCode %>
+                    </span>
                   </p>
                   <p class="text-slate-500 text-xs font-inter font-medium">
-                    Phone: <span class="font-semibold"><%= primaryAddress.phone %></span>
+                    Phone: <span class="font-semibold">
+                      <%= primaryAddress.phone %>
+                    </span>
                   </p>
                 </div>
                 <a class="bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold border border-slate-200 dark:border-slate-700 self-start sm:self-auto rounded-xl shadow-sm shrink-0 py-2 px-3.5 hover:text-orange-600 hover:transition-colors" href="/@<%= _user.username %>/address-book">
@@ -365,7 +391,8 @@
               </div>
               <% } else { %>
               <div class="border border-dashed border-slate-200 dark:border-slate-800 rounded-2xl text-center p-6">
-                <p class="text-slate-500 dark:text-slate-400 text-xs font-inter mb-3.5">No default address registered yet.</p>
+                <p class="text-slate-500 dark:text-slate-400 text-xs font-inter mb-3.5">No default address
+                  registered yet.</p>
                 <a class="bg-orange-600 text-white inline-flex items-center gap-x-1.5 rounded-xl shadow-md shadow-orange-500/20 py-2.5 px-4 hover:bg-orange-700 hover:transition-colors hover:ease-out hover:duration-[250ms]" href="/@<%= _user.username %>/address-add">
                   <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -391,9 +418,9 @@
                   </svg>
                 </a>
               </div>
-              <% if (recentOrders && recentOrders.length > 0) { %>
+              <% if (recentOrders && recentOrders.length> 0) { %>
               <div class="divide-y divide-slate-100 dark:divide-slate-800/80">
-                <% recentOrders.forEach(order => { %>
+                <% recentOrders.forEach(order=> { %>
                 <div class="flex items-center justify-between py-3.5 first:pt-0 last:pb-0">
                   <div class="space-y-0.5">
                     <div class="flex items-center gap-x-2.5">
@@ -401,11 +428,14 @@
                         #<%= order.orderId %>
                       </span>
                       <span class="text-slate-400 text-[0.6875rem] font-inter">
-                        • <%= new Date(order.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %>
+                        • <%= new Date(order.createdAt).toLocaleDateString('en-US', { month: 'short' ,
+                                day: 'numeric' , year: 'numeric' }) %>
                       </span>
                     </div>
                     <p class="text-slate-600 dark:text-slate-400 text-[0.6875rem] font-inter font-medium flex items-center gap-x-1.25 sm:gap-x-2.5">
-                      <%= order.items.length %> <%= order.items.length > 1 ? 'Items' : 'Item' %> <span>• Grand Total: <strong class="text-orange-600 dark:text-orange-400 text-xs">Rs: <%= order.grandTotal.toLocaleString() %></strong></span>
+                      <%= order.items.length %>
+                      <%= order.items.length> 1 ? 'Items' : 'Item' %> <span>• Grand Total: <strong class="text-orange-600 dark:text-orange-400 text-xs">Rs: <%=
+                                      order.grandTotal.toLocaleString() %></strong></span>
                     </p>
                   </div>
                   <span class="text-[0.6875rem] font-montserrat font-bold <%= order.orderStatus === 'Delivered' ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400' : (order.orderStatus === 'Cancelled' ? 'bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400' : 'bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400') %> rounded-full py-1 px-2.5">
@@ -426,7 +456,8 @@
       </div>
     </section>
     <!-- ==================== 4. EDIT PROFILE MODAL DIALOG ==================== -->
-    <div class="bg-slate-950/60 backdrop-blur-sm hidden items-center justify-center overflow-y-auto fixed inset-0 z-50 p-4" id="editProfileModel">
+    <div class="bg-slate-950/60 backdrop-blur-sm hidden items-center justify-center overflow-y-auto 
+    fixed inset-0 z-50 p-4" id="editProfileModel">
       <div class="bg-white dark:bg-slate-900 relative w-full max-w-2xl border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl my-8 overflow-hidden transition-transform ease-in-out duration-300">
         <!-- Modal Header -->
         <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 py-5 px-6">
@@ -512,11 +543,13 @@
               </span>
               <div class="flex items-center gap-6 pt-2">
                 <label class="inline-flex items-center gap-2">
-                  <input class="text-orange-600 h-4 w-4 border-slate-300 dark:border-slate-700 focus:ring-orange-500" id="gender-male" type="radio" name="gender" value="Male" <%= _user.gender === "Male" ? 'checked' : '' %> required />
+                  <input class="text-orange-600 h-4 w-4 border-slate-300 dark:border-slate-700 focus:ring-orange-500" id="gender-male" type="radio" name="gender" value="Male" <%=_user.gender==="Male" ? 'checked' : ''
+                      %> required />
                   <span class="text-slate-700 dark:text-slate-300 text-sm font-inter cursor-pointer">Male</span>
                 </label>
                 <label class="inline-flex items-center gap-2">
-                  <input class="text-orange-600 h-4 w-4 border-slate-300 dark:border-slate-700 focus:ring-orange-500" id="gender-female" type="radio" name="gender" value="Female" <%= _user.gender === "Female" ? 'checked' : '' %> required />
+                  <input class="text-orange-600 h-4 w-4 border-slate-300 dark:border-slate-700 focus:ring-orange-500" id="gender-female" type="radio" name="gender" value="Female" <%=_user.gender==="Female"
+                      ? 'checked' : '' %> required />
                   <span class="text-slate-700 dark:text-slate-300 text-sm font-inter cursor-pointer">Female</span>
                 </label>
               </div>

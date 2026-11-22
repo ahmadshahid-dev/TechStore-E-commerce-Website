@@ -1,11 +1,11 @@
 /* ***********************************
                Imports
 *********************************** */
+const { check, validationResult } = require("express-validator");
 const { escapeRegex } = require("../utils/regex");
 const Product = require("../models/productModel");
 const Contact = require("../models/contactModel");
 const NewsLetter = require("../models/newsLetterModel");
-const { check, validationResult } = require("express-validator");
 /* ***********************************
 Website GET Home Controller
 *********************************** */
@@ -45,11 +45,11 @@ const getShop = async (req, res, next) => {
     const products = await Product.find(
       search
         ? {
-            name: {
-              $regex: escapeRegex(search),
-              $options: "i",
-            },
-          }
+          name: {
+            $regex: escapeRegex(search),
+            $options: "i",
+          },
+        }
         : {},
     )
       .limit(search ? 5 : 10)

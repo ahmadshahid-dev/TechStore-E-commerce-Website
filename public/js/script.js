@@ -699,6 +699,7 @@ const checkRemainingProducts = (countItems) => {
   const ContentContainer = document.getElementById("content-container");
   const favBenefits = document.getElementById("fav-benefits");
   const countItemsContent = document.getElementById("countItemsBar");
+  const remaningUsers = document.getElementById("remaningUsers");
   const itemsCount = document.getElementById("items-count");
   const emptyState = document.getElementById("empty");
   const NoMatch = document.getElementById("no-matches");
@@ -708,6 +709,8 @@ const checkRemainingProducts = (countItems) => {
   }
   if (countText) {
     countText.textContent = countItems === 1 ? "Item" : "Items";
+  } else if (remaningUsers) {
+    remaningUsers.textContent = countItems === 1 ? "User" : "Users";
   }
   if (countItems > 0) {
     countItemsContent?.classList.remove("hidden");
@@ -741,7 +744,7 @@ categoryChips.forEach((chip) => {
       }
     });
     chip.className =
-      "category-chip active-chip bg-orange-600 text-white text-xs font-montserrat font-bold whitespace-nowrap cursor-pointer rounded-xl shadow-sm shadow-orange-600/25 py-2 px-4";
+      "category-chip active-chip bg-orange-600 text-white text-xs font-montserrat font-bold whitespace-nowrap cursor-pointer rounded-xl shadow-sm shadow-orange-600/25 py-2 px-4 hover:transition ease-out duration-[250ms]";
     filterCategory(category);
   });
 });
@@ -750,7 +753,6 @@ categoryChips.forEach((chip) => {
 *********************************** */
 const prdctSearchInput = document.getElementById("prdctSearchInput");
 const prdctStockFilter = document.getElementById("prdctStockFilter");
-const sortSelect = document.getElementById("sort-select");
 let currentCategory = "All";
 function filterCategory(category = currentCategory) {
   currentCategory = category;
@@ -791,25 +793,51 @@ function filterCategory(category = currentCategory) {
 prdctSearchInput?.addEventListener("input", () => filterCategory());
 prdctStockFilter?.addEventListener("change", () => filterCategory());
 /* ***********************************
+           Products Sorting
+*********************************** */
+const sortSelect = document.getElementById("sort-select");
+function sortProducts(criteria) {
+  const grid = document.getElementById("content-container");
+  if (!grid) return;
+  const cards = Array.from(grid.querySelectorAll(".product-item"));
+  cards.sort((a, b) => {
+    const priceA = parseFloat(a.getAttribute("data-price")) || 0;
+    const priceB = parseFloat(b.getAttribute("data-price")) || 0;
+    const nameA = a.getAttribute("data-name") || "";
+    const nameB = b.getAttribute("data-name") || "";
+    if (criteria === "Price-Low") return priceA - priceB;
+    if (criteria === "Price-High") return priceB - priceA;
+    if (criteria === "Name") return nameA.localeCompare(nameB);
+    return 0;
+  });
+  cards.forEach((card) => grid.appendChild(card));
+}
+sortSelect?.addEventListener("change", (event) => {
+  const value = event.target.value;
+  sortProducts(value);
+});
+/* ***********************************
          Reset Category Chips
 *********************************** */
 function resetCategoryChips() {
   if (prdctSearchInput) prdctSearchInput.value = "";
   if (prdctStockFilter) prdctStockFilter.value = "All";
-  if (sortSelect) sortSelect.value = "default";
+  if (sortSelect) sortSelect.value = "Default";
   categoryChips.forEach((chip) => {
     const isAll = chip.dataset.category === "All";
     chip.className = isAll
-      ? "category-chip active-chip bg-orange-600 text-white text-xs font-montserrat font-bold whitespace-nowrap cursor-pointer rounded-xl shadow-sm shadow-orange-600/25 py-2 px-4"
-      : "category-chip bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer border border-slate-200 dark:border-slate-800 rounded-xl py-2 px-4 hover:bg-slate-100 dark:hover:bg-slate-800 hover:transition hover:ease-out hover:duration-[250ms]";
+      ? "category-chip active-chip bg-orange-600 text-white text-xs font-montserrat font-bold whitespace-nowrap cursor-pointer rounded-xl shadow-sm shadow-orange-600/25 py-2 px-4 hover:transition ease-out duration-[250ms]"
+      : window.location.href === "http://localhost:3000/shop"
+        ? "category-chip bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer border border-slate-200 dark:border-slate-800 rounded-xl py-2 px-4 hover:bg-slate-100 dark:hover:bg-slate-800 hover:transition hover:ease-out hover:duration-[250ms]"
+        : "category-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 hover:transition hover:ease-out hover:duration-[250ms]";
   });
   filterCategory("All");
 }
 /* ***********************************
-             Clear Filters
+        Clear Products Filters
 *********************************** */
-const clearFilterBtn = document.querySelectorAll(".clearFilterBtn");
-clearFilterBtn?.forEach((btn) => {
+const clearPrdctFilters = document.querySelectorAll(".clearPrdctFilters");
+clearPrdctFilters?.forEach((btn) => {
   btn.addEventListener("click", async (event) => {
     event.preventDefault();
     if (searchInput) {
@@ -820,27 +848,79 @@ clearFilterBtn?.forEach((btn) => {
   });
 });
 /* ***********************************
-           Products Sorting
+        Role Chips/Badges
 *********************************** */
-function sortProducts(criteria) {
-  const grid = document.getElementById("content-container");
-  if (!grid) return;
-  const cards = Array.from(grid.querySelectorAll(".product-item"));
-  cards.sort((a, b) => {
-    const priceA = parseFloat(a.getAttribute("data-price")) || 0;
-    const priceB = parseFloat(b.getAttribute("data-price")) || 0;
-    const nameA = a.getAttribute("data-name") || "";
-    const nameB = b.getAttribute("data-name") || "";
-    if (criteria === "price-low") return priceA - priceB;
-    if (criteria === "price-high") return priceB - priceA;
-    if (criteria === "name") return nameA.localeCompare(nameB);
-    return 0;
+const RoleChips = document.querySelectorAll(".role-chip");
+RoleChips.forEach((chip) => {
+  chip.addEventListener("click", (event) => {
+    event.preventDefault();
+    const role = chip.getAttribute("data-role") || "All";
+    RoleChips.forEach((chip) => {
+      chip.className =
+        "role-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 hover:transition hover:ease-out hover:duration-[250ms]";
+    });
+    chip.className =
+      "role-chip active-chip bg-orange-600 text-white text-xs font-montserrat font-bold whitespace-nowrap rounded-xl cursor-pointer shadow-md shadow-orange-600/20 py-2 px-4 hover:transition hover:ease-out hover:duration-[250ms]";
+    filterRole(role);
   });
-  cards.forEach((card) => grid.appendChild(card));
+});
+/* ***********************************
+          Role Filteration
+*********************************** */
+const userSearchInput = document.getElementById("userSearchInput");
+const userStatusFilter = document.getElementById("userStatusFilter");
+let currentRole = "All";
+function filterRole(role = currentRole) {
+  currentRole = role;
+  const query = (userSearchInput?.value || "").toLowerCase().trim();
+  const statusFilter = userStatusFilter?.value || "All";
+  const ROLE = role.toLowerCase();
+  let users = document.querySelectorAll(".user-card");
+  let visibleCount = 0;
+  users.forEach((user) => {
+    const userRole = (user.dataset.role || "").toLowerCase();
+    const userName = (user.dataset.name || "").toLowerCase();
+    const userEmail = (user.dataset.email || "").toLowerCase();
+    const userStatus = (user.dataset.status || "").toLowerCase();
+    const matchesRole = ROLE === "all" || userRole.includes(ROLE);
+    const matchesQuery =
+      !query || userName.includes(query) || userEmail.includes(query);
+    const matchesStatus =
+      statusFilter === "All" || userStatus === statusFilter.toLowerCase();
+    if (matchesRole && matchesQuery && matchesStatus) {
+      user.style.display = "";
+      visibleCount++;
+    } else {
+      user.style.display = "none";
+    }
+  });
+  checkRemainingProducts(visibleCount);
 }
-sortSelect?.addEventListener("change", (event) => {
-  const value = event.target.value;
-  sortProducts(value);
+userSearchInput?.addEventListener("input", () => filterRole());
+userStatusFilter?.addEventListener("change", () => filterRole());
+/* ***********************************
+         Reset Role Chips
+*********************************** */
+function resetRoleChips() {
+  if (userSearchInput) userSearchInput.value = "";
+  if (userStatusFilter) userStatusFilter.value = "All";
+  RoleChips.forEach((chip) => {
+    const isAll = chip.dataset.role === "All";
+    chip.className = isAll
+      ? "role-chip active-chip bg-orange-600 text-white text-xs font-montserrat font-bold whitespace-nowrap rounded-xl cursor-pointer shadow-md shadow-orange-600/20 py-2 px-4 hover:transition hover:ease-out hover:duration-[250ms]"
+      : "role-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 hover:transition hover:ease-out hover:duration-[250ms]";
+  });
+  filterRole("All");
+}
+/* ***********************************
+          Clear Users Filters
+*********************************** */
+const clearUserFilters = document.querySelectorAll(".clearUserFilters");
+clearUserFilters?.forEach((btn) => {
+  btn.addEventListener("click", async (event) => {
+    event.preventDefault();
+    resetRoleChips();
+  });
 });
 /* ***********************************
             Model Dialogs
@@ -848,8 +928,8 @@ sortSelect?.addEventListener("change", (event) => {
 const openTriggers = document.querySelectorAll(".openTrigger");
 openTriggers.forEach((trigger) => {
   trigger.addEventListener("click", () => {
-    const tragetId = trigger.dataset.model;
-    if (tragetId === "deleteModel") {
+    const targetId = trigger.dataset.model;
+    if (targetId === "deleteModel") {
       const prdctNameTxt = document.getElementById("prdctNameTxt");
       const modelPrductDelBtn = document.getElementById("prdctDeleteBtn");
       const prdctId = trigger.dataset.productId;
@@ -858,8 +938,18 @@ openTriggers.forEach((trigger) => {
         prdctNameTxt.textContent = prdctName;
         modelPrductDelBtn.setAttribute("data-product-id", prdctId);
       }
+    } else if (targetId === "userModel") {
+      const Id = document.getElementById("userId");
+      const role = document.getElementById("role");
+      const status = document.getElementById("status");
+      const userId = trigger.dataset.userId;
+      const userRole = trigger.dataset.role;
+      const userStatus = trigger.dataset.status;
+      Id.value = userId;
+      role.value = userRole;
+      status.value = userStatus;
     }
-    const modelDialog = document.getElementById(tragetId);
+    const modelDialog = document.getElementById(targetId);
     if (!modelDialog) return;
     modelDialog.classList.remove("hidden");
     modelDialog.classList.add("flex");

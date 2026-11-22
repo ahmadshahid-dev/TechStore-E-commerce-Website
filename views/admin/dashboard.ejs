@@ -10,13 +10,15 @@
   <link rel="stylesheet" href="/css/output.css" />
 </head>
 
-<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased selection:bg-orange-500 selection:text-white">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 selection:bg-orange-500 
+antialiased selection:text-white">
   <!-- Header -->
   <%- include("../partials/header") %>
   <!-- Main -->
   <main>
     <!-- ==================== 1. ADMIN HERO / GREETING BANNER ==================== -->
-    <section class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 py-8 sm:py-10">
+    <section class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border-b border-slate-200/80 
+    dark:border-slate-800/80 py-8 sm:py-10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <!-- Title & Greeting -->
@@ -284,7 +286,7 @@
                   <p class="text-slate-500 text-xs font-inter font-inter shrink-0"><%= order.orderId %> · <%= timeAgo(order.createdAt) %>
                   </p>
                 </div>
-                <div class="flex items-center gap-x-3.5 shrink-0">
+                <div class="flex flex-col sm:flex-row items-end gap-y-2 sm:gap-y-0 gap-x-3.5 shrink-0">
                   <span class="text-green-600 dark:text-green-400 text-base font-inter font-semibold leading-none">Rs. <%= order.grandTotal.toLocaleString() %></span>
                   <span class="bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 text-[0.6250rem] font-montserrat font-semibold border border-orange-200/50 rounded-md py-0.5 px-2">
                     <%= order.orderStatus %>

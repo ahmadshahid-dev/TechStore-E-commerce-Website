@@ -9,523 +9,406 @@
   <title>Manage Orders | TechStore Admin</title>
   <!-- Stylesheet -->
   <link rel="stylesheet" href="/css/output.css" />
-  <style>
-    @media print {
-      body * {
-        visibility: hidden;
-      }
-
-      #print-modal-area,
-      #print-modal-area * {
-        visibility: visible;
-      }
-
-      #print-modal-area {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-      }
-
-      .no-print {
-        display: none !important;
-      }
-    }
-  </style>
 </head>
 
-<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased min-h-screen flex flex-col font-inter selection:bg-orange-500 selection:text-white">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased selection:bg-orange-500 selection:text-white">
 
-  <!-- Admin Header Partial -->
-  <div class="flex-grow flex">
-
-    <%- include("../partials/header") %>
-
-    <!-- Main Workspace Container -->
-    <main class="flex-grow p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
-
-      <!-- ==================== 1. BREADCRUMBS & TOP BAR ==================== -->
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-        <div>
-          <nav aria-label="Breadcrumb" class="mb-2">
-            <ol class="flex items-center space-x-2 text-xs font-medium text-slate-500 dark:text-slate-400">
-              <li><a href="/admin/dashboard" class="hover:text-orange-600 transition-colors">Admin</a></li>
-              <li><span>/</span></li>
-              <li class="text-slate-900 dark:text-white font-semibold">Orders</li>
-            </ol>
-          </nav>
-          <h1 class="text-2xl sm:text-3xl font-black font-montserrat text-slate-900 dark:text-white tracking-tight">
-            Manage <span class="text-orange-600 dark:text-orange-500">Orders</span>
-          </h1>
-          <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
-            Track, update, and manage all customer shipments and cash-on-delivery orders.
-          </p>
-        </div>
-
-        <!-- Quick Top Actions -->
-        <div class="flex items-center gap-3">
-          <button onclick="window.print()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold transition-colors shadow-sm cursor-pointer">
+  <!-- Header -->
+  <%- include("../partials/header") %>
+  <!-- Main -->
+  <main>
+    <!-- ==================== 1. BREADCRUMBS & TOP BAR ==================== -->
+    <section class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 py-8 sm:py-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div class="space-y-1.5">
+            <nav class="text-slate-500 dark:text-slate-400 text-xs font-inter font-medium flex items-center space-x-2" aria-label="Breadcrumb">
+              <ol class="flex items-center space-x-2 text-xs font-medium text-slate-500 dark:text-slate-400">
+                <li><a href="/admin/dashboard" class="hover:text-orange-600 transition-colors">Admin</a></li>
+                <li><span>/</span></li>
+                <li class="text-slate-900 dark:text-white font-semibold">Orders</li>
+              </ol>
+            </nav>
+            <h1 class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-extrabold tracking-tight leading-none">
+              Manage <span class="text-orange-600 dark:text-orange-500">Orders</span>
+            </h1>
+            <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-inter">
+              Track, update, and manage all customer shipments and cash-on-delivery orders.
+            </p>
+          </div>
+          <!-- Quick Top Actions -->
+          <button class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 w-fit inline-flex items-center gap-x-2 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm cursor-pointer py-2.5 px-4 hover:bg-slate-100 dark:hover:bg-slate-800 hover:transition-colors hover:ease-out hover:duration-[250ms]" onclick="window.print()">
             <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
             </svg>
-            Print Report
+            <span class="text-xs font-montserrat font-semibold">Print Report</span>
           </button>
         </div>
       </div>
-
-      <!-- ==================== 2. KPI / STATS CARDS ==================== -->
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
-
-        <!-- Total Orders -->
-        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Orders</span>
-            <div class="w-9 h-9 rounded-xl bg-orange-100 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 flex items-center justify-center">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-              </svg>
+    </section>
+    <!-- ==================== 2. KPI / STATS CARDS ==================== -->
+    <section class="backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 py-8 sm:py-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <!-- Total Orders -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-5">
+            <div class="flex items-center justify-between mb-2.5">
+              <span class="text-slate-500 dark:text-slate-400 text-xs font-inter font-bold uppercase tracking-wider">Total Orders</span>
+              <div class="bg-orange-100 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 h-9 w-9 flex items-center justify-center rounded-xl shrink-0">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+              </div>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-black">
+                <%= orders.length %>
+              </span>
+              <span class="text-emerald-600 text-xs font-inter font-semibold">+14% this month</span>
             </div>
           </div>
-          <div class="flex items-baseline gap-2">
-            <span class="text-2xl sm:text-3xl font-black font-montserrat text-slate-900 dark:text-white" id="stat-total-orders">
-              <%= typeof orders !== 'undefined' ? orders.length : 12 %>
-            </span>
-            <span class="text-xs text-emerald-600 font-semibold">+14% this month</span>
-          </div>
-        </div>
-
-        <!-- Pending / Processing -->
-        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Pending / Processing</span>
-            <div class="w-9 h-9 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+          <!-- Pending / Processing -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-5">
+            <div class="flex items-center justify-between mb-2.5">
+              <span class="text-slate-500 dark:text-slate-400 text-xs font-inter font-bold uppercase tracking-wider">Pending / Processing</span>
+              <div class="bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 h-9 w-9 flex items-center justify-center rounded-xl shrink-0">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-black">
+                <%= orders.filter((order) => order.status === 'Pending' || order.status === 'Processing').length %>
+              </span>
+              <span class="text-amber-600 text-xs font-inter font-semibold truncate">Requires Dispatch</span>
             </div>
           </div>
-          <div class="flex items-baseline gap-2">
-            <span class="text-2xl sm:text-3xl font-black font-montserrat text-slate-900 dark:text-white" id="stat-pending-orders">
-              <%= typeof orders !== 'undefined' ? orders.filter(o => o.status === 'Pending' || o.status === 'Processing').length : 3 %>
-            </span>
-            <span class="text-xs text-amber-600 font-semibold">Requires Dispatch</span>
-          </div>
-        </div>
-
-        <!-- Shipped / In Transit -->
-        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Shipped</span>
-            <div class="w-9 h-9 rounded-xl bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
-              </svg>
+          <!-- Shipped / In Transit -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-5">
+            <div class="flex items-center justify-between mb-2.5">
+              <span class="text-slate-500 dark:text-slate-400 text-xs font-inter font-bold uppercase tracking-wider">Shipped</span>
+              <div class="bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 h-9 w-9 flex items-center justify-center rounded-xl shrink-0">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
+                </svg>
+              </div>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-black">
+                <%= orders.filter((order) => order.status === 'Shipped').length %>
+              </span>
+              <span class="text-blue-600 text-xs font-inter font-semibold">In Transit</span>
             </div>
           </div>
-          <div class="flex items-baseline gap-2">
-            <span class="text-2xl sm:text-3xl font-black font-montserrat text-slate-900 dark:text-white" id="stat-shipped-orders">
-              <%= typeof orders !== 'undefined' ? orders.filter(o => o.status === 'Shipped').length : 4 %>
-            </span>
-            <span class="text-xs text-blue-600 font-semibold">In Transit</span>
-          </div>
-        </div>
-
-        <!-- Delivered & Complete -->
-        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Delivered</span>
-            <div class="w-9 h-9 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-              </svg>
+          <!-- Delivered & Complete -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-5">
+            <div class="flex items-center justify-between mb-2.5">
+              <span class="text-slate-500 dark:text-slate-400 text-xs font-inter font-bold uppercase tracking-wider">Delivered</span>
+              <div class="bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 h-9 w-9 flex items-center justify-center rounded-xl shrink-0">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+            </div>
+            <div class="flex items-baseline gap-2">
+              <span class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-black">
+                <%= orders.filter((order) => order.status === 'Delivered').length %>
+              </span>
+              <span class="text-emerald-600 text-xs font-inter font-semibold">Completed</span>
             </div>
           </div>
-          <div class="flex items-baseline gap-2">
-            <span class="text-2xl sm:text-3xl font-black font-montserrat text-slate-900 dark:text-white" id="stat-delivered-orders">
-              <%= typeof orders !== 'undefined' ? orders.filter(o => o.status === 'Delivered').length : 5 %>
-            </span>
-            <span class="text-xs text-emerald-600 font-semibold">Completed</span>
-          </div>
         </div>
-
       </div>
-
-      <!-- ==================== 3. TOOLBAR: SEARCH & STATUS FILTER CHIPS ==================== -->
-      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 shadow-sm mb-6 space-y-4">
-
+    </section>
+    <!-- ==================== 3. TOOLBAR: SEARCH & STATUS FILTER CHIPS ==================== -->
+    <section class="backdrop-blur-md max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+      <div class="bg-white dark:bg-slate-900 space-y-4 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-4 sm:p-5 mb-6 sm:mb-8">
         <!-- Search & Dropdown Actions Row -->
         <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-
           <!-- Search Input -->
           <div class="relative flex-grow max-w-md">
-            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <span class="text-slate-400 absolute inset-y-0 flex items-center left-0 pl-3.5 pointer-events-none">
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </span>
-            <input type="text" id="orderSearchInput" placeholder="Search by Order ID, customer name, phone..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition" />
+            <input class="bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 w-full text-xs sm:text-sm font-inter border border-slate-300 dark:border-slate-800 focus:ring focus:border-orange-500 focus:ring-orange-500/20 focus:outline-none rounded-xl placeholder:text-slate-400 py-2.5 pl-10 pr-4" id="orderSearchInput" type="text" placeholder="Search by Order ID, customer name, phone..." />
           </div>
-
           <!-- Quick Filters: Payment & Date -->
           <div class="flex items-center gap-2.5">
-            <select id="paymentFilterSelect" class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-xl px-3 py-2.5 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-orange-500 cursor-pointer">
+            <select class="bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold cursor-pointer border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring focus:ring-orange-500 rounded-xl py-2.5 px-3" id="paymentFilterSelect">
               <option value="All">All Payments</option>
               <option value="COD">Cash on Delivery</option>
               <option value="Online">Online Paid</option>
             </select>
-
-            <button id="clearOrderFilterBtn" class="px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-semibold transition cursor-pointer">
+            <button class=" text-slate-600 dark:text-slate-400 text-xs font-montserrat font-semibold border border-slate-200 dark:border-slate-700 rounded-xl py-2.5 px-3.5 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 hover:transition hover:ease-out hover:duration-[250ms]" id="clearOrderFilterBtn">
               Clear
             </button>
           </div>
-
         </div>
-
         <!-- Filter Chips (Status Tabs) -->
-        <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar border-t border-slate-100 dark:border-slate-800/80 pt-3">
-          <button class="order-status-chip active-chip bg-orange-600 text-white text-xs font-montserrat font-bold whitespace-nowrap cursor-pointer rounded-xl shadow-sm shadow-orange-600/20 py-2 px-4 transition" data-status="All">
+        <div class="border-t border-slate-100 dark:border-slate-800/80 flex items-center gap-x-2 [scrollbar-width:none] pt-3 pb-1 overflow-x-auto">
+          <button class="order-status-chip active-chip bg-orange-600 text-white text-xs font-montserrat font-bold whitespace-nowrap cursor-pointer rounded-xl shadow-sm shadow-orange-600/20 py-2 px-4 hover:transition hover:ease-out hover:duration-[250ms]" data-status="All">
             All Orders
           </button>
-          <button class="order-status-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 transition" data-status="Pending">
+          <button class="order-status-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 hover:transition hover:ease-out hover:duration-[250ms]" data-status="Pending">
             Pending
           </button>
-          <button class="order-status-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 transition" data-status="Processing">
+          <button class="order-status-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 hover:transition hover:ease-out hover:duration-[250ms]" data-status="Processing">
             Processing
           </button>
-          <button class="order-status-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 transition" data-status="Shipped">
+          <button class="order-status-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 hover:transition hover:ease-out hover:duration-[250ms]" data-status="Shipped">
             Shipped
           </button>
-          <button class="order-status-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 transition" data-status="Delivered">
+          <button class="order-status-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 hover:transition hover:ease-out hover:duration-[250ms]" data-status="Delivered">
             Delivered
           </button>
-          <button class="order-status-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 transition" data-status="Cancelled">
+          <button class="order-status-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 hover:transition hover:ease-out hover:duration-[250ms]" data-status="Cancelled">
             Cancelled
           </button>
         </div>
-
       </div>
-
       <!-- ==================== 4. ORDERS TABLE CARD ==================== -->
       <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
-
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse" id="orders-table">
-
+        <div class="overflow-x-auto [scrollbar-width:none]">
+          <table class="w-full text-left border-collapse">
             <!-- Table Header -->
             <thead>
-              <tr class="bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider font-montserrat">
-                <th class="py-3.5 px-4 sm:px-6">Order ID & Date</th>
+              <tr class="bg-slate-50 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 text-[0.6875rem] font-montserrat font-bold uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
+                <th class="py-3.5 px-4 sm:px-6 text-left truncate">Order ID & Date</th>
                 <th class="py-3.5 px-4">Customer</th>
                 <th class="py-3.5 px-4">Items</th>
                 <th class="py-3.5 px-4">Payment</th>
-                <th class="py-3.5 px-4">Total (Rs.)</th>
+                <th class="py-3.5 px-4 truncate">Total (Rs)</th>
+                <th class="py-3.5 px-4">Delivery</th>
                 <th class="py-3.5 px-4">Status</th>
-                <th class="py-3.5 px-4 sm:px-6 text-right">Actions</th>
+                <th class="py-3.5 px-4 sm:px-6 text-right">Action</th>
               </tr>
             </thead>
-
             <!-- Table Body -->
-            <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-xs sm:text-sm font-medium" id="orders-tbody">
-
-              <% if (typeof orders !== 'undefined' && orders.length > 0) { %>
-              <% orders.forEach(function(order) { %>
-              <tr class="order-row hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors" data-order-id="<%= order.orderNumber || order._id %>" data-status="<%= order.status || 'Pending' %>" data-customer="<%= order.shippingAddress?.fullName || 'Customer' %>" data-payment="<%= order.paymentMethod || 'COD' %>">
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-xs sm:text-sm font-medium">
+              <% if (orders && orders.length > 0) { %>
+              <% orders.forEach((order) => { %>
+              <tr class="order-row hover:bg-slate-50/80 dark:hover:bg-slate-800/40 hover:transition-colors hover:ease-out hover:duration-150" data-order-id="<%= order.orderNumber || order._id %>" data-status="<%= order.status || 'Pending' %>" data-customer="<%= order.shippingAddress?.fullName || 'Customer' %>" data-payment="<%= order.paymentMethod || 'COD' %>">
                 <!-- Order ID & Date -->
                 <td class="py-4 px-4 sm:px-6">
-                  <span class="font-bold font-mono text-orange-600 dark:text-orange-400 block">
-                    <%= order.orderNumber || '#TS-894215' %>
+                  <span class="text-orange-600 dark:text-orange-400 text-xs font-mono font-bold block">
+                    <%= order.orderId %>
                   </span>
-                  <span class="text-[11px] text-slate-400">
+                  <span class="text-slate-400 text-[0.6875rem] font-manrope block">
                     <%= order.createdAt ? new Date(order.createdAt).toLocaleDateString() : 'Today' %>
                   </span>
                 </td>
-
                 <!-- Customer -->
                 <td class="py-4 px-4">
-                  <span class="font-bold text-slate-900 dark:text-white block">
-                    <%= order.shippingAddress?.fullName || 'Ahmad Shahid' %>
+                  <span class="text-slate-900 dark:text-white font-inter font-semibold block">
+                    <%= order.address.fullName %>
                   </span>
-                  <span class="text-[11px] text-slate-400 block truncate max-w-[150px]">
-                    <%= order.shippingAddress?.city || 'Lahore' %> • <%= order.shippingAddress?.phone || '+92 300 1234567' %>
+                  <span class="text-slate-400 text-[0.6875rem] font-inter truncate block max-w-[225px]">
+                    <%= order.address.city %> • <%= order.address.phone %>
                   </span>
                 </td>
-
                 <!-- Items Count -->
                 <td class="py-4 px-4">
-                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold">
-                    <%= order.items ? order.items.length : 1 %> <%= (order.items && order.items.length === 1) ? 'Item' : 'Items' %>
+                  <span class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-inter font-semibold truncate capitalize rounded-lg py-1 px-2.5">
+                    <%= order.items.length %> <%= order.items.length === 1 ? 'Item' : 'Items' %>
                   </span>
                 </td>
-
                 <!-- Payment -->
                 <td class="py-4 px-4">
-                  <span class="px-2 py-0.5 rounded text-[11px] font-bold <%= order.paymentMethod === 'Online' ? 'bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300' : 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300' %>">
-                    <%= order.paymentMethod || 'COD' %>
+                  <span class="bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 text-[0.6875rem] font-inter font-bold rounded py-0.5 px-2">
+                    <%= order.paymentMethod %>
                   </span>
                 </td>
-
                 <!-- Total -->
-                <td class="py-4 px-4 font-black font-montserrat text-slate-900 dark:text-white">
-                  Rs. <%= order.grandTotal ? order.grandTotal.toLocaleString() : '4,999' %>
+                <td class="py-4 px-4 text-slate-900 dark:text-white font-montserrat font-bold">
+                  Rs: <%= order.grandTotal.toLocaleString() %>
                 </td>
-
+                <!-- Delivery -->
+                <td class="py-4 px-4">
+                  <span class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-inter font-semibold capitalize rounded-lg py-1 px-2.5">
+                    <%= order.shippingMethod %>
+                  </span>
+                </td>
                 <!-- Status Badge -->
                 <td class="py-4 px-4">
                   <% 
-                        let badgeClass = 'bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-800';
-                        if (order.status === 'Processing') badgeClass = 'bg-blue-100 dark:bg-blue-950/70 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-800';
-                        if (order.status === 'Shipped') badgeClass = 'bg-indigo-100 dark:bg-indigo-950/70 text-indigo-800 dark:text-indigo-300 border-indigo-300 dark:border-indigo-800';
-                        if (order.status === 'Delivered') badgeClass = 'bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800';
-                        if (order.status === 'Cancelled') badgeClass = 'bg-rose-100 dark:bg-rose-950/70 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-800';
-                      %>
-                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-semibold <%= badgeClass %>">
-                    <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
-                    <%= order.status || 'Pending' %>
+                  let badgeClass = 'bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-800';
+                  if (order.status === 'Processing') badgeClass = 'bg-blue-100 dark:bg-blue-950/70 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-800';
+                  if (order.status === 'Shipped') badgeClass = 'bg-indigo-100 dark:bg-indigo-950/70 text-indigo-800 dark:text-indigo-300 border-indigo-300 dark:border-indigo-800';
+                  if (order.status === 'Delivered') badgeClass = 'bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800';
+                  if (order.status === 'Cancelled') badgeClass = 'bg-rose-100 dark:bg-rose-950/70 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-800';
+                %>
+                  <span class="text-xs font-inter font-semibold inline-flex items-center gap-1.5 border rounded-full py-1 px-2.5 <%= badgeClass %>">
+                    <span class="bg-current h-1.5 w-1.5 rounded-full"></span>
+                    <%= order.orderStatus %>
                   </span>
                 </td>
-
-                <!-- Actions -->
+                <!-- Action -->
                 <td class="py-4 px-4 sm:px-6 text-right">
-                  <div class="flex items-center justify-end gap-2">
-                    <!-- View Details Modal Trigger -->
-                    <button type="button" class="view-order-btn p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950/40 transition cursor-pointer" data-order='<%- JSON.stringify(order) %>' title="View Order Details">
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                      </svg>
-                    </button>
-
-                    <!-- Quick Print Trigger -->
-                    <a href="/admin/orders/<%= order._id %>/invoice" target="_blank" class="p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Print Invoice">
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                      </svg>
-                    </a>
-                  </div>
+                  <!-- View Details Modal Trigger -->
+                  <button class="view-order-btn text-slate-600 dark:text-slate-400 hover:text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950/40 rounded-xl cursor-pointer p-2 transition-colors ease-out duration-150" type="button" title="View Order Details">
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  </button>
                 </td>
               </tr>
               <% }); %>
               <% } else { %>
-
-              <!-- Mock Sample Order 1 -->
-              <tr class="order-row hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors" data-order-id="#TS-894215" data-status="Pending" data-customer="Ahmad Shahid" data-payment="COD">
-                <td class="py-4 px-4 sm:px-6">
-                  <span class="font-bold font-mono text-orange-600 dark:text-orange-400 block">#TS-894215</span>
-                  <span class="text-[11px] text-slate-400">Oct 12, 2026 • 02:45 PM</span>
-                </td>
-                <td class="py-4 px-4">
-                  <span class="font-bold text-slate-900 dark:text-white block">Ahmad Shahid</span>
-                  <span class="text-[11px] text-slate-400 block truncate max-w-[150px]">Lahore • +92 300 1234567</span>
-                </td>
-                <td class="py-4 px-4">
-                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold">
-                    2 Items
-                  </span>
-                </td>
-                <td class="py-4 px-4">
-                  <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
-                    COD
-                  </span>
-                </td>
-                <td class="py-4 px-4 font-black font-montserrat text-slate-900 dark:text-white">
-                  Rs. 37,498
-                </td>
-                <td class="py-4 px-4">
-                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-semibold bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-800">
-                    <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
-                    Pending
-                  </span>
-                </td>
-                <td class="py-4 px-4 sm:px-6 text-right">
-                  <button type="button" class="view-order-btn p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950/40 transition cursor-pointer" title="View Order Details">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                  </button>
-                </td>
-              </tr>
-
-              <!-- Mock Sample Order 2 -->
-              <tr class="order-row hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors" data-order-id="#TS-894216" data-status="Delivered" data-customer="Hamza Ali" data-payment="Online">
-                <td class="py-4 px-4 sm:px-6">
-                  <span class="font-bold font-mono text-orange-600 dark:text-orange-400 block">#TS-894216</span>
-                  <span class="text-[11px] text-slate-400">Oct 11, 2026 • 11:20 AM</span>
-                </td>
-                <td class="py-4 px-4">
-                  <span class="font-bold text-slate-900 dark:text-white block">Hamza Ali</span>
-                  <span class="text-[11px] text-slate-400 block truncate max-w-[150px]">Karachi • +92 321 9876543</span>
-                </td>
-                <td class="py-4 px-4">
-                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold">
-                    1 Item
-                  </span>
-                </td>
-                <td class="py-4 px-4">
-                  <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300">
-                    Online
-                  </span>
-                </td>
-                <td class="py-4 px-4 font-black font-montserrat text-slate-900 dark:text-white">
-                  Rs. 12,499
-                </td>
-                <td class="py-4 px-4">
-                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-semibold bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800">
-                    <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
-                    Delivered
-                  </span>
-                </td>
-                <td class="py-4 px-4 sm:px-6 text-right">
-                  <button type="button" class="view-order-btn p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950/40 transition cursor-pointer" title="View Order Details">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                  </button>
-                </td>
-              </tr>
-
+              <!-- ==================== 5. EMPTY Catalog ==================== -->
+              <div class="py-10 sm:py-12 text-center space-y-3" id="empty">
+                <div class="bg-orange-100 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 h-16 w-16 flex items-center justify-center mx-auto rounded-2xl mb-4.5">
+                  <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                  </svg>
+                </div>
+                <h3 class="text-slate-900 dark:text-white text-base sm:text-lg font-montserrat font-bold leading-none">No Oders Yet</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter max-w-sm mx-auto mb-4.5">
+                  Your orders catalog is empty. Orders will appear here as soon as customers start placing them.
+                </p>
+                <a class="bg-orange-600 text-white inline-flex items-center gap-x-1.5 rounded-xl cursor-pointer py-2.5 px-4 hover:bg-orange-700 transition ease-out duration-[250ms]" href="">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                  </svg>
+                  <span class="text-xs font-montserrat font-semibold">Create First Order</span>
+                </a>
+              </div>
               <% } %>
-
             </tbody>
           </table>
         </div>
-
-        <!-- ==================== 5. EMPTY SEARCH STATE ==================== -->
-        <div id="no-orders-found" class="hidden py-12 text-center">
-          <div class="w-16 h-16 mx-auto rounded-2xl bg-orange-100 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 flex items-center justify-center mb-3">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+        <!-- ==================== 6. EMPTY SEARCH STATE ==================== -->
+        <div class="py-10 sm:py-12 text-center space-y-3 hidden" id="no-matches">
+          <div class="bg-orange-50 dark:bg-orange-500/10 h-16 w-16 text-orange-600 text-2xl mx-auto flex items-center justify-center rounded-2xl mb-4">
+            🔍
           </div>
-          <h3 class="text-base font-bold text-slate-900 dark:text-white mb-1">No Orders Match Your Filter</h3>
-          <p class="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto mb-4">
-            Try checking for spelling errors or clear the active status filters.
+          <h3 class="text-slate-900 dark:text-white text-base sm:text-lg font-montserrat font-bold leading-none">No Matching Order</h3>
+          <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter max-w-sm mx-auto mb-4.5">
+            Try clearing your search query or selecting a different order filter.
           </p>
-          <button id="resetFromEmptyBtn" class="px-4 py-2 rounded-xl bg-orange-600 text-white text-xs font-bold hover:bg-orange-700 transition cursor-pointer">
+          <button class="clearUserFilters bg-orange-600 text-white text-sm font-montserrat font-semibold inline-flex items-center gap-x-1.5 rounded-xl cursor-pointer py-2.5 px-4 hover:bg-orange-700 transition ease-out duration-[250ms]">
             Reset All Filters
           </button>
         </div>
-
         <!-- Table Footer / Pagination -->
-        <div class="p-4 sm:p-5 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
-          <span>Showing <strong class="text-slate-900 dark:text-white" id="visible-order-count">2</strong> orders</span>
-          <div class="flex items-center gap-2">
-            <button class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-800 disabled:opacity-50" disabled>Previous</button>
-            <span class="px-3 py-1.5 rounded-lg bg-orange-600 text-white font-bold">1</span>
-            <button class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-800 disabled:opacity-50" disabled>Next</button>
+        <div class="bg-slate-50/50 dark:bg-slate-800/30 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-200 dark:border-slate-800 p-4 sm:p-5">
+          <span class="text-slate-500 text-xs font-inter">Showing <strong class="text-slate-900 dark:text-white" id="items-count"><%= orders.length %> </strong>
+            <span id="remaningOrders"><%= orders.length > 1 ? 'Orders' : 'Order' %></span>
+          </span>
+          <div class="flex items-center gap-x-2">
+            <button class="text-slate-500 text-xs font-montserrat border border-slate-200 dark:border-slate-700 rounded-lg cursor-pointer py-1.5 px-3 hover:bg-white dark:hover:bg-slate-800 hover:transition-colors disabled:opacity-50" disabled>Previous</button>
+            <span class="bg-orange-600 text-white text-xs font-montserrat font-bold rounded-lg py-1.5 px-3">1</span>
+            <button class="text-slate-500 text-xs font-montserrat border border-slate-200 dark:border-slate-700 rounded-lg cursor-pointer py-1.5 px-3 hover:bg-white dark:hover:bg-slate-800 hover:transition-colors disabled:opacity-50" disabled>Next</button>
           </div>
         </div>
-
       </div>
+    </section>
+    <!-- ==================== 6. ORDER DETAILS & STATUS UPDATE MODAL ==================== -->
+    <div class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto" id="orderModal">
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-2xl shadow-2xl overflow-hidden relative animate-in fade-in zoom-in-95 duration-200" id="print-modal-area">
 
-    </main>
-  </div>
-
-  <!-- ==================== 6. ORDER DETAILS & STATUS UPDATE MODAL ==================== -->
-  <div id="orderModal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
-    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-2xl shadow-2xl overflow-hidden relative animate-in fade-in zoom-in-95 duration-200" id="print-modal-area">
-
-      <!-- Modal Header -->
-      <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between no-print">
-        <div>
-          <span class="text-xs font-mono font-bold text-orange-600 dark:text-orange-400" id="modal-order-number">#TS-894215</span>
-          <h2 class="text-lg font-black font-montserrat text-slate-900 dark:text-white">Order Details</h2>
-        </div>
-        <button type="button" id="closeOrderModal" class="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-
-      <!-- Modal Body Content -->
-      <div class="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
-
-        <!-- Status Update Control Form -->
-        <form id="updateOrderStatusForm" action="/admin/orders/update-status" method="POST" class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 no-print">
-          <input type="hidden" name="orderId" id="modal-form-order-id" value="" />
+        <!-- Modal Header -->
+        <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between no-print">
           <div>
-            <label class="text-xs font-bold text-slate-900 dark:text-white block">Update Order Status</label>
-            <span class="text-[11px] text-slate-500">Change status to notify user</span>
+            <span class="text-xs font-mono font-bold text-orange-600 dark:text-orange-400" id="modal-order-number">#TS-894215</span>
+            <h2 class="text-lg font-black font-montserrat text-slate-900 dark:text-white">Order Details</h2>
           </div>
-          <div class="flex items-center gap-2">
-            <select name="status" id="modal-status-select" class="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500">
-              <option value="Pending">Pending</option>
-              <option value="Processing">Processing</option>
-              <option value="Shipped">Shipped</option>
-              <option value="Delivered">Delivered</option>
-              <option value="Cancelled">Cancelled</option>
-            </select>
-            <button type="submit" class="px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs shadow-sm transition cursor-pointer">
-              Update
-            </button>
-          </div>
-        </form>
-
-        <!-- Shipping Address Details -->
-        <div>
-          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Customer & Shipping Info</h3>
-          <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs sm:text-sm space-y-1">
-            <p class="font-bold text-slate-900 dark:text-white" id="modal-customer-name">Ahmad Shahid</p>
-            <p class="text-slate-600 dark:text-slate-300" id="modal-customer-address">House #123, Block 4, Gulberg III, Lahore, Punjab</p>
-            <p class="text-slate-500 font-mono" id="modal-customer-phone">Phone: +92 300 1234567</p>
-            <p class="text-slate-500 font-mono" id="modal-customer-email">Email: customer@example.com</p>
-          </div>
+          <button type="button" id="closeOrderModal" class="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
 
-        <!-- Ordered Items Summary List -->
-        <div>
-          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Ordered Products</h3>
-          <div class="divide-y divide-slate-100 dark:divide-slate-800 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden p-2 bg-white dark:bg-slate-900" id="modal-items-container">
-            <!-- Dynamic Items Injected by JS or Default Sample -->
-            <div class="p-3 flex items-center justify-between text-xs sm:text-sm">
-              <div>
-                <p class="font-bold text-slate-900 dark:text-white">Apex Pro Wireless Headset ANC</p>
-                <span class="text-slate-400 text-xs">Qty: 1 × Rs. 24,999</span>
-              </div>
-              <span class="font-bold text-slate-900 dark:text-white">Rs. 24,999</span>
+        <!-- Modal Body Content -->
+        <div class="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
+
+          <!-- Status Update Control Form -->
+          <form id="updateOrderStatusForm" action="/admin/orders/update-status" method="POST" class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 no-print">
+            <input type="hidden" name="orderId" id="modal-form-order-id" value="" />
+            <div>
+              <label class="text-xs font-bold text-slate-900 dark:text-white block">Update Order Status</label>
+              <span class="text-[11px] text-slate-500">Change status to notify user</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <select name="status" id="modal-status-select" class="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500">
+                <option value="Pending">Pending</option>
+                <option value="Processing">Processing</option>
+                <option value="Shipped">Shipped</option>
+                <option value="Delivered">Delivered</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+              <button type="submit" class="px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs shadow-sm transition cursor-pointer">
+                Update
+              </button>
+            </div>
+          </form>
+
+          <!-- Shipping Address Details -->
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Customer & Shipping Info</h3>
+            <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs sm:text-sm space-y-1">
+              <p class="font-bold text-slate-900 dark:text-white" id="modal-customer-name">Ahmad Shahid</p>
+              <p class="text-slate-600 dark:text-slate-300" id="modal-customer-address">House #123, Block 4, Gulberg III, Lahore, Punjab</p>
+              <p class="text-slate-500 font-mono" id="modal-customer-phone">Phone: +92 300 1234567</p>
+              <p class="text-slate-500 font-mono" id="modal-customer-email">Email: customer@example.com</p>
             </div>
           </div>
+
+          <!-- Ordered Items Summary List -->
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Ordered Products</h3>
+            <div class="divide-y divide-slate-100 dark:divide-slate-800 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden p-2 bg-white dark:bg-slate-900" id="modal-items-container">
+              <!-- Dynamic Items Injected by JS or Default Sample -->
+              <div class="p-3 flex items-center justify-between text-xs sm:text-sm">
+                <div>
+                  <p class="font-bold text-slate-900 dark:text-white">Apex Pro Wireless Headset ANC</p>
+                  <span class="text-slate-400 text-xs">Qty: 1 × Rs. 24,999</span>
+                </div>
+                <span class="font-bold text-slate-900 dark:text-white">Rs. 24,999</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment Breakdown -->
+          <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 text-xs sm:text-sm space-y-2">
+            <div class="flex justify-between text-slate-600 dark:text-slate-400">
+              <span>Payment Method:</span>
+              <span class="font-bold text-emerald-600 dark:text-emerald-400" id="modal-payment-method">Cash on Delivery (COD)</span>
+            </div>
+            <div class="flex justify-between text-slate-600 dark:text-slate-400">
+              <span>Delivery Charges:</span>
+              <span class="font-bold text-slate-900 dark:text-white" id="modal-shipping-cost">Rs. 250</span>
+            </div>
+            <div class="pt-2 border-t border-slate-200 dark:border-slate-700 flex justify-between font-black text-base text-slate-900 dark:text-white">
+              <span>Grand Total:</span>
+              <span class="text-orange-600 dark:text-orange-400" id="modal-grand-total">Rs. 37,498</span>
+            </div>
+          </div>
+
         </div>
 
-        <!-- Payment Breakdown -->
-        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 text-xs sm:text-sm space-y-2">
-          <div class="flex justify-between text-slate-600 dark:text-slate-400">
-            <span>Payment Method:</span>
-            <span class="font-bold text-emerald-600 dark:text-emerald-400" id="modal-payment-method">Cash on Delivery (COD)</span>
-          </div>
-          <div class="flex justify-between text-slate-600 dark:text-slate-400">
-            <span>Delivery Charges:</span>
-            <span class="font-bold text-slate-900 dark:text-white" id="modal-shipping-cost">Rs. 250</span>
-          </div>
-          <div class="pt-2 border-t border-slate-200 dark:border-slate-700 flex justify-between font-black text-base text-slate-900 dark:text-white">
-            <span>Grand Total:</span>
-            <span class="text-orange-600 dark:text-orange-400" id="modal-grand-total">Rs. 37,498</span>
-          </div>
+        <!-- Modal Footer -->
+        <div class="p-4 sm:p-6 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 flex items-center justify-between no-print">
+          <button onclick="window.print()" type="button" class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 transition cursor-pointer flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+            </svg>
+            Print Invoice
+          </button>
+          <button type="button" id="closeOrderModalBottom" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-100 dark:hover:bg-slate-200 dark:text-slate-900 font-bold text-xs transition cursor-pointer">
+            Close
+          </button>
         </div>
 
       </div>
-
-      <!-- Modal Footer -->
-      <div class="p-4 sm:p-6 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 flex items-center justify-between no-print">
-        <button onclick="window.print()" type="button" class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 transition cursor-pointer flex items-center gap-1.5">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-          </svg>
-          Print Invoice
-        </button>
-        <button type="button" id="closeOrderModalBottom" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-100 dark:hover:bg-slate-200 dark:text-slate-900 font-bold text-xs transition cursor-pointer">
-          Close
-        </button>
-      </div>
-
     </div>
-  </div>
-
-  <!-- Admin Footer Partial -->
+  </main>
+  <!-- Footer -->
   <%- include("../partials/footer") %>
-
   <!-- ==================== 7. CLIENT-SIDE JS SCRIPT ==================== -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {

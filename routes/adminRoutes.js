@@ -21,5 +21,7 @@ adminRoutes.delete("/product-delete/:id", auth("api"), admin, controllers.delete
 adminRoutes.get("/manage-orders", auth("page"), admin, controllers.getManageOrders);
 // Website GET Admin Manage Users Route;
 adminRoutes.get("/manage-users", auth("page"), admin, controllers.getManageUsers);
+// Website PUT Admin User Edit Route;
+adminRoutes.put("/user-update", auth("api"), admin, controllers.putEditUser);
 // Exports;
 module.exports = adminRoutes;

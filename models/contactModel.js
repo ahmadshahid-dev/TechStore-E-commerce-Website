@@ -3,7 +3,7 @@
 *********************************** */
 const mongoose = require("mongoose");
 /* ***********************************
-             ontact Schema
+             Contact Schema
 *********************************** */
 const contactSchema = mongoose.Schema(
   {

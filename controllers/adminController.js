@@ -1,12 +1,12 @@
 /* ***********************************
                Imports
 *********************************** */
-const { validateId } = require("../utils/validate");
-const { uploadImage, deleteImages } = require("../utils/cloudinary");
-const User = require("../models/userModel");
-const Product = require("../models/productModel");
-const Order = require("../models/orderModel");
 const { check, validationResult } = require("express-validator");
+const { uploadImage, deleteImages } = require("../utils/cloudinary");
+const { validateId } = require("../utils/validate");
+const Product = require("../models/productModel");
+const User = require("../models/userModel");
+const Order = require("../models/orderModel");
 /* ***********************************
 Website GET Admin Dashboard Controller
 *********************************** */
@@ -448,13 +448,15 @@ const deleteProduct = async (req, res, next) => {
 /* ***********************************
 Website GET Admin Manage Products Controller
 *********************************** */
-const getManageOrders = (req, res, next) => {
+const getManageOrders = async (req, res, next) => {
   try {
+    const orders = await Order.find().lean();
     res.render("admin/manage-orders", {
       currentPage: "Manage Orders",
       isLoggedIn: req.session.isLoggedIn,
       user: req.session.user,
       search: "",
+      orders,
     });
   } catch (error) {
     console.error("Manage Orders fetching error:", error);
@@ -464,19 +466,91 @@ const getManageOrders = (req, res, next) => {
 /* ***********************************
 Website GET Admin Manage Products Controller
 *********************************** */
-const getManageUsers = (req, res, next) => {
+const getManageUsers = async (req, res, next) => {
   try {
+    const users = await User.aggregate([
+      {
+        $lookup: {
+          from: "orders",
+          localField: "_id",
+          foreignField: "userId",
+          as: "orders",
+        },
+      },
+      {
+        $addFields: {
+          totalOrders: { $size: "$orders" },
+          totalPrice: { $sum: "$orders.grandTotal" },
+        },
+      },
+      {
+        $unset: "orders",
+      },
+    ]);
     res.render("admin/manage-users", {
       currentPage: "Manage Users",
       isLoggedIn: req.session.isLoggedIn,
       user: req.session.user,
       search: "",
+      users,
     });
   } catch (error) {
     console.error("Manage Users fetching error:", error);
     return next(error);
   }
 };
+/* ***********************************
+Website POST Admin Edit User Controller
+*********************************** */
+const putEditUser = [
+  check("role")
+    .trim()
+    .notEmpty()
+    .withMessage("Role is required!")
+    .bail()
+    .isIn(["user", "admin", "staff"])
+    .withMessage("Invaild Role!"),
+  check("status")
+    .trim()
+    .notEmpty()
+    .withMessage("Status is required!")
+    .bail()
+    .isIn(["Active", "Block"])
+    .withMessage("Invaild Status!"),
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ type: "error", errors: errors.array() });
+    }
+    const { userId, role, status } = req.body;
+    if (!validateId(userId)) {
+      return res.status(400).json({
+        type: "error",
+        message: "Invalid user!",
+      });
+    }
+    try {
+      const user = await User.findOneAndUpdate(
+        { _id: userId },
+        { $set: { role: role, status: status } },
+      );
+      if (!user) {
+        return res.status(404).json({
+          type: "error",
+          message: "User Not Found!",
+        });
+      }
+      return res.status(200).json({
+        type: "success",
+        message: "User Updated!",
+        redirect: "/admin/manage-users",
+      });
+    } catch (error) {
+      console.error("Edit User error:", error);
+      return next(error);
+    }
+  },
+];
 /* ***********************************
                Exports
 *********************************** */
@@ -490,4 +564,5 @@ module.exports = {
   deleteProduct,
   getManageOrders,
   getManageUsers,
+  putEditUser,
 };

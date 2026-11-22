@@ -1,5 +1,4 @@
 // Imports;
-const fs = require("fs/promises");
 const mongoose = require("mongoose");
 // Validate Product;
 exports.validateId = (Id) => {
