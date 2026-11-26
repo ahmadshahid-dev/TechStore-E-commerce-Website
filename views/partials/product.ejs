@@ -23,7 +23,7 @@
   </a>
   <!-- Un-Favourite Button (Top Right) -->
   <% if(currentPage === "Favourites") { %>
-  <button class="unfav-btn bg-white/95 dark:bg-slate-800/95 text-slate-700 dark:text-slate-200 flex items-center justify-center absolute top-3 right-3 z-10 border border-slate-300 dark:border-slate-700 rounded-full shadow-md p-1.5 cursor-pointer hover:text-rose-500 hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 transition-transform ease-out duration-250" data-product-id="<%= product._id %>" title="Remove from favorites">
+  <button class="unfav-btn bg-white/95 dark:bg-slate-800/95 text-slate-700 dark:text-slate-200 flex items-center justify-center absolute top-3 right-3 z-10 border border-slate-300 dark:border-slate-700 rounded-full shadow-md p-1.5 cursor-pointer hover:text-rose-500 hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60 transition-transform ease-out duration-[250ms]" data-product-id="<%= product._id %>" title="Remove from favorites">
     <svg class="Icon h-5 w-5 shrink-0" fill="currentColor" viewBox="0 0 24 24">
       <path d="M2.80777 1.3934L21.1925 19.7782L19.7783 21.1924L16.0316 17.4454L12 21.485L3.52154 12.993C1.48186 10.7094 1.49309 7.24014 3.55524 4.96959L1.39355 2.80762L2.80777 1.3934ZM4.98009 11.6232L12 18.6543L14.6176 16.0314L4.97206 6.38623C3.67816 7.88265 3.67138 10.121 4.98009 11.6232ZM20.2428 4.75736C22.5054 7.02472 22.5831 10.637 20.4788 12.993L18.8442 14.629L17.4302 13.215L19.0202 11.6232C20.3937 10.0467 20.3191 7.66525 18.8271 6.1701C17.3281 4.66794 14.9078 4.60702 13.3371 6.01688L12.0021 7.21524L10.6662 6.01781C10.3163 5.70415 9.92487 5.46325 9.51117 5.29473L7.2604 3.04551C8.92926 2.83935 10.6682 3.33369 12.0011 4.52853C14.3502 2.42 17.9802 2.49 20.2428 4.75736Z" />
     </svg>
@@ -31,7 +31,7 @@
   </button>
   <% } %>
   <!-- Add-to-Favourite Button (Bottom Right) -->
-  <button class="fav-btn bg-rose-500 text-white flex items-center justify-center p-1.5 rounded-full absolute top-1.5 sm:top-3 right-1.5 sm:right-3 z-10 cursor-pointer hover:bg-rose-600 hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 transition ease-out duration-[250ms] overflow-hidden <%= currentPage === "Favourites" ? 'hidden' : 'block' %>" <%= product.stockQuantity <= 0 ? 'disabled' : '' %> data-product-id="<%= product._id %>" title="Add to Favourite">
+  <button class="fav-btn bg-rose-500 text-white flex items-center justify-center p-1.5 rounded-full absolute top-1.5 sm:top-3 right-1.5 sm:right-3 z-10 cursor-pointer hover:bg-rose-600 hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60 transition ease-out duration-[250ms] overflow-hidden <%= currentPage === "Favourites" ? 'hidden' : 'block' %>" <%= product.stockQuantity <= 0 ? 'disabled' : '' %> data-product-id="<%= product._id %>" title="Add to Favourite">
     <svg class="Icon h-4.5 w-4.5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" />
     </svg>
@@ -63,7 +63,7 @@
       </span>
       <% } %>
     </div>
-    <button class="cart-btn bg-orange-600 w-full text-white rounded-xl shadow-md shadow-orange-500/20 flex items-center justify-center gap-x-2 cursor-pointer py-2.5 sm:py-3 hover:bg-orange-700 active:scale-[0.98] transition ease-out duration-250 disabled:opacity-50 disabled:cursor-not-allowed" aria-label="Add to cart" data-product-id="<%= product._id %>" <%= product?.stockQuantity <= 0 ? 'disabled' : '' %>>
+    <button class="cart-btn bg-orange-600 w-full text-white rounded-xl shadow-md shadow-orange-500/20 flex items-center justify-center gap-x-2 cursor-pointer py-2.5 sm:py-3 hover:bg-orange-700 active:scale-[0.98] transition ease-out duration-[250ms] disabled:cursor-not-allowed disabled:opacity-60" aria-label="Add to cart" data-product-id="<%= product._id %>" <%= product?.stockQuantity <= 0 ? 'disabled' : '' %>>
       <svg class="Icon h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
       </svg>

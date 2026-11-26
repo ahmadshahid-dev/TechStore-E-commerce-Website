@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 
 <head>
   <meta charset="UTF-8" />
@@ -17,7 +17,7 @@ text-slate-900 dark:text-slate-100 antialiased selection:bg-orange-500 selection
   <%- include("../partials/header") %>
   <!-- Main -->
   <main>
-    <!-- ==================== 1. BREADCRUMB NAVIGATION ==================== -->
+    <!-- ==================== BREADCRUMB NAVIGATION ==================== -->
     <div class="backdrop-blur-md max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden">
       <nav class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-inter flex items-center gap-2 overflow-x-auto whitespace-nowrap py-3.5">
         <a class="hover:text-orange-600 dark:hover:text-orange-400 hover:underline hover:transition-colors" href="/">
@@ -33,7 +33,7 @@ text-slate-900 dark:text-slate-100 antialiased selection:bg-orange-500 selection
         </span>
       </nav>
     </div>
-    <!-- ==================== 2. MAIN PRODUCT SECTION ==================== -->
+    <!-- ==================== MAIN PRODUCT SECTION ==================== -->
     <section class="backdrop-blur-md pb-8 sm:pb-10 lg:pb-12 overflow-hidden">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-10">
@@ -131,12 +131,12 @@ text-slate-900 dark:text-slate-100 antialiased selection:bg-orange-500 selection
                 <div class="flex items-center gap-3.5">
                   <div class="bg-white dark:bg-slate-900 w-fit flex items-center border-2 border-slate-300 dark:border-slate-700 rounded-xl shadow-sm">
                     <button class="text-slate-700 dark:text-slate-300 text-xl font-montserrat 
-                    font-bold w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800" id="minus-pdp" type="button">
+                    font-bold w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 hover:transition-colors" id="minus-pdp" type="button">
                       −
                     </button>
                     <input class="bg-transparent text-slate-900 dark:text-white w-15 text-lg font-montserrat font-bold text-center outline-none" type="number" id="quantity" name="quantity" value="1" min="1" max="10" readonly />
                     <button class="text-slate-700 dark:text-slate-300 text-xl font-montserrat 
-                    font-bold w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800" id="plus-pdp" type="button">
+                    font-bold w-10 h-10 flex items-center justify-center rounded-lg cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 hover:transition-colors" id="plus-pdp" type="button">
                       +
                     </button>
                   </div>
@@ -146,7 +146,7 @@ text-slate-900 dark:text-slate-100 antialiased selection:bg-orange-500 selection
               <!-- Action Buttons -->
               <div class="flex flex-col sm:flex-row gap-5">
                 <!-- Add to Cart Button -->
-                <button class="bg-gradient-to-r from-orange-600 to-red-600 text-white rounded-xl shadow-sm shadow-orange-500/30 hover:shadow-orange-500/40 gap-x-2.5 hover:to-red-700 hover:from-orange-700 flex flex-1 items-center justify-center cursor-pointer py-3.5 px-6 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition ease-out duration-[250ms]" type="submit" <%= product.stockQuantity <= 0 ? 'disabled' : '' %>>
+                <button class="bg-gradient-to-r from-orange-600 to-red-600 text-white rounded-xl shadow-sm shadow-orange-500/30 hover:shadow-orange-500/40 gap-x-2.5 hover:to-red-700 hover:from-orange-700 flex flex-1 items-center justify-center cursor-pointer py-3.5 px-6 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed transition ease-out duration-[250ms]" type="submit" <%= product.stockQuantity <= 0 ? 'disabled' : '' %>>
                   <svg class="Icon h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path>
                   </svg>
@@ -154,7 +154,7 @@ text-slate-900 dark:text-slate-100 antialiased selection:bg-orange-500 selection
                   <span class="Text text-[0.9375rem] font-montserrat font-semibold leading-none">Add to Cart</span>
                 </button>
                 <!-- Wishlist Button -->
-                <button class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 flex-1 sm:flex-initial flex items-center justify-center gap-x-2.5 border border-slate-200 dark:border-slate-700 shadow-sm rounded-xl py-3.25 px-6 hover:bg-slate-50 dark:hover:bg-slate-800 hover:shadow-md active:scale-[0.98] cursor-pointer group hover:transition hover:ease-out hover:duration-[250ms]" id="fav-btn" type="button" data-product-id="<%= product._id %>">
+                <button class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 flex-1 sm:flex-initial flex items-center justify-center gap-x-2.5 border border-slate-200 dark:border-slate-700 shadow-sm rounded-xl py-3.25 px-6 hover:bg-slate-50 dark:hover:bg-slate-800 hover:shadow-md active:scale-[0.98] cursor-pointer group hover:transition hover:ease-out hover:duration-[250ms] disabled:opacity-60 disabled:cursor-not-allowed" id="fav-btn" type="button" data-product-id="<%= product._id %>">
                   <svg class="Icon text-red-500 h-5 w-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12.001 4.52853C14.35 2.42 17.98 2.49 20.2426 4.75736C22.5053 7.02472 22.583 10.637 20.4786 12.993L11.9999 21.485L3.52138 12.993C1.41705 10.637 1.49571 7.01901 3.75736 4.75736C6.02157 2.49315 9.64519 2.41687 12.001 4.52853Z" />
                   </svg>
@@ -163,7 +163,7 @@ text-slate-900 dark:text-slate-100 antialiased selection:bg-orange-500 selection
                 </button>
               </div>
               <!-- Buy Now Button -->
-              <button class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white w-full flex items-center justify-center gap-x-2.5 rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-orange-500/40 cursor-pointer py-4 px-6 active:scale-[0.98] disabled:opacity-50 transition ease-out duration-[250ms] disabled:cursor-not-allowed" id="buy-btn" type="submit" <%= product.stockQuantity <= 0 ? 'disabled' : '' %>>
+              <button class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white w-full flex items-center justify-center gap-x-2.5 rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-orange-500/40 cursor-pointer py-4 px-6 active:scale-[0.98] disabled:opacity-60 transition ease-out duration-[250ms] disabled:cursor-not-allowed" id="buy-btn" type="submit" <%= product.stockQuantity <= 0 ? 'disabled' : '' %>>
                 <span class="Spinner h-4.5 w-4.5 border-[3px] border-orange-100 border-t-orange-500 shrink-0 rounded-full animate-spin drop-shadow-[0_0_4px_rgba(249,115,22,0.6)] hidden"></span>
                 <span class="Text text-[0.9375rem] font-montserrat font-semibold leading-none">Buy Now</span>
               </button>
@@ -215,7 +215,7 @@ text-slate-900 dark:text-slate-100 antialiased selection:bg-orange-500 selection
         </div>
       </div>
     </section>
-    <!-- ==================== 3. DESCRIPTION & SPECIFICATIONS ==================== -->
+    <!-- ==================== DESCRIPTION & SPECIFICATIONS ==================== -->
     <section class="border-t border-slate-200 dark:border-slate-800 py-8 sm:py-10 
       lg:py-12">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -235,7 +235,7 @@ text-slate-900 dark:text-slate-100 antialiased selection:bg-orange-500 selection
         </div>
       </div>
     </section>
-    <!-- ==================== 4. RELATED PRODUCTS ==================== -->
+    <!-- ==================== RELATED PRODUCTS ==================== -->
     <section class="bg-white/50 dark:bg-slate-900/50 border-t border-slate-200 
     dark:border-slate-800 py-8 sm:py-10 lg:py-12">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

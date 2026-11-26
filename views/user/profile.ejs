@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="csrf-token" content="<%= csrfToken %>">
-  <title>Customer Profile & Dashboard | TechStore</title>
+  <title>Profile & Dashboard | TechStore</title>
   <!-- Stylesheet -->
   <link rel="stylesheet" href="/css/output.css" />
 </head>
@@ -16,7 +16,7 @@
   <%- include("../partials/header") %>
   <!-- Main -->
   <main>
-    <!-- ==================== 1. TOP HEADER BANNER ==================== -->
+    <!-- ==================== TOP HEADER BANNER ==================== -->
     <section class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md overflow-hidden py-8 sm:py-10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -38,14 +38,14 @@
           <!-- Action Buttons (Edit + Settings) -->
           <div class="flex items-center gap-x-2.5">
             <!-- Edit Profile Button -->
-            <button class="openTrigger bg-orange-600 text-white inline-flex items-center gap-2 rounded-xl shadow-lg shadow-orange-500/25 cursor-pointer py-3 px-5 hover:bg-orange-700 hover:shadow-orange-500/35 active:scale-[0.98] transition ease-out duration-[250ms]" type="button" data-model="editProfileModel">
+            <button class="openTrigger bg-orange-600 text-white inline-flex items-center gap-2 rounded-xl shadow-lg shadow-orange-500/25 cursor-pointer py-3 px-5 hover:bg-orange-700 hover:shadow-orange-500/35 active:scale-[0.98] transition ease-out duration-200" type="button" data-model="editProfileModel">
               <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
               </svg>
               <span class="text-xs sm:text-sm font-montserrat font-bold">Edit Profile</span>
             </button>
             <!-- Settings Button -->
-            <a class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800  rounded-xl shadow-sm hover:bg-slate-100 dark:hover:bg-slate-800 hover:transition-colors p-2.75" href="/@<%= _user.username %>/privacy-security">
+            <a class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800  rounded-xl shadow-sm p-2.75 hover:bg-slate-100 dark:hover:bg-slate-800 hover:transition-colors hover:ease-out duration-200" href="/@<%= _user.username %>/privacy-security">
               <svg class="text-slate-400 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -55,7 +55,7 @@
         </div>
       </div>
     </section>
-    <!-- ==================== 2. MAIN DASHBOARD ==================== -->
+    <!-- ==================== MAIN DASHBOARD ==================== -->
     <section class="border-t border-slate-200/80 dark:border-slate-800/80 py-8 sm:py-10 lg:py-12">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <!-- ==================== 4 KPI STATS METRIC CARDS ==================== -->
@@ -227,7 +227,7 @@
               <!-- Navigation Links -->
               <div class="pt-4 border-t border-slate-100 dark:border-slate-800/80 space-y-2.5">
                 <a class="bg-slate-50 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300
-                 w-full flex items-center justify-between rounded-xl py-2 px-4 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/30 dark:hover:text-red-400" href="/@<%= _user.username %>/address-book">
+                 w-full flex items-center justify-between rounded-xl py-2 px-4 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/30 dark:hover:text-red-400 hover:transition-colors hover:ease-out duration-200" href="/@<%= _user.username %>/address-book">
                   <div class="flex items-center gap-x-2.5">
                     <svg class="text-red-500 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
@@ -238,7 +238,7 @@
                   <span class="text-slate-400">→</span>
                 </a>
                 <a class="bg-slate-50 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300
-                 w-full flex items-center justify-between rounded-xl py-2 px-4 hover:bg-orange-50 hover:text-orange-600 dark:hover:bg-orange-950/30 dark:hover:text-orange-400" href="/@<%= _user.username %>/my-orders">
+                 w-full flex items-center justify-between rounded-xl py-2 px-4 hover:bg-orange-50 hover:text-orange-600 dark:hover:bg-orange-950/30 dark:hover:text-orange-400 hover:transition-colors hover:ease-out duration-200" href="/@<%= _user.username %>/my-orders">
                   <div class="flex items-center gap-x-2.5">
                     <svg class="text-orange-500 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -248,7 +248,7 @@
                   <span class="text-slate-400">→</span>
                 </a>
                 <a class="bg-slate-50 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300
-                 w-full flex items-center justify-between rounded-xl py-2 px-4 hover:bg-amber-50 hover:text-amber-600 dark:hover:bg-amber-950/30 dark:hover:text-amber-400" href="/@<%= _user.username %>/order-tracking">
+                 w-full flex items-center justify-between rounded-xl py-2 px-4 hover:bg-amber-50 hover:text-amber-600 dark:hover:bg-amber-950/30 dark:hover:text-amber-400 hover:transition-colors hover:ease-out duration-200" href="/@<%= _user.username %>/order-tracking">
                   <div class="flex items-center gap-x-2.5">
                     <svg class="text-amber-500 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M12 22V12" />
@@ -263,7 +263,7 @@
                   <span class="text-slate-400">→</span>
                 </a>
                 <a class="bg-slate-50 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300
-                 w-full flex items-center justify-between rounded-xl py-2 px-4 hover:bg-purple-50 hover:text-purple-600 dark:hover:bg-purple-950/30 dark:hover:text-purple-400" href="/@<%= _user.username %>/privacy-security">
+                 w-full flex items-center justify-between rounded-xl py-2 px-4 hover:bg-purple-50 hover:text-purple-600 dark:hover:bg-purple-950/30 dark:hover:text-purple-400 hover:transition-colors hover:ease-out duration-200" href="/@<%= _user.username %>/privacy-security">
                   <div class="flex items-center gap-x-2.5">
                     <svg class="text-purple-500 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
@@ -275,7 +275,7 @@
                   <span class="text-slate-400">→</span>
                 </a>
                 <button class="logout bg-rose-50 dark:bg-rose-950/30 text-rose-600 dark:text-rose-400 
-                w-full flex items-center justify-center gap-2 rounded-xl cursor-pointer py-2.5 px-4 hover:bg-rose-100 dark:hover:bg-rose-900/50 border border-rose-200/80 dark:border-rose-900/40">
+                w-full flex items-center justify-center gap-2 rounded-xl cursor-pointer py-2.5 px-4 hover:bg-rose-100 dark:hover:bg-rose-900/50 border border-rose-200/80 dark:border-rose-900/40 hover:transition-colors hover:ease-out duration-[250ms]">
                   <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                   </svg>
@@ -299,7 +299,7 @@
                 <h3 class="text-slate-900 dark:text-white text-base sm:text-lg font-montserrat font-bold leading-none">
                   Personal Information
                 </h3>
-                <button class="openTrigger text-orange-600 dark:text-orange-400 flex items-center gap-x-0.5 cursor-pointer hover:text-orange-700 hover:underline" type="button" data-model="editProfileModel">
+                <button class="openTrigger text-orange-600 dark:text-orange-400 flex items-center gap-x-0.5 cursor-pointer hover:text-orange-700 hover:underline hover:transition-colors ease-out hover:duration-150" type="button" data-model="editProfileModel">
                   <span class="text-xs font-montserrat font-semibold">Edit</span>
                   <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -353,7 +353,7 @@
                     <p class="text-slate-400 text-xs font-inter">Default address used for 1-click checkout.</p>
                   </div>
                 </div>
-                <a class="text-orange-600 dark:text-orange-400 flex items-center gap-x-0.5 hover:text-orange-700" href="/@<%= _user.username %>/address-book">
+                <a class="text-orange-600 dark:text-orange-400 flex items-center gap-x-0.5 hover:text-orange-700 hover:transition-colors hover:ease-out hover:duration-150" href="/@<%= _user.username %>/address-book">
                   <span class="text-xs font-montserrat font-bold">Manage</span>
                   <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -385,7 +385,7 @@
                     </span>
                   </p>
                 </div>
-                <a class="bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold border border-slate-200 dark:border-slate-700 self-start sm:self-auto rounded-xl shadow-sm shrink-0 py-2 px-3.5 hover:text-orange-600 hover:transition-colors" href="/@<%= _user.username %>/address-book">
+                <a class="bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold border border-slate-200 dark:border-slate-700 self-start sm:self-auto rounded-xl shadow-sm shrink-0 py-2 px-3.5 hover:text-orange-600 hover:transition-colors hover:ease-out hover:duration-200" href="/@<%= _user.username %>/address-book">
                   Change Address
                 </a>
               </div>
@@ -393,7 +393,7 @@
               <div class="border border-dashed border-slate-200 dark:border-slate-800 rounded-2xl text-center p-6">
                 <p class="text-slate-500 dark:text-slate-400 text-xs font-inter mb-3.5">No default address
                   registered yet.</p>
-                <a class="bg-orange-600 text-white inline-flex items-center gap-x-1.5 rounded-xl shadow-md shadow-orange-500/20 py-2.5 px-4 hover:bg-orange-700 hover:transition-colors hover:ease-out hover:duration-[250ms]" href="/@<%= _user.username %>/address-add">
+                <a class="bg-orange-600 text-white inline-flex items-center gap-x-1.5 rounded-xl shadow-md shadow-orange-500/20 py-2.5 px-4 hover:bg-orange-700 hover:transition-colors hover:ease-out hover:duration-200" href="/@<%= _user.username %>/address-add">
                   <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                   </svg>
@@ -411,7 +411,7 @@
                   </h3>
                   <p class="text-slate-400 text-xs font-inter">Live updates on your recent purchases.</p>
                 </div>
-                <a class="text-orange-600 dark:text-orange-400 text-xs font-montserrat font-bold truncate flex items-center gap-x-0.5 hover:text-orange-700" href="/@<%= _user.username %>/orders">
+                <a class="text-orange-600 dark:text-orange-400 text-xs font-montserrat font-bold truncate flex items-center gap-x-0.5 hover:text-orange-700 hover:transition-colors" href="/@<%= _user.username %>/orders">
                   <span>View All</span>
                   <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -429,13 +429,13 @@
                       </span>
                       <span class="text-slate-400 text-[0.6875rem] font-inter">
                         • <%= new Date(order.createdAt).toLocaleDateString('en-US', { month: 'short' ,
-                                day: 'numeric' , year: 'numeric' }) %>
+                        day: 'numeric' , year: 'numeric' }) %>
                       </span>
                     </div>
                     <p class="text-slate-600 dark:text-slate-400 text-[0.6875rem] font-inter font-medium flex items-center gap-x-1.25 sm:gap-x-2.5">
                       <%= order.items.length %>
                       <%= order.items.length> 1 ? 'Items' : 'Item' %> <span>• Grand Total: <strong class="text-orange-600 dark:text-orange-400 text-xs">Rs: <%=
-                                      order.grandTotal.toLocaleString() %></strong></span>
+                      order.grandTotal.toLocaleString() %></strong></span>
                     </p>
                   </div>
                   <span class="text-[0.6875rem] font-montserrat font-bold <%= order.orderStatus === 'Delivered' ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400' : (order.orderStatus === 'Cancelled' ? 'bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400' : 'bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400') %> rounded-full py-1 px-2.5">
@@ -455,11 +455,11 @@
         </div>
       </div>
     </section>
-    <!-- ==================== 4. EDIT PROFILE MODAL DIALOG ==================== -->
+    <!-- ==================== EDIT PROFILE MODEL DIALOG ==================== -->
     <div class="bg-slate-950/60 backdrop-blur-sm hidden items-center justify-center overflow-y-auto 
     fixed inset-0 z-50 p-4" id="editProfileModel">
       <div class="bg-white dark:bg-slate-900 relative w-full max-w-2xl border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl my-8 overflow-hidden transition-transform ease-in-out duration-300">
-        <!-- Modal Header -->
+        <!-- Model Header -->
         <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 py-5 px-6">
           <div class="space-y-0.5">
             <h3 class="text-slate-900 dark:text-white text-lg font-montserrat font-bold">
@@ -469,7 +469,7 @@
               Update your account details and profile photo.
             </p>
           </div>
-          <button class="closeTrigger text-slate-400 rounded-xl cursor-pointer p-2 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-600 dark:hover:text-slate-200 hover:transition-colors" type="button">
+          <button class="closeTrigger text-slate-400 rounded-xl cursor-pointer p-2 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-600 dark:hover:text-slate-200 hover:transition-colors hover:ease-out hover:duration-150" type="button">
             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -576,10 +576,10 @@
           </div>
           <!-- Modal Actions Footer -->
           <div class="flex items-center justify-end gap-x-3 border-t border-slate-100 dark:border-slate-800 pt-5">
-            <button class="cancelTrigger text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold border border-slate-200 dark:border-slate-700 rounded-xl cursor-pointer py-2.5 px-5 hover:bg-slate-100 dark:hover:bg-slate-800 hover:transition-colors hover:ease-out hover:duration-[250ms]" type="button">
+            <button class="cancelTrigger text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold border border-slate-200 dark:border-slate-700 rounded-xl cursor-pointer py-2.5 px-5 hover:bg-slate-100 dark:hover:bg-slate-800 hover:transition-colors hover:ease-out hover:duration-200" type="button">
               Cancel
             </button>
-            <button class="bg-orange-600 text-white flex items-center justify-center gap-x-1.5 rounded-xl shadow-md shadow-orange-500/25 cursor-pointer py-2.5 px-6 hover:bg-orange-700 active:scale-[0.98] transition-colors ease-out duration-[250ms] disabled:cursor-not-allowed disabled:opacity-50" type="submit">
+            <button class="bg-orange-600 text-white flex items-center justify-center gap-x-1.5 rounded-xl shadow-md shadow-orange-500/25 cursor-pointer py-2.5 px-6 hover:bg-orange-700 active:scale-[0.98] transition-colors ease-out duration-[250ms] disabled:cursor-not-allowed disabled:opacity-60" type="submit">
               <span class="Spinner h-3.5 w-3.5 border-[3px] border-orange-100 border-t-orange-500 shrink-0 rounded-full animate-spin drop-shadow-[0_0_4px_rgba(249,115,22,0.6)] hidden"></span>
               <span class="Text text-xs font-montserrat font-bold">Save Changes</span>
             </button>

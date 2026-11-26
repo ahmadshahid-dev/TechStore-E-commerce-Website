@@ -12,19 +12,18 @@
 </head>
 
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased selection:bg-orange-500 selection:text-white">
-
   <!-- Header -->
   <%- include("../partials/header") %>
   <!-- Main -->
   <main>
-    <!-- ==================== 1. BREADCRUMBS & TOP BAR ==================== -->
+    <!-- ==================== BREADCRUMBS & TOP BAR ==================== -->
     <section class="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 py-8 sm:py-10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div class="space-y-1.5">
             <nav class="text-slate-500 dark:text-slate-400 text-xs font-inter font-medium flex items-center space-x-2" aria-label="Breadcrumb">
               <ol class="flex items-center space-x-2 text-xs font-medium text-slate-500 dark:text-slate-400">
-                <li><a href="/admin/dashboard" class="hover:text-orange-600 transition-colors">Admin</a></li>
+                <li><a href="/admin/dashboard" class="hover:text-orange-600 hover:transition-colors">Admin</a></li>
                 <li><span>/</span></li>
                 <li class="text-slate-900 dark:text-white font-semibold">Orders</li>
               </ol>
@@ -37,7 +36,7 @@
             </p>
           </div>
           <!-- Quick Top Actions -->
-          <button class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 w-fit inline-flex items-center gap-x-2 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm cursor-pointer py-2.5 px-4 hover:bg-slate-100 dark:hover:bg-slate-800 hover:transition-colors hover:ease-out hover:duration-[250ms]" onclick="window.print()">
+          <button class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 w-fit inline-flex items-center gap-x-2 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm cursor-pointer py-2.5 px-4 hover:bg-slate-100 dark:hover:bg-slate-800 hover:transition-colors hover:ease-out hover:duration-200" onclick="window.print()">
             <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
             </svg>
@@ -46,7 +45,7 @@
         </div>
       </div>
     </section>
-    <!-- ==================== 2. KPI / STATS CARDS ==================== -->
+    <!-- ==================== KPI / STATS CARDS ==================== -->
     <section class="backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 py-8 sm:py-10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
@@ -121,7 +120,7 @@
         </div>
       </div>
     </section>
-    <!-- ==================== 3. TOOLBAR: SEARCH & STATUS FILTER CHIPS ==================== -->
+    <!-- ==================== TOOLBAR: SEARCH & STATUS FILTER CHIPS ==================== -->
     <section class="backdrop-blur-md max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
       <div class="bg-white dark:bg-slate-900 space-y-4 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-4 sm:p-5 mb-6 sm:mb-8">
         <!-- Search & Dropdown Actions Row -->
@@ -133,43 +132,46 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </span>
-            <input class="bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 w-full text-xs sm:text-sm font-inter border border-slate-300 dark:border-slate-800 focus:ring focus:border-orange-500 focus:ring-orange-500/20 focus:outline-none rounded-xl placeholder:text-slate-400 py-2.5 pl-10 pr-4" id="orderSearchInput" type="text" placeholder="Search by Order ID, customer name, phone..." />
+            <input class="bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 w-full text-xs sm:text-sm font-inter border border-slate-300 dark:border-slate-800 focus:ring focus:border-orange-500 focus:ring-orange-500/20 focus:outline-none rounded-xl placeholder:text-slate-400 py-2.5 pl-10 pr-4" id="orderSearchInput" type="text" placeholder="Search by Order ID, customer name..." />
           </div>
           <!-- Quick Filters: Payment & Date -->
           <div class="flex items-center gap-2.5">
-            <select class="bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold cursor-pointer border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring focus:ring-orange-500 rounded-xl py-2.5 px-3" id="paymentFilterSelect">
+            <select class="bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold cursor-pointer border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring focus:ring-orange-500 rounded-xl py-2.5 px-3" id="payMethodFilter">
               <option value="All">All Payments</option>
               <option value="COD">Cash on Delivery</option>
               <option value="Online">Online Paid</option>
             </select>
-            <button class=" text-slate-600 dark:text-slate-400 text-xs font-montserrat font-semibold border border-slate-200 dark:border-slate-700 rounded-xl py-2.5 px-3.5 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 hover:transition hover:ease-out hover:duration-[250ms]" id="clearOrderFilterBtn">
+            <button class="clearOrderFilter text-slate-600 dark:text-slate-400 text-xs font-montserrat font-semibold border border-slate-200 dark:border-slate-700 rounded-xl py-2.5 px-3.5 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 hover:transition hover:ease-out hover:duration-[250ms]">
               Clear
             </button>
           </div>
         </div>
         <!-- Filter Chips (Status Tabs) -->
         <div class="border-t border-slate-100 dark:border-slate-800/80 flex items-center gap-x-2 [scrollbar-width:none] pt-3 pb-1 overflow-x-auto">
-          <button class="order-status-chip active-chip bg-orange-600 text-white text-xs font-montserrat font-bold whitespace-nowrap cursor-pointer rounded-xl shadow-sm shadow-orange-600/20 py-2 px-4 hover:transition hover:ease-out hover:duration-[250ms]" data-status="All">
+          <button class="orderStatus-chip active-chip bg-orange-600 text-white text-xs font-montserrat font-bold whitespace-nowrap cursor-pointer rounded-xl shadow-sm shadow-orange-600/20 py-2 px-4 hover:transition hover:ease-out hover:duration-[250ms]" data-status="All">
             All Orders
           </button>
-          <button class="order-status-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 hover:transition hover:ease-out hover:duration-[250ms]" data-status="Pending">
+          <button class="orderStatus-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 hover:transition hover:ease-out hover:duration-[250ms]" data-status="Pending">
             Pending
           </button>
-          <button class="order-status-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 hover:transition hover:ease-out hover:duration-[250ms]" data-status="Processing">
+          <button class="orderStatus-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 hover:transition hover:ease-out hover:duration-[250ms]" data-status="Confirmed">
+            Confirmed
+          </button>
+          <button class="orderStatus-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 hover:transition hover:ease-out hover:duration-[250ms]" data-status="Processing">
             Processing
           </button>
-          <button class="order-status-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 hover:transition hover:ease-out hover:duration-[250ms]" data-status="Shipped">
+          <button class="orderStatus-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 hover:transition hover:ease-out hover:duration-[250ms]" data-status="Shipped">
             Shipped
           </button>
-          <button class="order-status-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 hover:transition hover:ease-out hover:duration-[250ms]" data-status="Delivered">
+          <button class="orderStatus-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 hover:transition hover:ease-out hover:duration-[250ms]" data-status="Delivered">
             Delivered
           </button>
-          <button class="order-status-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 hover:transition hover:ease-out hover:duration-[250ms]" data-status="Cancelled">
+          <button class="orderStatus-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 hover:transition hover:ease-out hover:duration-[250ms]" data-status="Cancelled">
             Cancelled
           </button>
         </div>
       </div>
-      <!-- ==================== 4. ORDERS TABLE CARD ==================== -->
+      <!-- ==================== ORDERS TABLE CARD ==================== -->
       <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
         <div class="overflow-x-auto [scrollbar-width:none]">
           <table class="w-full text-left border-collapse">
@@ -190,7 +192,7 @@
             <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-xs sm:text-sm font-medium">
               <% if (orders && orders.length > 0) { %>
               <% orders.forEach((order) => { %>
-              <tr class="order-row hover:bg-slate-50/80 dark:hover:bg-slate-800/40 hover:transition-colors hover:ease-out hover:duration-150" data-order-id="<%= order.orderNumber || order._id %>" data-status="<%= order.status || 'Pending' %>" data-customer="<%= order.shippingAddress?.fullName || 'Customer' %>" data-payment="<%= order.paymentMethod || 'COD' %>">
+              <tr class="order-card hover:bg-slate-50/80 dark:hover:bg-slate-800/40 hover:transition-colors hover:ease-out hover:duration-150" data-order-id="<%= order.orderId %>" data-status="<%= order.status %>" data-name="<%= order.address.fullName %>" data-payment-method="<%= order.paymentMethod || 'COD' %>">
                 <!-- Order ID & Date -->
                 <td class="py-4 px-4 sm:px-6">
                   <span class="text-orange-600 dark:text-orange-400 text-xs font-mono font-bold block">
@@ -247,13 +249,20 @@
                 </td>
                 <!-- Action -->
                 <td class="py-4 px-4 sm:px-6 text-right">
-                  <!-- View Details Modal Trigger -->
-                  <button class="view-order-btn text-slate-600 dark:text-slate-400 hover:text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950/40 rounded-xl cursor-pointer p-2 transition-colors ease-out duration-150" type="button" title="View Order Details">
-                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                  </button>
+                  <!-- View Details & Edit Model Trigger -->
+                  <div class="flex items-center justify-end gap-x-2.5">
+                    <button class="openTrigger text-slate-600 dark:text-slate-400 rounded-xl cursor-pointer p-2 hover:bg-orange-50 dark:hover:bg-orange-950/40 hover:text-orange-600 transition ease-out duration-200" type="button" data-model="orderStatusModel" data-order-id="<%= order._id %>">
+                      <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                      </svg>
+                    </button>
+                    <button class="openTrigger text-slate-600 dark:text-slate-400 hover:text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950/40 rounded-xl cursor-pointer p-2 transition-colors ease-out duration-150" type="button" data-model="orderModel" data-order="<%= JSON.stringify(order) %>" title="View Order Details">
+                      <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                    </button>
+                  </div>
                 </td>
               </tr>
               <% }); %>
@@ -289,7 +298,7 @@
           <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter max-w-sm mx-auto mb-4.5">
             Try clearing your search query or selecting a different order filter.
           </p>
-          <button class="clearUserFilters bg-orange-600 text-white text-sm font-montserrat font-semibold inline-flex items-center gap-x-1.5 rounded-xl cursor-pointer py-2.5 px-4 hover:bg-orange-700 transition ease-out duration-[250ms]">
+          <button class="clearOrderFilter bg-orange-600 text-white text-sm font-montserrat font-semibold inline-flex items-center gap-x-1.5 rounded-xl cursor-pointer py-2.5 px-4 hover:bg-orange-700 transition-colors ease-out duration-200">
             Reset All Filters
           </button>
         </div>
@@ -306,235 +315,127 @@
         </div>
       </div>
     </section>
-    <!-- ==================== 6. ORDER DETAILS & STATUS UPDATE MODAL ==================== -->
-    <div class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto" id="orderModal">
-      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-2xl shadow-2xl overflow-hidden relative animate-in fade-in zoom-in-95 duration-200" id="print-modal-area">
-
+    <!-- ==================== ORDER STATUS UPDATE MODAL ==================== -->
+    <div class="bg-slate-950/60 backdrop-blur-sm fixed inset-0 flex items-center justify-center p-4 z-50 hidden" id="orderStatusModel">
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-2xl shadow-2xl overflow-hidden relative animate-in fade-in zoom-in-95 duration-200">
         <!-- Modal Header -->
-        <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between no-print">
-          <div>
-            <span class="text-xs font-mono font-bold text-orange-600 dark:text-orange-400" id="modal-order-number">#TS-894215</span>
-            <h2 class="text-lg font-black font-montserrat text-slate-900 dark:text-white">Order Details</h2>
-          </div>
-          <button type="button" id="closeOrderModal" class="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="border-b border-slate-100 dark:border-slate-800 flex items-center justify-between p-6">
+          <h2 class="text-slate-900 dark:text-white text-lg font-montserrat font-bold leading-none">Order <span class="text-orange-600 dark:text-orange-400">Status</span></h2>
+          <button class="closeTrigger text-slate-400 rounded-xl cursor-pointer p-2 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-600 dark:hover:text-white transition-colors ease-out duration-150" type="button">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
-
         <!-- Modal Body Content -->
-        <div class="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
-
-          <!-- Status Update Control Form -->
-          <form id="updateOrderStatusForm" action="/admin/orders/update-status" method="POST" class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 no-print">
-            <input type="hidden" name="orderId" id="modal-form-order-id" value="" />
-            <div>
-              <label class="text-xs font-bold text-slate-900 dark:text-white block">Update Order Status</label>
-              <span class="text-[11px] text-slate-500">Change status to notify user</span>
+        <div class="overflow-y-auto p-5">
+          <!-- Status Update Form -->
+          <form class="bg-slate-50 dark:bg-slate-800/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border border-slate-200 dark:border-slate-800 rounded-2xl p-4" id="updateOrderStatusForm">
+            <input type="hidden" name="orderId" id="orderIdInput" value="" />
+            <div class="flex flex-col gap-y-0.5">
+              <label class="text-slate-900 dark:text-white text-xs font-montserrat font-bold leading-none" for="status-select">Update Order Status</label>
+              <span class="text-slate-500 text-[0.6875rem] font-inter">Change status to notify user</span>
             </div>
-            <div class="flex items-center gap-2">
-              <select name="status" id="modal-status-select" class="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500">
+            <div class="flex items-center gap-x-2.5">
+              <select class="bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-xs font-montserrat font-bold border border-slate-300 dark:border-slate-700 focus:ring focus:ring-orange-500 focus:outline-0 rounded-xl cursor-pointer py-2 px-3" id="status-select" name="status">
                 <option value="Pending">Pending</option>
+                <option value="Confirmed">Confirmed</option>
                 <option value="Processing">Processing</option>
                 <option value="Shipped">Shipped</option>
                 <option value="Delivered">Delivered</option>
                 <option value="Cancelled">Cancelled</option>
               </select>
-              <button type="submit" class="px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs shadow-sm transition cursor-pointer">
-                Update
+              <button class="bg-orange-600 text-white flex items-center justify-center gap-x-1.5 rounded-xl shadow-sm cursor-pointer px-4 py-2 hover:bg-orange-700 transition ease-out duration-[250ms] disabled:cursor-not-allowed disabled:opacity-50" type="submit">
+                <span class="Spinner h-3.5 w-3.5 border-[3px] border-orange-100 border-t-orange-500 shrink-0 rounded-full animate-spin drop-shadow-[0_0_4px_rgba(249,115,22,0.6)] hidden"></span>
+                <span class="Text text-xs font-montserrat font-bold">Update</span>
               </button>
             </div>
           </form>
-
-          <!-- Shipping Address Details -->
-          <div>
-            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Customer & Shipping Info</h3>
-            <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs sm:text-sm space-y-1">
-              <p class="font-bold text-slate-900 dark:text-white" id="modal-customer-name">Ahmad Shahid</p>
-              <p class="text-slate-600 dark:text-slate-300" id="modal-customer-address">House #123, Block 4, Gulberg III, Lahore, Punjab</p>
-              <p class="text-slate-500 font-mono" id="modal-customer-phone">Phone: +92 300 1234567</p>
-              <p class="text-slate-500 font-mono" id="modal-customer-email">Email: customer@example.com</p>
-            </div>
-          </div>
-
-          <!-- Ordered Items Summary List -->
-          <div>
-            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Ordered Products</h3>
-            <div class="divide-y divide-slate-100 dark:divide-slate-800 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden p-2 bg-white dark:bg-slate-900" id="modal-items-container">
-              <!-- Dynamic Items Injected by JS or Default Sample -->
-              <div class="p-3 flex items-center justify-between text-xs sm:text-sm">
-                <div>
-                  <p class="font-bold text-slate-900 dark:text-white">Apex Pro Wireless Headset ANC</p>
-                  <span class="text-slate-400 text-xs">Qty: 1 × Rs. 24,999</span>
-                </div>
-                <span class="font-bold text-slate-900 dark:text-white">Rs. 24,999</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Payment Breakdown -->
-          <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 text-xs sm:text-sm space-y-2">
-            <div class="flex justify-between text-slate-600 dark:text-slate-400">
-              <span>Payment Method:</span>
-              <span class="font-bold text-emerald-600 dark:text-emerald-400" id="modal-payment-method">Cash on Delivery (COD)</span>
-            </div>
-            <div class="flex justify-between text-slate-600 dark:text-slate-400">
-              <span>Delivery Charges:</span>
-              <span class="font-bold text-slate-900 dark:text-white" id="modal-shipping-cost">Rs. 250</span>
-            </div>
-            <div class="pt-2 border-t border-slate-200 dark:border-slate-700 flex justify-between font-black text-base text-slate-900 dark:text-white">
-              <span>Grand Total:</span>
-              <span class="text-orange-600 dark:text-orange-400" id="modal-grand-total">Rs. 37,498</span>
-            </div>
-          </div>
-
         </div>
-
         <!-- Modal Footer -->
-        <div class="p-4 sm:p-6 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 flex items-center justify-between no-print">
-          <button onclick="window.print()" type="button" class="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 transition cursor-pointer flex items-center gap-1.5">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-            </svg>
-            Print Invoice
-          </button>
-          <button type="button" id="closeOrderModalBottom" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white dark:bg-slate-100 dark:hover:bg-slate-200 dark:text-slate-900 font-bold text-xs transition cursor-pointer">
+        <div class="bg-slate-50 dark:bg-slate-800/40 flex items-center justify-end border-t border-slate-100 dark:border-slate-800 p-4 sm:p-6">
+          <button class="cancelTrigger bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-xs font-montserrat font-bold rounded-xl cursor-pointer py-2.5 px-5 hover:bg-slate-800 dark:hover:bg-slate-200 hover:transition-colors hover:ease-out hover:duration-200" type="button">
             Close
           </button>
         </div>
-
+      </div>
+    </div>
+    <!-- ==================== ORDER DETAILS MODEL ==================== -->
+    <div class="bg-slate-950/60 backdrop-blur-sm fixed inset-0 flex items-center justify-center p-4 z-50 hidden" id="orderModel">
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-2xl shadow-2xl overflow-hidden relative animate-in fade-in zoom-in-95 duration-200">
+        <!-- Model Header -->
+        <div class="border-b border-slate-100 dark:border-slate-800 flex items-center justify-between p-6">
+          <div class="space-y-0.5">
+            <span class="text-orange-600 dark:text-orange-400 text-xs font-manrope font-bold" id="orderId"></span>
+            <h2 class="text-slate-900 dark:text-white text-lg font-montserrat font-bold leading-none">Order Details</h2>
+          </div>
+          <button class="closeTrigger text-slate-400 rounded-xl cursor-pointer p-2 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-600 dark:hover:text-white transition-colors ease-out duration-150" type="button">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <!-- Model Body Content -->
+        <div class="max-h-[70vh] space-y-6 p-6 overflow-y-auto">
+          <!-- Ordered Items Summary List -->
+          <div class="space-y-1.5">
+            <h3 class="text-slate-400 text-xs font-inter font-bold uppercase tracking-wider">Customer & Shipping Info</h3>
+            <div class="grid grid-cols-1 gap-4" id="orderItems">
+            </div>
+          </div>
+          <!-- Shipping Address Details -->
+          <div class="space-y-1.5">
+            <h3 class="text-slate-400 text-xs font-inter font-bold uppercase tracking-wider">Customer & Shipping Info</h3>
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-0.5 p-4">
+              <span class="text-slate-900 dark:text-white text-sm font-montserrat font-bold truncate" id="fullName">
+              </span>
+              <p class="text-slate-500 dark:text-slate-400 text-xs font-inter font-medium" id="stateAddress"></p>
+              <p class="text-slate-600 dark:text-slate-300 text-xs font-inter font-semibold" id="prvinceCtyPstlCd">
+              </p>
+              <p class="text-slate-500 text-xs font-inter font-medium">Email: <span class="text-slate-600 dark:text-slate-300 font-semibold" id="emailAddress">customer@example.com</span></p>
+              <p class="text-slate-500 text-xs font-inter font-medium">
+                📞 Contact:
+                <span class="text-slate-600 dark:text-slate-300 font-semibold" id="phoneNumber">+923112910920</span>
+              </p>
+            </div>
+          </div>
+          <!-- Payment Breakdown -->
+          <div class="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 space-y-2 rounded-2xl p-4">
+            <div class="flex justify-between">
+              <span class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter leading-none">Payment Method:</span>
+              <span class="text-emerald-600 dark:text-emerald-400 text-xs sm:text-sm font-inter font-bold leading-none">Cash on Delivery (COD)</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm font-inter leading-none">Delivery Charges:</span>
+              <span class="text-slate-900 dark:text-white text-xs sm:text-sm font-inter font-semibold leading-none" id="shippingRs">Rs. 250</span>
+            </div>
+            <div class="border-t border-slate-200 dark:border-slate-700 flex justify-between pt-2.5">
+              <span class="text-slate-900 dark:text-white text-base font-montserrat font-bold leading-none">Grand Total:</span>
+              <span class="text-orange-600 dark:text-orange-400 text-base font-montserrat font-black leading-none" id="grandTotal">Rs. 37,498</span>
+            </div>
+          </div>
+        </div>
+        <!-- Model Footer -->
+        <div class="bg-slate-50 dark:bg-slate-800/40 flex items-center justify-between border-t border-slate-100 dark:border-slate-800 p-4 sm:p-6">
+          <button class="text-slate-700 dark:text-slate-300 flex items-center gap-1.5 border border-slate-200 dark:border-slate-700 rounded-xl cursor-pointer py-2.5 px-4 hover:bg-slate-100 dark:hover:bg-slate-800 hover:transition-colors hover:ease-out hover:duration-200" type="button">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+            </svg>
+            <span class="text-xs font-montserrat font-semibold">Print Invoice</span>
+          </button>
+          <button class="cancelTrigger bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-xs font-montserrat font-bold rounded-xl cursor-pointer py-2.5 px-5 hover:bg-slate-800 dark:hover:bg-slate-200 hover:transition-colors hover:ease-out hover:duration-200" type="button">
+            Close
+          </button>
+        </div>
       </div>
     </div>
   </main>
   <!-- Footer -->
   <%- include("../partials/footer") %>
-  <!-- ==================== 7. CLIENT-SIDE JS SCRIPT ==================== -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const orderSearchInput = document.getElementById("orderSearchInput");
-      const paymentFilterSelect = document.getElementById("paymentFilterSelect");
-      const clearOrderFilterBtn = document.getElementById("clearOrderFilterBtn");
-      const resetFromEmptyBtn = document.getElementById("resetFromEmptyBtn");
-      const statusChips = document.querySelectorAll(".order-status-chip");
-      const orderRows = document.querySelectorAll(".order-row");
-      const noOrdersFound = document.getElementById("no-orders-found");
-      const visibleCountEl = document.getElementById("visible-order-count");
-
-      let currentStatus = "All";
-
-      // Function: Filter table rows
-      function filterOrders() {
-        const query = (orderSearchInput?.value || "").toLowerCase().trim();
-        const payment = paymentFilterSelect?.value || "All";
-        let count = 0;
-
-        orderRows.forEach(row => {
-          const rowId = (row.dataset.orderId || "").toLowerCase();
-          const rowStatus = row.dataset.status || "Pending";
-          const rowCustomer = (row.dataset.customer || "").toLowerCase();
-          const rowPayment = row.dataset.payment || "COD";
-
-          // Matching logic
-          const matchesQuery = !query || rowId.includes(query) || rowCustomer.includes(query);
-          const matchesStatus = currentStatus === "All" || rowStatus.toLowerCase() === currentStatus.toLowerCase();
-          const matchesPayment = payment === "All" || rowPayment.toLowerCase() === payment.toLowerCase();
-
-          if (matchesQuery && matchesStatus && matchesPayment) {
-            row.style.display = "";
-            count++;
-          } else {
-            row.style.display = "none";
-          }
-        });
-
-        // Update count & empty state
-        if (visibleCountEl) visibleCountEl.textContent = count;
-        if (noOrdersFound) {
-          if (count === 0) {
-            noOrdersFound.classList.remove("hidden");
-          } else {
-            noOrdersFound.classList.add("hidden");
-          }
-        }
-      }
-
-      // Status chip click listener
-      statusChips.forEach(chip => {
-        chip.addEventListener("click", (e) => {
-          e.preventDefault();
-          statusChips.forEach(c => {
-            c.className = "order-status-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 transition";
-          });
-          chip.className = "order-status-chip active-chip bg-orange-600 text-white text-xs font-montserrat font-bold whitespace-nowrap cursor-pointer rounded-xl shadow-sm shadow-orange-600/20 py-2 px-4 transition";
-          currentStatus = chip.getAttribute("data-status") || "All";
-          filterOrders();
-        });
-      });
-
-      // Inputs listeners
-      orderSearchInput?.addEventListener("input", filterOrders);
-      paymentFilterSelect?.addEventListener("change", filterOrders);
-
-      // Reset filters function
-      function resetFilters() {
-        if (orderSearchInput) orderSearchInput.value = "";
-        if (paymentFilterSelect) paymentFilterSelect.value = "All";
-        statusChips.forEach(c => {
-          const isAll = c.getAttribute("data-status") === "All";
-          c.className = isAll ?
-            "order-status-chip active-chip bg-orange-600 text-white text-xs font-montserrat font-bold whitespace-nowrap cursor-pointer rounded-xl shadow-sm shadow-orange-600/20 py-2 px-4 transition" :
-            "order-status-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 transition";
-        });
-        currentStatus = "All";
-        filterOrders();
-      }
-
-      clearOrderFilterBtn?.addEventListener("click", resetFilters);
-      resetFromEmptyBtn?.addEventListener("click", resetFilters);
-
-      // ==================== MODAL LOGIC ====================
-      const orderModal = document.getElementById("orderModal");
-      const closeButtons = [document.getElementById("closeOrderModal"), document.getElementById("closeOrderModalBottom")];
-
-      document.querySelectorAll(".view-order-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-          try {
-            const rawData = btn.getAttribute("data-order");
-            if (rawData) {
-              const order = JSON.parse(rawData);
-              document.getElementById("modal-order-number").textContent = order.orderNumber || "#TS-894215";
-              document.getElementById("modal-form-order-id").value = order._id || "";
-              document.getElementById("modal-status-select").value = order.status || "Pending";
-              document.getElementById("modal-customer-name").textContent = order.shippingAddress?.fullName || "Customer";
-              document.getElementById("modal-customer-address").textContent = (order.shippingAddress?.street || "") + ", " + (order.shippingAddress?.city || "");
-              document.getElementById("modal-customer-phone").textContent = "Phone: " + (order.shippingAddress?.phone || "N/A");
-              document.getElementById("modal-customer-email").textContent = "Email: " + (order.email || "N/A");
-              document.getElementById("modal-grand-total").textContent = "Rs. " + (order.grandTotal ? order.grandTotal.toLocaleString() : "0");
-              document.getElementById("modal-payment-method").textContent = order.paymentMethod || "Cash on Delivery (COD)";
-            }
-          } catch (e) {
-            console.log("Modal preview render");
-          }
-          orderModal?.classList.remove("hidden");
-        });
-      });
-
-      closeButtons.forEach(btn => {
-        btn?.addEventListener("click", () => {
-          orderModal?.classList.add("hidden");
-        });
-      });
-
-      orderModal?.addEventListener("click", (e) => {
-        if (e.target === orderModal) {
-          orderModal.classList.add("hidden");
-        }
-      });
-
-    });
-  </script>
-
+  <!-- Scripts -->
+  <script src="/js/script.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/admin.js"></script>
 </body>
 
 </html>

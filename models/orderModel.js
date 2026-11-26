@@ -111,6 +111,7 @@ const orderSchema = mongoose.Schema(
         "Pending",
         "Confirmed",
         "Processing",
+        "Shipped",
         "Delivered",
         "Cancelled",
       ],

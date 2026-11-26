@@ -662,10 +662,12 @@ const removeProduct = (productId) => {
 /* ***********************************
           UI Address Update
 *********************************** */
-const UIAddressUpdate = (address) => {
+const UIAddressUpdate = (address, orderEmail) => {
   const fullName = document.getElementById("fullName");
   const stateAddress = document.getElementById("stateAddress");
   const prvinceCtyPstlCd = document.getElementById("prvinceCtyPstlCd");
+  const emailAddress = document.getElementById("emailAddress");
+  const phoneNumber = document.getElementById("phoneNumber");
   if (!fullName || !stateAddress || !prvinceCtyPstlCd) return;
   if (!address) return;
   fullName.textContent = address.fullName || "";
@@ -677,6 +679,9 @@ const UIAddressUpdate = (address) => {
   ]
     .filter(Boolean)
     .join(", ");
+  if (!emailAddress || !phoneNumber) return;
+  emailAddress.textContent = orderEmail || "";
+  phoneNumber.textContent = address.phone || "";
 };
 /* ***********************************
           UI Address Update
@@ -917,7 +922,7 @@ function resetRoleChips() {
 *********************************** */
 const clearUserFilters = document.querySelectorAll(".clearUserFilters");
 clearUserFilters?.forEach((btn) => {
-  btn.addEventListener("click", async (event) => {
+  btn.addEventListener("click", (event) => {
     event.preventDefault();
     resetRoleChips();
   });
@@ -948,15 +953,54 @@ openTriggers.forEach((trigger) => {
       Id.value = userId;
       role.value = userRole;
       status.value = userStatus;
+    } else if (targetId === "orderModel") {
+      const order = JSON.parse(trigger.dataset.order);
+      const orderId = document.getElementById("orderId");
+      if (!orderId) return;
+      orderId.textContent = order.orderId;
+      const orderHTML = order.items
+        .map((item) => {
+          return `<div class="bg-slate-50/70 dark:bg-slate-800/40 flex items-center justify-between gap-4 border border-slate-200/60 dark:border-slate-800 rounded-2xl p-3.5">
+      <div class="flex items-center gap-x-2.5 sm:gap-x-3.5">
+        <div class="relative h-16 w-16 border border-slate-200/60 dark:border-slate-700 rounded-xl shrink-0 overflow-hidden">
+          <span class="bg-orange-500 text-white text-xs font-montserrat font-semibold leading-none border border-slate-200 rounded-full absolute z-5 p-0.75 px-1.5">${item.quantity}</span>
+          <img class="h-full w-full object-cover" src="${item.image}" alt="${item.name}" />
+        </div>
+        <div class="flex flex-col space-y-0.5">
+          <h4 class="text-slate-800 dark:text-slate-300 text-[0.8050rem] sm:text-sm font-montserrat font-semibold line-clamp-2">
+          ${item.name}
+          </h4>
+          <span class="text-sm font-inter flex justify-between gap-x-[0.315rem]">
+          <span class="text-slate-900 dark:text-slate-100">Price: <span class="font-medium">${(item.price / item.quantity).toLocaleString()} x ${item.quantity}</span></span>
+          <span class="text-orange-600 dark:text-orange-400 font-bold">Rs: ${item.price.toLocaleString()}</span>
+          </span>
+        </div>
+      </div>
+      </div>`;
+        })
+        .join("");
+      const orderItems = document.getElementById("orderItems");
+      orderItems.innerHTML = orderHTML;
+      UIAddressUpdate(order.address, order.orderEmail);
+      const shippingRs = document.getElementById("shippingRs");
+      const grandTotal = document.getElementById("grandTotal");
+      if (!shippingRs || !grandTotal) return;
+      shippingRs.textContent = `Rs: ${order.shippingMethod === "Express" ? 500 : 200}`;
+      grandTotal.textContent = `Rs: ${order.grandTotal.toLocaleString()}`;
+    } else if (!targetId === "orderStatusModel") {
+      const orderId = trigger.dataset.orderId;
+      const orderIdInput = document.getElementById("orderIdInput");
+      if (!orderIdInput) return;
+      orderIdInput.value = orderId;
     }
     const modelDialog = document.getElementById(targetId);
     if (!modelDialog) return;
     modelDialog.classList.remove("hidden");
     modelDialog.classList.add("flex");
     document.body.style.overflow = "hidden";
-    const closeTrigger = document.querySelector(".closeTrigger");
-    const cancelTrigger = modelDialog.querySelector(".cancelTrigger");
-    if (!cancelTrigger) return;
+    const closeTriggers = document.querySelectorAll(".closeTrigger");
+    const cancelTriggers = modelDialog.querySelectorAll(".cancelTrigger");
+    // if (!cancelTrigger) return;
     function closeModel() {
       modelDialog.classList.add("hidden");
       modelDialog.classList.remove("flex");
@@ -971,8 +1015,12 @@ openTriggers.forEach((trigger) => {
         }
       }
     }
-    closeTrigger?.addEventListener("click", closeModel);
-    cancelTrigger?.addEventListener("click", closeModel);
+    closeTriggers.forEach((trigger) => {
+      trigger.addEventListener("click", closeModel);
+    });
+    cancelTriggers.forEach((trigger) => {
+      trigger.addEventListener("click", closeModel);
+    });
     modelDialog?.addEventListener("click", (e) => {
       if (e.target === modelDialog) closeModel();
     });
@@ -981,6 +1029,82 @@ openTriggers.forEach((trigger) => {
         closeModel();
       }
     });
+  });
+});
+/* ***********************************
+      Order Status Chips/Badges
+*********************************** */
+const orderStatusChips = document.querySelectorAll(".orderStatus-chip");
+orderStatusChips.forEach((chip) => {
+  chip.addEventListener("click", (event) => {
+    event.preventDefault();
+    const status = chip.getAttribute("data-status") || "All";
+    orderStatusChips.forEach((chip) => {
+      chip.className =
+        "orderStatus-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 hover:transition hover:ease-out hover:duration-[250ms]";
+    });
+    chip.className =
+      "orderStatus-chip active-chip bg-orange-600 text-white text-xs font-montserrat font-bold whitespace-nowrap cursor-pointer rounded-xl shadow-sm shadow-orange-600/25 py-2 px-4 hover:transition ease-out duration-[250ms]";
+    filterOrderStatus(status);
+  });
+});
+/* ***********************************
+           Order Filteration
+*********************************** */
+const orderSearchInput = document.getElementById("orderSearchInput");
+const payMethodFilter = document.getElementById("payMethodFilter");
+let currentStatus = "All";
+function filterOrderStatus(status = currentStatus) {
+  currentStatus = status;
+  const query = (orderSearchInput?.value || "").toLowerCase().trim();
+  const payMthdFilter = payMethodFilter?.value || "All";
+  const STATUS = status.toLowerCase();
+  let orders = document.querySelectorAll(".order-card");
+  let visibleCount = 0;
+  orders.forEach((order) => {
+    const orderId = (order.dataset.orderId || "").toLowerCase();
+    const orderName = (order.dataset.name || "").toLowerCase();
+    const orderStatus = (order.dataset.status || "").toLowerCase();
+    const orderPayMthd = (order.dataset.paymentMethod || "COD").toLowerCase();
+    console.log();
+    const matchesStatus = STATUS === "all" || orderStatus.includes(STATUS);
+    const matchesQuery =
+      !query || orderId.includes(query) || orderName.includes(query);
+    const matchesPayMthd =
+      payMthdFilter === "All" || orderPayMthd === payMthdFilter.toLowerCase();
+    if (matchesStatus && matchesQuery && matchesPayMthd) {
+      order.style.display = "";
+      visibleCount++;
+    } else {
+      order.style.display = "none";
+    }
+  });
+  checkRemainingProducts(visibleCount);
+}
+orderSearchInput?.addEventListener("input", () => filterOrderStatus());
+payMethodFilter?.addEventListener("change", () => filterOrderStatus());
+/* ***********************************
+         Reset Role Chips
+*********************************** */
+function resetStatusChips() {
+  if (orderSearchInput) orderSearchInput.value = "";
+  if (payMethodFilter) payMethodFilter.value = "All";
+  orderStatusChips.forEach((chip) => {
+    const isAll = chip.dataset.status === "All";
+    chip.className = isAll
+      ? "orderStatus-chip active-chip bg-orange-600 text-white text-xs font-montserrat font-bold whitespace-nowrap rounded-xl cursor-pointer shadow-md shadow-orange-600/20 py-2 px-4 hover:transition hover:ease-out hover:duration-[250ms]"
+      : "orderStatus-chip bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-montserrat font-semibold whitespace-nowrap cursor-pointer rounded-xl py-2 px-4 hover:bg-slate-200 dark:hover:bg-slate-700 hover:transition hover:ease-out hover:duration-[250ms]";
+  });
+  filterOrderStatus("All");
+}
+/* ***********************************
+          Clear Users Filters
+*********************************** */
+const clearOrderFilters = document.querySelectorAll(".clearOrderFilter");
+clearOrderFilters?.forEach((btn) => {
+  btn.addEventListener("click", (event) => {
+    event.preventDefault();
+    resetStatusChips();
   });
 });
 /* ***********************************
