@@ -463,6 +463,7 @@ async function orderTrack(event) {
       trackingPage?.classList.remove("h-[calc(100vh_-_75px)]");
       trackingResult?.classList.remove("hidden");
       orderTrackUpdate(data.order);
+      orderTimeline(data.order);
       UIAddressUpdate(data.order.address);
     }
   } catch (error) {

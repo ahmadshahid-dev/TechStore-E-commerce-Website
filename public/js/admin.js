@@ -3,6 +3,7 @@ const prdctAddForm = document.getElementById("prdctAddForm");
 const prdctEditForm = document.getElementById("prdctEditForm");
 const prdctDeleteBtn = document.getElementById("prdctDeleteBtn");
 const userEditForm = document.getElementById("userEditForm");
+const updateOrderForm = document.getElementById("updateOrderForm");
 /* ***********************************
              Add Product
 *********************************** */
@@ -171,6 +172,48 @@ async function handleUpdateUser(event) {
     }
   }
 }
+/* ***********************************
+         Update Order Status
+*********************************** */
+async function handleUpdateOrder(event) {
+  event.preventDefault();
+  const form = event.target;
+  const formData = new FormData(form);
+  const updateBtn = form.querySelector("button[type='submit']");
+  if (updateBtn) {
+    loadingSet(updateBtn, "Updating...");
+  }
+  try {
+    const response = await fetch("/admin/order-update", {
+      method: "PUT",
+      headers: jsonHeaders(),
+      body: JSON.stringify(Object.fromEntries(formData)),
+    });
+    const data = await response.json();
+    if (response.status === 422) {
+      form.querySelectorAll(".error").forEach((el) => (el.textContent = ""));
+      data.errors.forEach((error) => {
+        const el = document.getElementById(`error-${error.path}`);
+        if (el) el.textContent = error.msg;
+      });
+      return;
+    }
+    if (authenticationCheck(response, data)) return;
+    responseIsNotOk(response, data);
+    if (data.type === "success") {
+      form.querySelectorAll(".error").forEach((el) => (el.textContent = ""));
+      showToast(data.message, data.type);
+      window.location.href = data.redirect;
+    }
+  } catch (error) {
+    console.error("Update order status error:", error);
+    showToast(error.message || "Something went wrong!");
+  } finally {
+    if (updateBtn) {
+      loadingReset(updateBtn, "Update");
+    }
+  }
+}
 // DOM Event Handling;
 prdctAddForm?.addEventListener("submit", handleAddProduct);
 prdctEditForm?.addEventListener("submit", handleUpdateProduct);
@@ -183,4 +226,5 @@ prdctDeleteBtn?.addEventListener("click", (event) => {
   }
   handleDeleteProduct(event, productId);
 });
-userEditForm?.addEventListener("submit", handleUpdateUser)
+userEditForm?.addEventListener("submit", handleUpdateUser);
+updateOrderForm?.addEventListener("submit", handleUpdateOrder);

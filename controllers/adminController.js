@@ -500,7 +500,7 @@ const getManageUsers = async (req, res, next) => {
   }
 };
 /* ***********************************
-Website POST Admin Edit User Controller
+Website PUT Admin Edit User Controller
 *********************************** */
 const putEditUser = [
   check("role")
@@ -552,6 +552,59 @@ const putEditUser = [
   },
 ];
 /* ***********************************
+Website PUT Admin Edit Order Controller
+*********************************** */
+const putEditOder = [
+  check("status")
+    .trim()
+    .notEmpty()
+    .withMessage("Status is required!")
+    .bail()
+    .isIn([
+      "Pending",
+      "Confirmed",
+      "Processing",
+      "Shipped",
+      "Delivered",
+      "Cancelled",
+    ])
+    .withMessage("Invaild Status!"),
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        type: "error",
+        errors: errors.array(),
+      });
+    }
+    const { orderId, status, note } = req.body;
+    try {
+      const order = await Order.findOneAndUpdate(
+        { _id: orderId },
+        {
+          $set: { orderStatus: status },
+          $push: { statusHistory: { status, note } },
+        },
+        { returnDocument: "after", runValidators: true },
+      );
+      if (!order) {
+        return res.status(404).json({
+          type: "error",
+          message: "Order Not Found!",
+        });
+      }
+      return res.status(200).json({
+        type: "success",
+        message: "Order Status Updated!",
+        redirect: "/admin/manage-orders",
+      });
+    } catch (error) {
+      console.error("Edit Order error:", error);
+      return next(error);
+    }
+  },
+];
+/* ***********************************
                Exports
 *********************************** */
 module.exports = {
@@ -565,4 +618,5 @@ module.exports = {
   getManageOrders,
   getManageUsers,
   putEditUser,
+  putEditOder,
 };

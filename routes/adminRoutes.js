@@ -23,5 +23,7 @@ adminRoutes.get("/manage-orders", auth("page"), admin, controllers.getManageOrde
 adminRoutes.get("/manage-users", auth("page"), admin, controllers.getManageUsers);
 // Website PUT Admin User Edit Route;
 adminRoutes.put("/user-update", auth("api"), admin, controllers.putEditUser);
+// Website PUT Admin Order Edit Route;
+adminRoutes.put("/order-update", auth("api"), admin, controllers.putEditOder);
 // Exports;
 module.exports = adminRoutes;

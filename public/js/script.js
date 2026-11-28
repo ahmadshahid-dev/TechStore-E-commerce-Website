@@ -987,11 +987,14 @@ openTriggers.forEach((trigger) => {
       if (!shippingRs || !grandTotal) return;
       shippingRs.textContent = `Rs: ${order.shippingMethod === "Express" ? 500 : 200}`;
       grandTotal.textContent = `Rs: ${order.grandTotal.toLocaleString()}`;
-    } else if (!targetId === "orderStatusModel") {
+    } else if (targetId === "orderStatusModel") {
       const orderId = trigger.dataset.orderId;
+      const orderStatus = trigger.dataset.status;
       const orderIdInput = document.getElementById("orderIdInput");
-      if (!orderIdInput) return;
+      const statusSelect = document.getElementById("status-select");
+      if (!orderId || !orderStatus || !orderIdInput || !statusSelect) return;
       orderIdInput.value = orderId;
+      statusSelect.value = orderStatus;
     }
     const modelDialog = document.getElementById(targetId);
     if (!modelDialog) return;
@@ -1180,4 +1183,63 @@ function bindProductActions(target = document) {
       addToCart(event, btn, productId, quantity);
     });
   });
+}
+/* ***********************************
+           Order Time Line
+*********************************** */
+const ORDER_STEPS = [
+  ["Pending", "🕒"],
+  ["Confirmed", "✅"],
+  ["Processing", "📦"],
+  ["Shipped", "🚚"],
+  ["Delivered", "🏡"],
+];
+function orderTimeline(order) {
+const timeline = document.getElementById("orderTimeline");
+if (!timeline) return;
+const history = order.statusHistory || [];
+const dates = { pending: order.createdAt };
+history.forEach((h) => (dates[h.status.toLowerCase()] = h.changedAt));
+const current = (
+  history.at(-1)?.status ||
+  order.status ||
+  "Pending"
+).toLowerCase();
+const list = current === "cancelled" ? [
+  ...ORDER_STEPS.filter(([name]) => dates[name.toLowerCase()]),
+  ["Cancelled", "❌"],
+]
+: ORDER_STEPS;
+const currentIndex = list.findIndex(
+  ([name]) => name.toLowerCase() === current,
+);
+timeline.innerHTML = list.map(([name, icon], i) => {
+  const key = name.toLowerCase();
+  const upcoming = i > currentIndex;
+  let circle = "bg-emerald-600 text-white";
+  if (key === "cancelled") circle = "bg-red-600 text-white";
+  else if (upcoming) circle = "bg-slate-200 dark:bg-slate-800";
+  else if (i === currentIndex && key !== "delivered")
+    circle = "bg-orange-600 text-white animate-pulse";
+  let text = upcoming ? "Waiting" : "";
+  if (!upcoming && dates[key]) {
+    text = new Date(dates[key]).toLocaleString("en-US", {
+      timeZone: "Asia/Karachi",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }
+  return `
+    <div class="flex sm:flex-1 sm:flex-col items-center gap-3.5 text-left sm:text-center ${upcoming ? "opacity-50" : ""}">
+      <div class="h-10 w-10 shrink-0 flex items-center justify-center rounded-full shadow-md ${circle}">
+        ${icon}
+      </div>
+      <div class="flex flex-col gap-y-1">
+        <h4 class="text-slate-900 dark:text-white text-sm font-montserrat font-bold">${name}</h4>
+        <span class="text-slate-400 text-xs font-inter">${text}</span>
+      </div>
+    </div>`;
+}).join("");
 }
