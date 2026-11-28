@@ -61,12 +61,12 @@ antialiased selection:text-white">
           <!-- Total Revenue -->
           <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm space-y-4 p-6 hover:shadow-md transition-shadow ease-in-out duration-300">
             <div class="flex items-start justify-between">
-              <div>
+              <div class="space-y-1">
                 <p class="text-slate-500 dark:text-slate-400 text-xs font-inter font-semibold uppercase tracking-wider">
                   Total Revenue
                 </p>
-                <h3 class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-extrabold mt-1">
-                  Rs <%= totalRevenue.toLocaleString() %>
+                <h3 class="text-orange-600 dark:text-orange-400 text-2xl font-montserrat font-bold">
+                   <span class="text-slate-900 dark:text-white text-base">Rs: </span><%= totalRevenue.toLocaleString() %>
                 </h3>
               </div>
               <div class="bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 h-11 w-11 flex items-center justify-center rounded-xl">
@@ -85,11 +85,11 @@ antialiased selection:text-white">
           <!-- Total Orders -->
           <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm space-y-4 p-6 hover:shadow-md transition-shadow ease-in-out duration-300">
             <div class="flex items-start justify-between">
-              <div>
+              <div class="space-y-1">
                 <p class="text-slate-500 dark:text-slate-400 text-xs font-inter font-semibold uppercase tracking-wider">
                   Total Orders
                 </p>
-                <h3 class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-extrabold mt-1">
+                <h3 class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-extrabold">
                   <%= totalOrders %>
                 </h3>
               </div>
@@ -109,11 +109,11 @@ antialiased selection:text-white">
           <!-- Active Products -->
           <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm space-y-4 p-6 hover:shadow-md transition-shadow ease-in-out duration-300">
             <div class="flex items-start justify-between">
-              <div>
+              <div class="space-y-1">
                 <p class="text-slate-500 dark:text-slate-400 text-xs font-inter font-semibold uppercase tracking-wider">
                   Active Products
                 </p>
-                <h3 class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-extrabold mt-1">
+                <h3 class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-extrabold">
                   <%= totalProducts %>
                 </h3>
               </div>
@@ -133,11 +133,11 @@ antialiased selection:text-white">
           <!-- Total Users -->
           <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-sm space-y-4 p-6 hover:shadow-md transition-shadow ease-in-out duration-300">
             <div class="flex items-start justify-between">
-              <div>
+              <div class="space-y-1">
                 <p class="text-slate-500 dark:text-slate-400 text-xs font-inter font-semibold uppercase tracking-wider">
                   Registered Users
                 </p>
-                <h3 class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-extrabold mt-1">
+                <h3 class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-montserrat font-extrabold">
                   <%= totalUsers %>
                 </h3>
               </div>
